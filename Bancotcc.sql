@@ -7,7 +7,7 @@ create table usuario (
     nome varchar(100) not null,
     email varchar(100) unique not null,
     senha varchar(255) not null, 
-    data_cadastro timestamp default CURRENT_timestamp
+    data_cadastro timestamp default current_timestamp
 );
 
 create table dificuldade (
@@ -26,7 +26,7 @@ create table curso (
     descricao text,
     id_dificuldade int not null,
     id_instrutor int not null,
-    data_criacao timestamp default CURRENT_timestamp,
+    data_criacao timestamp default current_timestamp,
     foreign key (id_dificuldade) references dificuldade(id_dificuldade),
     foreign key (id_instrutor) references usuario(id_usuario)
 );
