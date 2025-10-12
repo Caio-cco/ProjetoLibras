@@ -1,0 +1,57 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    background-color: #ffffff;
+    position: sticky;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    
+    .titulos{
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        font-size: 17px;
+        font-family: serif;
+        font-style: normal;
+        a{
+            text-decoration: none;
+            color: black;
+        }
+    }
+    .imagem {
+        img {
+            margin-left: 20px;
+            height: 45px;
+        }
+    }
+
+    
+    .botoes a {
+        text-decoration: none;
+        color: black;
+        button  {
+            border-radius: 10px;
+            width: 90px;
+            height: 50px;
+            margin-left: 10px;
+            margin-right: 5px;
+            background-color: #ffffff;
+            transition: background-color 0.9s ease; 
+            cursor: pointer;
+
+            &:hover {
+                background-color: #cdcdcd; 
+            }
+            
+        
+        }
+        
+    }
+}
