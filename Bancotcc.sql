@@ -5,6 +5,8 @@ use tcc;
 create table usuario (
     id_usuario int AUTO_INCREMENT primary key,
     nome varchar(100) not null,
+    foto_url varchar(255),
+    telefone varchar(255),
     email varchar(100) unique not null,
     senha varchar(255) not null, 
     data_cadastro timestamp default current_timestamp
