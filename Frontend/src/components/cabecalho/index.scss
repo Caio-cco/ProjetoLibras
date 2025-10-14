@@ -14,7 +14,7 @@
      top: 0;    
     z-index: 1000; 
     box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.25);
-    
+    overflow: hidden;
     .titulos{
         display: flex;
         align-items: center;
@@ -38,7 +38,9 @@
     .botoes a {
         text-decoration: none;
         color: black;
-        button  {
+        
+        
+    }button  {
             border-radius: 10px;
             width: 90px;
             height: 50px;
@@ -54,6 +56,4 @@
             
         
         }
-        
-    }
 }

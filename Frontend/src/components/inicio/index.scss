@@ -1,19 +1,30 @@
 .hero {
-    background: url("./imagem.png");
-    background-position: center;
-    background-size: cover;
-      clip-path: path("M0,0L0,520Q360,600,720,520T1440,520L1440,0Z");
-    font-weight: bold;
-height: 700px;
+    position: relative;
+    clip-path: path("M0,0L0,520Q360,600,720,520T1440,520L1440,0Z");
+    height: 700px;
+    overflow: hidden;
+
+    /* aqui sim faz efeito */
+    .hero-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 600px;
+        object-fit: cover;
+        /* imagem cobre tudo */
+        z-index: 0;
+    }
 
     .overlay {
-        width: 100%;
+        position: relative;
+        z-index: 1;
         background-color: #4343439e;
-        min-height: 75vh;
+        width: 100%;
+        height: 100%;
         display: flex;
-        justify-content: center;
         flex-direction: column;
-        padding-top: 50px;
+        justify-content: center;
         align-items: center;
 
         h1 {
@@ -25,8 +36,8 @@ height: 700px;
             font-size: 65px;
             font-style: normal;
             font-family: serif;
-            margin-top: -130px;
-
+            margin-top: -20px;
+            overflow: hidden;
         }
 
         p {
@@ -34,6 +45,7 @@ height: 700px;
             margin-top: 10px;
             font-family: Arial, Helvetica, sans-serif;
             font-style: normal;
+            overflow: hidden;
         }
 
         .btn {
@@ -48,7 +60,7 @@ height: 700px;
             gap: 0.2rem;
             font-weight: 600;
             cursor: pointer;
-             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
             svg {
                 transition: transform 0.3s ease;
