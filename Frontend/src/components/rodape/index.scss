@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  margin-right: -20px;
 
   .footer-container {
     width: 100%;
@@ -66,14 +67,18 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+     
 
       .footer-info {
         text-align: center;
+        margin-top: 1rem;
       }
+     
+      
     }
 
     .footer-logo {
-      width: 80px;
+      width: 90px;
       height: 80px;
     }
   }

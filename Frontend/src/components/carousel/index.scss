@@ -1,6 +1,9 @@
+/* ============================= */
+/* 🌟 CARROSSEL RESPONSIVO      */
+/* ============================= */
+
 .carousel-section {
   width: 100%;
-  
   padding: 4rem 1rem;
   display: flex;
   flex-direction: column;
@@ -9,69 +12,68 @@
   margin-top: -120px;
 }
 
+/* ====== Título ====== */
 .carousel-title {
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 700;
   color: #1f2937;
-  margin-bottom: 4.5rem;
+  margin-bottom: 3rem;
   text-align: center;
+  line-height: 1.2;
+  max-width: 90%;
 }
 
+/* ====== Container principal ====== */
 .carousel-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 19rem;
+  gap: clamp(2rem, 10vw, 19rem);
   width: 100%;
   max-width: 80rem;
+  flex-wrap: nowrap;
 }
 
+/* ====== Botões ====== */
 .carousel-btn {
   padding: 0.75rem;
   border-radius: 9999px;
   background-color: #facc15;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   border: none;
+  margin: 100px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  
 }
 
 .carousel-btn:hover {
   background-color: #eab308;
+  transform: scale(1.1);
 }
 
+/* Botões somem no mobile */
 @media (max-width: 640px) {
   .carousel-btn {
     display: none;
   }
 }
 
+/* ====== Card Container ====== */
 .carousel-card-container {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 280px;
-  height: 380px;
+  width: clamp(260px, 70vw, 420px);
+  height: clamp(340px, 70vh, 460px);
+  flex-shrink: 0;
 }
 
-@media (min-width: 640px) {
-  .carousel-card-container {
-    width: 360px;
-    height: 420px;
-  }
-}
-
-@media (min-width: 768px) {
-  .carousel-card-container {
-    width: 420px;
-    height: 460px;
-  }
-}
-
+/* ====== Card ====== */
 .carousel-card {
   position: absolute;
-  width: 700px;
+  width: 100%;
   height: 100%;
   background-color: #0b2954;
   color: #fff;
@@ -84,41 +86,38 @@
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+  transition: transform 0.3s ease;
 }
 
+.carousel-card:hover {
+  transform: translateY(-5px);
+}
+
+/* ====== Imagem ====== */
 .carousel-card .card-image {
   width: 100%;
-  height: 180px;
+  height: clamp(160px, 35vh, 260px);
   object-fit: cover;
   border-radius: 0.75rem;
   margin-bottom: 1rem;
 }
 
-@media (min-width: 640px) {
-  .carousel-card .card-image {
-    height: 220px;
-  }
-}
-
-@media (min-width: 768px) {
-  .carousel-card .card-image {
-    height: 260px;
-  }
-}
-
+/* ====== Texto ====== */
 .carousel-card h3 {
   color: #facc15;
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
 .carousel-card p {
   color: #e5e7eb;
-  font-size: 0.95rem;
+  font-size: clamp(0.9rem, 2vw, 1rem);
   line-height: 1.4;
+  margin-bottom: 1rem;
 }
 
+/* ====== Botão do Card ====== */
 .carousel-card button {
   background-color: #facc15;
   color: #0b2954;
@@ -136,10 +135,13 @@
   transform: scale(1.05);
 }
 
+/* ====== Dots ====== */
 .carousel-dots {
   display: flex;
   gap: 0.75rem;
   margin-top: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .carousel-dot {
@@ -153,5 +155,38 @@
 
 .carousel-dot.active {
   background-color: #facc15;
-  transform: scale(1.2);
+  transform: scale(1.3);
+}
+
+/* ====== Responsividade extra ====== */
+@media (max-width: 1024px) {
+  .carousel-container {
+    gap: 8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-section {
+    padding: 3rem 1rem;
+    margin-top: -60px;
+  }
+
+  .carousel-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-section {
+    margin-top: -40px;
+  }
+
+  .carousel-card {
+    padding: 1rem;
+  }
+
+  .carousel-card button {
+    width: 100%;
+  }
 }

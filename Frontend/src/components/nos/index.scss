@@ -73,11 +73,13 @@ margin-top: -20px;
   @media (max-width: 768px) {
     .conteudo {
       flex-direction: column;
+      margin-left: 5px;
     }
 
     .imagem {
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 17 / 10;
+      margin-left: 5px;
     }
   }
 }
