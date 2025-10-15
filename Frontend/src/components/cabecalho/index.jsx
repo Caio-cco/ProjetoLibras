@@ -33,9 +33,9 @@ export default function Cabecalho({ onEntrar, onInscrever }) {
             <div className={`cabecalho-centro ${menuAberto ? "aberto" : ""}`}>
                 <nav className="menu">
                     <div className="titulos">
-                        <a href="#atividades">Atividades</a>
-                        <a href="#">Quem Somos</a>
-                        <a href="#contato">Contato</a>
+                        <a href="/">Atividades</a>
+                        <a href="#QuemSomos">Quem Somos</a>
+                        <a href="/login">Contato</a>
                     </div>
 
                     {/* Versão mobile dos botões (aparece dentro do menu quando aberto) */}

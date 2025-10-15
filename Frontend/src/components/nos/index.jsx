@@ -12,7 +12,7 @@ export default function QuemSomos() {
 
         <div className="conteudo">
           <div className="imagem">
-            <FaRegImages className="icone" />
+            <img className='imagem' src="./joker.jpg"/>
           </div>
 
           <div className="texto">

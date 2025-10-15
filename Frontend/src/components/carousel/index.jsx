@@ -15,7 +15,7 @@ const cards = [
     title: "Libras para Intermediários",
     subtitle: "Módulo 2: Fluência Conversacional",
     desc: "Aprofunde seus conhecimentos e construa diálogos mais complexos.",
-    image: "/vite.svg",
+    image: "/imagem.png",
     button: "Saiba Mais",
   },
   {

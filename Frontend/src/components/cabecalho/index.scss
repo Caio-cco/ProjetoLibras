@@ -9,13 +9,17 @@
   align-items: center;
   width: 100%;
   height: 60px;
-  background-color: #fff;
+
+background-color: #ffffff;
+
+
   position: fixed;
   top: 0;
   z-index: 1000;
   box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.25);
   padding: 0 20px;
   gap: 10px;
+
 
   /* esquerdo: logo */
   .imagem {
@@ -51,11 +55,12 @@
     width: 25px;
     height: 20px;
     cursor: pointer;
+    
 
     .linha {
       width: 100%;
       height: 3px;
-      background-color: black;
+      background-color: rgb(0, 0, 0);
       border-radius: 2px;
       transition: all 0.3s ease;
     }
@@ -82,8 +87,8 @@
       align-items: center;
       justify-content: center;
       gap: 28px;
-      font-size: 17px;
-      font-family: serif;
+      font-size: 15px;
+
 
         a {
             text-decoration: none;
@@ -146,28 +151,32 @@
   .desktop-only {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 1px;
   }
 
   .desktop-only a {
     text-decoration: none;
-    color: #0b2954;
-    font-weight: 600;
+    color: #000000;
     padding: 8px 12px;
     border-radius: 8px;
     transition: background-color 0.15s ease, color 0.15s ease;
+    font-size: 15px;
+
   }
 
   .desktop-only .bot {
     border-radius: 9999px;
-    padding: 2px 15px;
+    padding: 2px 14px;
     background-color: #ffffff;
     color: #000000;
     height: 45px;
     border-radius: 10px;
-    font-weight: 700;
-    border: 1px solid black;
+    font-size: 15px;
+    font-family: var(--font-primary);
+    font-style: normal;
+    border: 1px solid rgb(0, 0, 0);
     cursor: pointer;
+    
     transition: transform 0.12s ease, filter 0.12s ease;
   }
 
@@ -190,7 +199,7 @@
       top: 60px;
       display: flex;
       justify-content: center;
-      background-color: #fff;
+      background-color: #ffffff;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       max-height: 0;

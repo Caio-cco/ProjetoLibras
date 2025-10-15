@@ -1,76 +1,148 @@
 .hero {
-    position: relative;
-    clip-path: path("M0,0L0,520Q360,600,720,520T1440,520L1440,0Z");
-    height: 700px;
-    overflow: hidden;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 
-    /* aqui sim faz efeito */
-    .hero-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 600px;
-        object-fit: cover;
-        /* imagem cobre tudo */
-        z-index: 0;
+  clip-path: polygon(
+    0 0, 
+    0 80%, 
+    25% 85%, 
+    50% 80%, 
+    85% 85%, 
+    100% 80%, 
+    100% 0
+  );
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 40% 30%, rgba(220, 220, 220, 0.6), rgba(245, 245, 245, 0.9));
+    z-index: 0;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .overlay {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+
+    h1 {
+      font-size: clamp(28px, 5vw, 62px);
+      font-family: var(--font-primary);
+      line-height: 1.1;
+      margin: 0;
+      margin-top: 100px;
     }
+
+    p {
+      font-size: clamp(14px, 2.5vw, 18px);
+      margin-top: 15px;
+      font-family: var(--font-primary);
+      line-height: 1.4;
+    }
+
+    .btn {
+      background: #ffd600;
+      color: #000;
+      margin-top: 25px;
+      border: none;
+      padding: 0.5rem 1.8rem;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+      svg {
+        transition: transform 0.3s ease;
+      }
+
+      &:hover svg {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  // Tablets
+  @media (max-width: 768px) {
+    height: 80vh; // reduz a altura
+    clip-path: polygon(
+      0 0, 
+      0 85%, 
+      25% 88%, 
+      50% 85%, 
+      75% 88%, 
+      100% 85%, 
+      100% 0
+    );
 
     .overlay {
-        position: relative;
-        z-index: 1;
-        background-color: #4343439e;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+      
+    
 
-        h1 {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-size: 65px;
-            font-style: normal;
-            font-family: serif;
-            margin-top: -20px;
-            overflow: hidden;
-        }
+      h1, p {
+        text-align: center;
+      }
 
-        p {
-            font-size: 20px;
-            margin-top: 10px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-style: normal;
-            overflow: hidden;
-        }
-
-        .btn {
-            background: #ffd600;
-            color: #000;
-            margin-top: 40px;
-            border: none;
-            padding: 0.3rem 1.5rem;
-            border-radius: 5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-            svg {
-                transition: transform 0.3s ease;
-            }
-
-            &:hover svg {
-                transform: translateX(4px);
-            }
-        }
-
-
+      .btn {
+        margin-top: 20px;
+        padding: 0.45rem 1.5rem;
+      }
     }
+  }
+
+  // Celulares
+  @media (max-width: 480px) {
+    height: 60vh; // reduz ainda mais
+    clip-path: polygon(
+      0 0, 
+      0 90%, 
+      25% 92%, 
+      50% 90%, 
+      75% 92%, 
+      100% 90%, 
+      100% 0
+    );
+
+    .overlay {
+      padding-top: 40px;
+
+      h1 {
+        font-size: clamp(22px, 6vw, 36px);
+      }
+
+      p {
+        font-size: clamp(12px, 4vw, 14px);
+      }
+
+      .btn {
+        margin-top: 15px;
+        padding: 0.4rem 1.2rem;
+        font-size: 14px;
+      }
+    }
+  }
 }

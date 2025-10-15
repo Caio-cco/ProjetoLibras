@@ -13,7 +13,7 @@ export default function Home() {
   const [modoCadastro, setModoCadastro] = useState(false);
 
   return (
-    <div>
+    <div className="full">
       <Cabecalho
         onEntrar={() => {
           setModoCadastro(false);

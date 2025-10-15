@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Navegacao from "./routes.jsx";
+import "./styles/global.scss";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const clientId = "SEU_CLIENT_ID.apps.googleusercontent.com";
