@@ -1,6 +1,6 @@
-import cadastroController from './controller/cadastroController'
-import loginController from './controller/loginController'
-import cursosController from './controller/cursosController'
+import cadastroController from './controller/cadastroController.js'
+import loginController from './controller/loginController.js'
+import cursosController from './controller/cursosController.js'
 
 export function adicionarRotas(api) {
     api.use(cadastroController)
