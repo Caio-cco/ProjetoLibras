@@ -1,14 +1,12 @@
 import express from "express";
 import cors from "cors";
-import { adicionarRotas } from "./rotas.js";
+import loginEndpoints from "./controller/loginController.js";
 
-const api = express();
-api.use(express.json());
-api.use(cors());
+const app = express();
+const PORT = 5010;
 
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
+app.use("/", loginEndpoints);
 
-api.use(express.static("public"));
-
-adicionarRotas(api);
-
-api.listen(5010, () => console.log("API subiu com sucesso!"));
+app.listen(PORT, () => console.log("API subiu com sucesso!"));

@@ -4,7 +4,7 @@ import Navegacao from "./routes.jsx";
 import "./styles/global.scss";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-const clientId = "SEU_CLIENT_ID.apps.googleusercontent.com";
+const clientId = "324833504461-pirdui28unoelj2lotec7m2e5fs09avl.apps.googleusercontent.com";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

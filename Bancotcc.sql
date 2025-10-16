@@ -96,3 +96,7 @@ create table cargo (
     cargo_adm boolean,
     foreign key (id_usuario) references usuario(id_usuario)
 );
+
+ALTER TABLE usuario MODIFY COLUMN senha VARCHAR(255) NULL;
+
+ALTER TABLE usuario ADD COLUMN login_social TINYINT(1) DEFAULT 0;
