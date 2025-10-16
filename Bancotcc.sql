@@ -89,3 +89,10 @@ create table curso_categoria (
     foreign key (id_curso) references curso(id_curso),
     foreign key (id_categoria) references categoria(id_categoria)
 );
+
+create table cargo (
+	id_adm int primary key auto_increment,
+    id_usuario int,
+    cargo_adm boolean,
+    foreign key (id_usuario) references usuario(id_usuario)
+);
