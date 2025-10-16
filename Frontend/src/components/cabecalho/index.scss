@@ -154,15 +154,35 @@ background-color: #ffffff;
     gap: 1px;
   }
 
-  .desktop-only a {
-    text-decoration: none;
-    color: #000000;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: background-color 0.15s ease, color 0.15s ease;
-    font-size: 15px;
+.link-login {
+  background: none;
+  border: none;
+  color: #222;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s ease;
 
+  &:hover {
+    color: #ffb800; // amarelo suave no hover
   }
+}
+
+.bot {
+  background-color: #ffb800;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #e0a600;
+  }
+}
+
 
   .desktop-only .bot {
     border-radius: 9999px;
@@ -259,4 +279,5 @@ background-color: #ffffff;
     display: flex;
   }
 }
+
 

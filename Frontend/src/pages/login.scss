@@ -1,0 +1,142 @@
+/* ====== login.scss ====== */
+
+.login-cadastro-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f2f2f2;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+}
+
+.forms-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+/* Divisão entre Login e Cadastro */
+.form-card {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:first-child {
+    border-right: 1px solid #ccc; /* Linha cinza divisória */
+  }
+
+  h2 {
+    color: #222;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #555;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    input {
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+
+      &:focus {
+        outline: none;
+        border-color: #ffcc00;
+      }
+    }
+
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem 0;
+
+      img {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    button {
+      background: #ffcc00; /* Botão amarelo */
+      color: #222;
+      font-weight: 600;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: #e6b800;
+      }
+    }
+  }
+
+  .footer-text {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #555;
+
+    .highlight {
+      color: #ffcc00;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+  }
+
+  .texto-menor {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #777;
+    a {
+      color: #ffcc00;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 900px) {
+  .forms-wrapper {
+    flex-direction: column;
+  }
+
+  .form-card {
+    &:first-child {
+      border-right: none;
+      border-bottom: 1px solid #ccc; /* Linha cinza horizontal no mobile */
+    }
+  }
+}
