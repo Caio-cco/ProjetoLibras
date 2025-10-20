@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
-import LoginCadastro from "./pages/loginCadastro";
 import Atividades from "./components/atividades";
 
 function Navegacao() {
