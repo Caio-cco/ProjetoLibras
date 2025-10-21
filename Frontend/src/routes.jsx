@@ -24,9 +24,7 @@ function isAuthenticated() {
   }
 }
 
-// -------------------------------
-// Componente de rota protegida
-// -------------------------------
+
 function ProtectedRoute({ children }) {
   const location = useLocation();
 
