@@ -1,4 +1,3 @@
-
 import Cabecalho from "../components/cabecalho";
 import Inicio from "../components/inicio";
 import Carousel from "../components/carousel";

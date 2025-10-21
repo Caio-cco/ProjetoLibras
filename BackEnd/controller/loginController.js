@@ -11,7 +11,7 @@ const REDIRECT_URI = "postmessage";
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI);
 
 
-// Login tradicional
+
 endpoints.post("/usuario/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
@@ -28,7 +28,7 @@ endpoints.post("/usuario/login", async (req, res) => {
   }
 });
 
-// Criar conta
+
 endpoints.post("/usuario", async (req, res) => {
   try {
     const novoLogin = req.body;
@@ -42,7 +42,7 @@ endpoints.post("/usuario", async (req, res) => {
   }
 });
 
-// Login com Google
+
 endpoints.post("/usuario/google", async (req, res) => {
   try {
     const { code } = req.body;

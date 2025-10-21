@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
@@ -13,10 +14,28 @@ const BACKEND_URL = "http://localhost:5010";
 export default function LoginCadastro() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decoded = jwt_decode(token);
+        const now = Date.now() / 1000;
+        if (decoded.exp && decoded.exp > now) {
+          navigate("/");
+        } else {
+          localStorage.removeItem("authToken");
+        }
+      } catch {
+        localStorage.removeItem("authToken");
+      }
+    }
+  }, [navigate]);
+
+
   const irParaLogin = () => navigate("/login");
   const irParaCadastro = () => navigate("/cadastro");
 
-  // === LOGIN COM GOOGLE ===
+
   const loginGoogle = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
@@ -30,7 +49,7 @@ export default function LoginCadastro() {
 
         localStorage.setItem("authToken", token);
         alert(`Login com sucesso! Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
-        navigate("/"); // redireciona para a home, por exemplo
+        navigate("/");
       } catch (error) {
         console.error("Erro ao autenticar com o backend:", error);
         alert("Falha na autenticação com o Google.");
@@ -45,7 +64,6 @@ export default function LoginCadastro() {
   return (
     <div className="login-cadastro-page">
       <div className="forms-wrapper">
-        {/* LOGIN */}
         <div className="form-card login-card">
           <h2>Bem vindo de volta</h2>
           <p>Faça login para continuar sua jornada de aprendizado</p>
@@ -55,7 +73,6 @@ export default function LoginCadastro() {
 
             <div className="social-login">
               <img src={FacebookIcon} alt="Facebook" />
-              {/* Aqui o clique chama o Google Login */}
               <img
                 src={GoogleIcon}
                 alt="Google"
@@ -82,7 +99,6 @@ export default function LoginCadastro() {
           </p>
         </div>
 
-        {/* CADASTRO */}
         <div className="form-card cadastro-card">
           <h2>Cadastro</h2>
           <p>Bem vindo de volta</p>
