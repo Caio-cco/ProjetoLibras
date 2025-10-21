@@ -28,7 +28,7 @@ export default function Home() {
       <div className="carousel">
         <Carousel />
         <Fundadores />
-        
+        <Nos />
         <Rodape />
       <div>
         <button onClick={handleLogout}>
