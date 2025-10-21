@@ -3,6 +3,7 @@ import Home from "./pages/home";
 import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
 import Atividades from "./components/atividades";
+import HomeLogado from "./pages/homeLogado";
 import jwt_decode from "jwt-decode";
 
 
@@ -66,6 +67,16 @@ function Navegacao() {
             </PublicRoute>
           }
         />
+
+        <Route
+          path="/homeLogado"
+          element={
+            <ProtectedRoute>
+              <homeLogado />
+            </ProtectedRoute>
+          }
+        />
+
 
         <Route
           path="/"

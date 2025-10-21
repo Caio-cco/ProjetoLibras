@@ -1,13 +1,16 @@
 .fundadores {
-  background: linear-gradient(180deg, #4b53b8 0%, #6a73de 100%);
-  color: #fff;
+  
+  color: #000000;
   text-align: center;
-  padding: 2rem 8%;
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
+  padding: 2rem 2%;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-bottom: 95px;
 
   h2 {
-    font-size: 2.3rem;
+    font-size: 2.4rem;
     font-weight: 700;
     margin-bottom: 3rem;
   }
@@ -15,17 +18,17 @@
   .cards-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+    gap: 2rem;
     justify-items: center;
   }
 
   .card {
-    background: #fff;
-    color: #222;
-    border-radius: 20px;
+    background: #0a2740;
+    color: #ffffff;
+    border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    max-width: 300px;
-    padding: 1rem 1.3rem;
+    width: 280px;
+    padding: 1rem 1.2rem ;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -61,12 +64,12 @@
       text-decoration: none;
 
       a {
-        color: #b84a00;
+        color: #facc15;
         text-decoration: none;
         transition: color 0.2s ease;
 
         &:hover {
-          color: #ff7b00;
+          color: #f4df8c;
         }
       }
     }
@@ -84,6 +87,20 @@
     }
   }
 
+  .redes-sociais {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+
+    a {
+      color: #ffffff;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #facc15;
+      }
+    }
+  }
   /* ===== Responsivo (carrossel) ===== */
   @media (max-width: 700px) {
     .carousel-wrapper {

@@ -1,225 +1,222 @@
-.perfil {
-  min-height: 100vh;
+.perfil-page {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(145deg, #e0f7fa, #f0f4f8);
-  padding: 2rem;
+  height: 100vh;
+  font-family: "Poppins", sans-serif;
+  color: #222;
 
-  .card-perfil {
-    position: relative;
-    background: #fff;
-    border-radius: 24px;
-    padding: 3rem 2rem 2rem;
-    max-width: 400px;
-    width: 100%;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-    text-align: center;
-    transition: transform 0.3s;
+  .sidebar {
+    background: #0a2740;
+    color: #ffffff;
+    width: 250px;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-    &:hover {
-      transform: translateY(-5px);
-    }
-
-    .sair {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: #fefefe;
-      border: none;
-      padding: 0.5rem;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: 0.3s;
-
-      &:hover {
-        background: #ffe5e5;
-        color: #e53935;
-      }
-    }
-
-    .foto-container {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 1rem;
-
-      .foto {
-        width: 130px;
-        height: 130px;
-        border-radius: 50%;
-        border: 4px solid #26c6da;
-        object-fit: cover;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-        transition: transform 0.3s;
-
-        &:hover {
-          transform: scale(1.05);
-        }
-      }
-
-      .camera {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        background: #26c6da;
-        color: #fff;
-        padding: 0.5rem;
-        border-radius: 50%;
+    .topo {
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
         cursor: pointer;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        transition: background 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
 
-        &:hover {
-          background: #00acc1;
+        .logo-icon {
+          font-size: 1.8rem;
         }
+      }
 
-        input {
-          display: none;
+      .sidebar-foto {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          border: 3px solid #444;
+          object-fit: cover;
+        }
+        p {
+          margin-top: 0.5rem;
+          font-size: 1rem;
+          font-weight: 500;
         }
       }
     }
 
-    h2 {
-      font-size: 1.8rem;
-      color: #1c1c1c;
-      margin-bottom: 0.3rem;
-    }
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
 
-    .email {
-      font-size: 0.95rem;
-      color: #6b7280;
-      margin-bottom: 1rem;
-    }
+      button {
+        background: transparent;
+        border: none;
+        color: #ddd;
+        font-size: 1rem;
+        text-align: left;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: 0.3s;
 
-    .info {
-      background: #f3f7fa;
-      border-radius: 16px;
-      padding: 1rem 1.2rem;
-      margin-bottom: 1.5rem;
-      text-align: left;
-      color: #374151;
-
-      p {
-        margin: 0.5rem 0;
-
-        span {
-          font-weight: 600;
-          color: #1c1c1c;
+        &:hover,
+        &.ativo {
+          background: #222;
+          color: #fff;
         }
-      }
-
-      .barra-progresso {
-        background: #e0e7ff;
-        height: 10px;
-        border-radius: 10px;
-        margin-top: 0.3rem;
-        overflow: hidden;
-
-        .progresso {
-          height: 100%;
-          background: #6366f1;
-          border-radius: 10px;
-          transition: width 0.5s ease;
-        }
-      }
-    }
-
-    .editar {
-      background: #26c6da;
-      color: #fff;
-      border: none;
-      padding: 0.6rem 1.5rem;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: background 0.3s;
-
-      &:hover {
-        background: #00acc1;
       }
     }
   }
 
-  .modal-edicao {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
+  .perfil-conteudo {
+              background: linear-gradient(90deg, #eeeff0, #bbbcbe);
+  
+  padding: 3rem;
+  border-radius: 2rem;
+  flex: 1;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  margin: 3rem;
+  transition: 0.3s;
 
-    .modal-conteudo {
-      background: #fff;
-      border-radius: 16px;
-      padding: 2rem;
-      width: 90%;
-      max-width: 400px;
-      position: relative;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+    }
 
-      .fechar {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: #888;
-        transition: 0.2s;
+    .info {
+     display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
 
-        &:hover {
-          color: #e53935;
+      .foto-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+
+        .foto {
+          width: 180px;
+          height: 180px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 4px solid #ddd;
         }
-      }
 
-      h3 {
-        margin-bottom: 1rem;
-        color: #1c1c1c;
-        text-align: center;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-        color: #374151;
-
-        input {
-          width: 100%;
-          padding: 0.5rem 0.8rem;
+        .trocar-foto {
+          background: #222;
+          color: #fff;
+          padding: 0.4rem 1rem;
           border-radius: 8px;
-          border: 1px solid #cbd5e1;
-          margin-top: 0.3rem;
-          font-size: 0.95rem;
-
-          &:focus {
-            outline: none;
-            border-color: #26c6da;
-            box-shadow: 0 0 5px rgba(38,198,218,0.4);
+          font-size: 0.9rem;
+          cursor: pointer;
+          transition: 0.3s;
+          &:hover {
+            background: #333;
           }
         }
       }
 
-      .salvar {
-        width: 100%;
-        background: #26c6da;
-        color: #fff;
-        padding: 0.6rem 0;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: 0.3s;
+      .dados {
+        flex: 1;
 
-        &:hover {
-          background: #00acc1;
+        h2 {
+          font-size: 1.8rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .bio {
+          color: #666;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          margin: 0.3rem 0;
+          font-size: 1rem;
+        }
+
+        input,
+        textarea {
+          width: 100%;
+          padding: 0.5rem;
+          font-size: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          margin-bottom: 0.8rem;
+        }
+
+        textarea {
+          height: 60px;
+          resize: none;
+        }
+
+        .progresso {
+          margin-top: 1.5rem;
+
+          .barra {
+            background: #ddd;
+            border-radius: 20px;
+            height: 12px;
+            width: 100%;
+            margin: 0.5rem 0;
+            overflow: hidden;
+
+            .preenchido {
+              background: linear-gradient(90deg, #4a90e2, #007aff);
+              height: 100%;
+              border-radius: 20px;
+              transition: width 0.5s ease;
+            }
+          }
+
+          .porcentagem {
+            font-size: 0.9rem;
+            color: #333;
+          }
+        }
+
+        .botoes {
+          margin-top: 2rem;
+          display: flex;
+          gap: 1rem;
+
+          button {
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+          }
+
+          .editar {
+            background: #4a90e2;
+            color: #fff;
+            &:hover {
+              background: #357abd;
+            }
+          }
+
+          .sair {
+            background: #ffd600;
+            color: #fff;
+            &:hover {
+              background: #ffd600;
+            }
+          }
+
+          .salvar {
+            background: #27ae60;
+            color: #fff;
+            &:hover {
+              background: #219150;
+            }
+          }
         }
       }
     }

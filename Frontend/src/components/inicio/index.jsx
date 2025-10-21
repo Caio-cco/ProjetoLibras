@@ -22,7 +22,7 @@ export default function Inicio() {
       <div className="onda-fundo">
   <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
   <path
-  fill=" #EDEDED"
+  fill=" #f9fbfd"
   d="M0,240 C320,360 1120,120 1440,240 L1440,320 L0,320 Z"
 />
 

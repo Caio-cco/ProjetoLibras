@@ -1,123 +1,95 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Camera, LogOut, Edit2, X } from "lucide-react";
 import "./perfil.scss";
 
-export default function Perfil() {
-  const navigate = useNavigate();
+export default function PerfilAluno() {
+  const [nome, setNome] = useState("Pedro Henrique");
+  const [bio, setBio] = useState("Aluno dedicado no curso de Libras.");
+  const [telefone, setTelefone] = useState("(11) 99999-9999");
+  const [area, setArea] = useState("Comunicação e Educação");
+  const [progresso, setProgresso] = useState(70);
+  const [foto, setFoto] = useState("./perfil.jpg");
+  const [editando, setEditando] = useState(false);
 
-  const [usuario, setUsuario] = useState({
-    nome: "Pedro Henrique",
-    email: "pedro@email.com",
-    curso: "Curso de Libras - Nível Intermediário",
-    foto: "https://i.pravatar.cc/150?img=12",
-    progresso: 65,
-  });
-
-  const [editarAtivo, setEditarAtivo] = useState(false);
-  const [form, setForm] = useState(usuario);
-
-  const sair = () => navigate("/");
-
-  // Trocar foto **funciona tanto no card quanto no modal**
   const trocarFoto = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const fotoURL = URL.createObjectURL(file);
-
-    // Atualiza foto do form e do usuario imediatamente
-    setForm({ ...form, foto: fotoURL });
-    setUsuario({ ...usuario, foto: fotoURL });
+    const arquivo = e.target.files[0];
+    if (arquivo) {
+      const url = URL.createObjectURL(arquivo);
+      setFoto(url);
+    }
   };
 
-  const salvarEdicao = () => {
-    setUsuario(form);
-    setEditarAtivo(false);
+  const salvarAlteracoes = () => {
+    setEditando(false);
   };
 
   return (
-    <div className="perfil">
-      <div className="card-perfil">
-        <button className="sair" title="Sair" onClick={sair}>
-          <LogOut size={20} />
-        </button>
+    <div className="perfil-page">
+      <aside className="sidebar">
+        <div className="topo">
+          <h2 className="logo" onClick={() => (window.location.href = "/")}>
+            <span className="logo-icon">🤟</span> Falar é Magico
+          </h2>
 
-        <div className="foto-container">
-          <img src={usuario.foto} alt="Foto do usuário" className="foto" />
-          <label htmlFor="foto" className="camera">
-            <Camera size={16} />
+          <div className="sidebar-foto">
+            <img src={foto} alt="Foto do aluno" />
+            <p>{nome}</p>
+          </div>
+        </div>
+
+        <nav>
+          <button onClick={() => (window.location.href = "/")}>🏠 Início</button>
+          <button className="ativo">👤 Perfil</button>
+          <button onClick={() => (window.location.href = "/")}>📚 Sair</button>
+        </nav>
+      </aside>
+
+      <main className="perfil-conteudo">
+        <h1>Perfil do Aluno</h1>
+
+        <section className="info">
+          <div className="foto-area">
+            <img src={foto} alt="Foto de perfil" className="foto" />
+            <label htmlFor="uploadFoto" className="trocar-foto">Trocar foto</label>
             <input
-              id="foto"
+              id="uploadFoto"
               type="file"
               accept="image/*"
-              onChange={trocarFoto} // 🔑 Aqui funciona
+              onChange={trocarFoto}
+              style={{ display: "none" }}
             />
-          </label>
-        </div>
-
-        <h2>{usuario.nome}</h2>
-        <p className="email">{usuario.email}</p>
-
-        <div className="info">
-          <p>
-            <span>Curso atual:</span> {usuario.curso}
-          </p>
-          <p>
-            <span>Progresso:</span>
-          </p>
-          <div className="barra-progresso">
-            <div
-              className="progresso"
-              style={{ width: `${usuario.progresso}%` }}
-            ></div>
           </div>
-        </div>
 
-        <button className="editar" onClick={() => setEditarAtivo(true)}>
-          <Edit2 size={16} /> Editar perfil
-        </button>
-      </div>
+          <div className="dados">
+            {editando ? (
+              <>
+                <input value={nome} onChange={(e) => setNome(e.target.value)} />
+                <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
+                <input value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+                <input value={area} onChange={(e) => setArea(e.target.value)} />
+                <div className="progresso-editar">
+                  
+               
+                </div>
+                <button className="salvar" onClick={salvarAlteracoes}>💾 Salvar</button>
+              </>
+            ) : (
+              <>
+                <h2>{nome}</h2>
+                <p className="bio">{bio}</p>
+                <p><strong>Telefone:</strong> {telefone}</p>
+                <p><strong>Área de estudo:</strong> {area}</p>
 
-      {editarAtivo && (
-        <div className="modal-edicao">
-          <div className="modal-conteudo">
-            <button className="fechar" onClick={() => setEditarAtivo(false)}>
-              <X size={20} />
-            </button>
+               
 
-            <h3>Editar Perfil</h3>
-            <label>
-              Nome
-              <input
-                type="text"
-                value={form.nome}
-                onChange={(e) => setForm({ ...form, nome: e.target.value })}
-              />
-            </label>
-            <label>
-              Email
-              <input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-              />
-            </label>
-            <label>
-              Curso
-              <input
-                type="text"
-                value={form.curso}
-                onChange={(e) => setForm({ ...form, curso: e.target.value })}
-              />
-            </label>
-          
-            <button className="salvar" onClick={salvarEdicao}>
-              Salvar Alterações
-            </button>
+                <div className="botoes">
+                  <button className="editar" onClick={() => setEditando(true)}>Editar perfil</button>
+                 
+                </div>
+              </>
+            )}
           </div>
-        </div>
-      )}
+        </section>
+      </main>
     </div>
   );
 }

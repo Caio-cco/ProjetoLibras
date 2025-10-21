@@ -1,0 +1,138 @@
+.form-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 4rem 1rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: 1000px;
+  width: 100%;
+  gap: 3rem;
+}
+
+.form-text {
+  flex: 1;
+  h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #1c1c1c;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 1rem;
+  }
+}
+
+.contact-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #333;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.6rem;
+      font-size: 1rem;
+      transition: 0.3s;
+
+      &:focus {
+        border-color: #c14e00;
+        outline: none;
+        box-shadow: 0 0 5px rgba(193, 78, 0, 0.3);
+      }
+    }
+
+    textarea {
+      resize: none;
+    }
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+
+    input {
+      width: 18px;
+      height: 18px;
+    }
+
+    label {
+      color: #222;
+    }
+  }
+
+  .politica {
+    font-size: 0.9rem;
+    color: #444;
+
+    a {
+      color: #c14e00;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .btn-enviar {
+    background-color: #ffd600;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 1.8rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #f0df8d;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .form-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .form-text {
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  .contact-form {
+    width: 100%;
+  }
+}

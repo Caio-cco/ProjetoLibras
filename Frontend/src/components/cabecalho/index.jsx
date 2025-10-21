@@ -33,9 +33,9 @@ export default function Cabecalho({ onInscrever }) {
       <div className={`cabecalho-centro ${menuAberto ? "aberto" : ""}`}>
         <nav className="menu">
           <div className="titulos">
-            <Link to="/">Atividades</Link>
-            <a href="#QuemSomos">Quem Somos</a>
-            <a href="#contato">Contato</a>
+            <Link to="/atividades">Atividades</Link>
+            <a href="/">Quem Somos</a>
+            <a href="/">Contato</a>
           </div>
 
           {/* Mobile */}

@@ -3,6 +3,7 @@ import Inicio from "../components/inicio";
 import Carousel from "../components/carousel";
 import Nos from "../components/nos";
 import Rodape from "../components/rodape";
+import Forms from "../components/forms";
 import Fundadores from "../components/fundadores";
 
 import "./home.scss";
@@ -24,6 +25,7 @@ export default function Home() {
         <Carousel />
         <Fundadores />
         <Nos />
+        <Forms />
         <Rodape />
       </div>
 
