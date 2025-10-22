@@ -4,16 +4,16 @@ import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 export default function Fundadores() {
   const membros = [
     {
-      nome: "Pedro Henrique",
+      nome: "Caio Mello",
       cargo: "CEO",
       descricao:
         "Publicitário e especialista em comunicação estratégica. Cofundador e Diretor Executivo da Hand Talk, uma das startups mais premiadas do Brasil. Reconhecido pela ONU e eleito Empreendedor do Ano pela EY.",
-      imagem: "./pedro.jpg",
+      imagem: "./imagem.png",
       linkedin: "https://www.linkedin.com/in/pedro-henrique-642177266",
       instagram: "https://www.instagram.com",
     },
     {
-      nome: "Caio Mello",
+      nome: "João Pedro",
       cargo: "CEO",
       descricao:
         "Diretor de Tecnologia e cofundador da Hand Talk, com mais de 20 anos de experiência em desenvolvimento de software. Eleito Empreendedor Social do Futuro pela Folha de São Paulo.",
@@ -31,7 +31,7 @@ export default function Fundadores() {
       instagram: "https://www.instagram.com",
     },
     {
-      nome: "Joao Pedro",
+      nome: "Pedro Henrique",
       cargo: "CEO",
       descricao:
         "Gestora de Operações com foco em inovação e impacto social. Lidera equipes multidisciplinares e estratégias voltadas à inclusão digital. Participou de programas do MIT e da ONU.",

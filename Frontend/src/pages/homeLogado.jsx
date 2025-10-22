@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Cabecalho from "../components/cabecalho";
 import Inicio from "../components/inicio";
 import Carousel from "../components/carousel";
@@ -13,9 +14,8 @@ export default function Home() {
 
   return (
     <div className="full">
-      <Cabecalho
-        
-      />
+     <Cabecalho logado={true} /> 
+      
 
       <div className="imagem">
         <Inicio />

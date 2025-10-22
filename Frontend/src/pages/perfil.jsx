@@ -37,7 +37,7 @@ export default function PerfilAluno() {
         </div>
 
         <nav>
-          <button onClick={() => (window.location.href = "/")}>🏠 Início</button>
+          <button onClick={() => (window.location.href = "/homeL")}>🏠 Início</button>
           <button className="ativo">👤 Perfil</button>
           <button onClick={() => (window.location.href = "/")}>📚 Sair</button>
         </nav>
