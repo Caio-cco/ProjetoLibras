@@ -69,7 +69,7 @@ function Navegacao() {
         />
 
         <Route
-          path="/homeLogado"
+          path="/homeL"
           element={
             <ProtectedRoute>
               <HomeLogado />

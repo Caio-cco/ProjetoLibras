@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
@@ -13,6 +13,7 @@ const BACKEND_URL = "http://localhost:5010";
 
 export default function LoginCadastro() {
   const navigate = useNavigate();
+  const [modo, setModo] = useState("login"); // controla se está no modo login ou cadastro
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -31,10 +32,8 @@ export default function LoginCadastro() {
     }
   }, [navigate]);
 
-
-  const irParaLogin = () => navigate("/login");
-  const irParaCadastro = () => navigate("/cadastro");
-
+  const irParaLogin = () => setModo("login");
+  const irParaCadastro = () => setModo("cadastro");
 
   const loginGoogle = useGoogleLogin({
     flow: "auth-code",
@@ -62,74 +61,98 @@ export default function LoginCadastro() {
   });
 
   return (
-    <div className="login-cadastro-page">
-      <div className="forms-wrapper">
-        <div className="form-card login-card">
-          <h2>Bem vindo de volta</h2>
-          <p>Faça login para continuar sua jornada de aprendizado</p>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Senha" />
+    <div className="login-cadastro-container">
+      {/* Toggle superior */}
+      <div className="switch-container">
+        <button
+          className={`switch-btn ${modo === "login" ? "ativo" : ""}`}
+          onClick={irParaLogin}
+        >
+          Login
+        </button>
+        <button
+          className={`switch-btn ${modo === "cadastro" ? "ativo" : ""}`}
+          onClick={irParaCadastro}
+        >
+          Cadastro
+        </button>
+        <div className={`slider ${modo}`}></div>
+      </div>
 
-            <div className="social-login">
-              <img src={FacebookIcon} alt="Facebook" />
-              <img
-                src={GoogleIcon}
-                alt="Google"
-                style={{ cursor: "pointer" }}
-                onClick={loginGoogle}
-              />
-              <img src={AppleIcon} alt="Apple" />
-            </div>
+      {/* Conteúdo */}
+      <div className="conteudo-container">
+        {modo === "login" ? (
+          <div className="login-section">
+            <h2>Bem vindo de volta</h2>
+            <p>Faça login para continuar sua jornada de aprendizado</p>
 
-            <button type="button" onClick={irParaLogin}>
-              Entrar
-            </button>
-          </form>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <input type="email" placeholder="Email" />
+              <input type="password" placeholder="Senha" />
 
-          <p className="footer-text">
-            Não possui conta?{" "}
-            <span className="highlight" onClick={irParaCadastro}>
-              Cadastre-se aqui!
-            </span>
-          </p>
+              <button type="button" onClick={irParaLogin} className="btn">
+                Entrar
+              </button>
 
-          <p className="texto-menor">
-            <a href="#">Esqueceu sua senha?</a>
-          </p>
-        </div>
+              <div className="social-login">
+                <img src={FacebookIcon} alt="Facebook" />
+                <img
+                  src={GoogleIcon}
+                  alt="Google"
+                  onClick={loginGoogle}
+                  style={{ cursor: "pointer" }}
+                />
+                <img src={AppleIcon} alt="Apple" />
+              </div>
+            </form>
 
-        <div className="form-card cadastro-card">
-          <h2>Cadastro</h2>
-          <p>Bem vindo de volta</p>
-          <form>
-            <input type="text" placeholder="Nome" />
-            <input type="email" placeholder="Email" />
-            <input type="tel" placeholder="Telefone" />
-            <input type="password" placeholder="Senha" />
-            <input type="password" placeholder="Confirme sua senha" />
+            <p className="link">
+              Não possui conta?{" "}
+              <span className="highlight" onClick={irParaCadastro}>
+                Cadastre-se aqui!
+              </span>
+            </p>
 
-            <div className="social-login">
-              <img src={FacebookIcon} alt="Facebook" />
-              <img
-                src={GoogleIcon}
-                alt="Google"
-                style={{ cursor: "pointer" }}
-                onClick={loginGoogle}
-              />
-              <img src={AppleIcon} alt="Apple" />
-            </div>
+            <a href="#" className="forgot">
+              Esqueceu sua senha?
+            </a>
+          </div>
+        ) : (
+          <div className="cadastro-section">
+            <h2>Cadastro</h2>
+            <p>Crie sua conta e comece agora</p>
 
-            <button type="submit">Entrar</button>
-          </form>
+            <form>
+              <input type="text" placeholder="Nome" />
+              <input type="email" placeholder="Email" />
+              <input type="tel" placeholder="Telefone" />
+              <input type="password" placeholder="Senha" />
+              <input type="password" placeholder="Confirme sua senha" />
 
-          <p className="footer-text">
-            Já possui uma conta?{" "}
-            <span className="highlight" onClick={irParaLogin}>
-              Entre agora!
-            </span>
-          </p>
-        </div>
+              <button type="submit" className="btn">
+                Cadastrar
+              </button>
+
+              <div className="social-login">
+                <img src={FacebookIcon} alt="Facebook" />
+                <img
+                  src={GoogleIcon}
+                  alt="Google"
+                  onClick={loginGoogle}
+                  style={{ cursor: "pointer" }}
+                />
+                <img src={AppleIcon} alt="Apple" />
+              </div>
+            </form>
+
+            <p className="link">
+              Já possui uma conta?{" "}
+              <span className="highlight" onClick={irParaLogin}>
+                Entre agora!
+              </span>
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
