@@ -72,7 +72,7 @@ function Navegacao() {
           path="/homeLogado"
           element={
             <ProtectedRoute>
-              <homeLogado />
+              <HomeLogado />
             </ProtectedRoute>
           }
         />
