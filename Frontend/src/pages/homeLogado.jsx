@@ -23,8 +23,8 @@ export default function Home() {
 
       <div className="carousel">
         <Carousel />
-        <Fundadores />
         <Nos />
+        <Fundadores />
         <Forms />
         <Rodape />
       </div>
