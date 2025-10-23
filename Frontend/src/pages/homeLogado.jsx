@@ -27,9 +27,7 @@ export default function Home() {
         <Fundadores />
         <Forms />
         <Rodape />
-      </div>
-
-      
+      </div>     
     </div>
   );
 }

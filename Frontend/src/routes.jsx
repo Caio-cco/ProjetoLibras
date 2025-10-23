@@ -6,7 +6,6 @@ import Atividades from "./components/atividades";
 import HomeLogado from "./pages/homeLogado";
 import jwt_decode from "jwt-decode";
 
-
 function isAuthenticated() {
   const token = localStorage.getItem("authToken");
   if (!token) return false;
@@ -25,46 +24,48 @@ function isAuthenticated() {
   }
 }
 
-
 function ProtectedRoute({ children }) {
   const location = useLocation();
-
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
-
   return children;
 }
 
-
-function PublicRoute({ children }) {
+function PublicOnlyRoute({ children }) {
   if (isAuthenticated()) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/homeL" replace />;
   }
   return children;
 }
-
 
 function Navegacao() {
   return (
     <BrowserRouter>
       <Routes>
-
         <Route
-          path="/login"
+          path="/"
           element={
-            <PublicRoute>
-              <LoginCadastro />
-            </PublicRoute>
+            <PublicOnlyRoute>
+              <Home />
+            </PublicOnlyRoute>
           }
         />
 
         <Route
+          path="/login"
+          element={
+            <PublicOnlyRoute>
+              <LoginCadastro />
+            </PublicOnlyRoute>
+          }
+        />
+        <Route
           path="/cadastro"
           element={
-            <PublicRoute>
+            <PublicOnlyRoute>
               <LoginCadastro />
-            </PublicRoute>
+            </PublicOnlyRoute>
           }
         />
 
@@ -76,17 +77,6 @@ function Navegacao() {
             </ProtectedRoute>
           }
         />
-
-
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-
         <Route
           path="/perfil"
           element={
@@ -95,7 +85,6 @@ function Navegacao() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/atividades"
           element={

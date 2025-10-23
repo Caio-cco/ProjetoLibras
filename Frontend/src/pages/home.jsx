@@ -11,10 +11,6 @@ import "./home.scss";
 export default function Home() {
   const navigate = useNavigate();
 
-  function handleLogout() {
-    localStorage.removeItem("authToken");
-    navigate("/login");
-  }
 
   return (
     <div className="full">
@@ -30,11 +26,6 @@ export default function Home() {
         <Fundadores />
         <Nos />
         <Rodape />
-      <div>
-        <button onClick={handleLogout}>
-          Sair
-        </button>
-      </div>
       </div>
     </div>
   );

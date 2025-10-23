@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./perfil.scss";
 
 export default function PerfilAluno() {
@@ -9,6 +10,8 @@ export default function PerfilAluno() {
   const [progresso, setProgresso] = useState(70);
   const [foto, setFoto] = useState("./perfil.jpg");
   const [editando, setEditando] = useState(false);
+
+  const navigate = useNavigate();
 
   const trocarFoto = (e) => {
     const arquivo = e.target.files[0];
@@ -22,11 +25,18 @@ export default function PerfilAluno() {
     setEditando(false);
   };
 
+
+  function handleLogout() {
+    localStorage.removeItem("authToken"); 
+    navigate("/", { replace: true });  
+    window.history.pushState(null, "", "/"); 
+  }
+
   return (
     <div className="perfil-page">
       <aside className="sidebar">
         <div className="topo">
-          <h2 className="logo" onClick={() => (window.location.href = "/")}>
+          <h2 className="logo" onClick={() => navigate("/")}>
             <span className="logo-icon">🤟</span> Falar é Magico
           </h2>
 
@@ -37,9 +47,9 @@ export default function PerfilAluno() {
         </div>
 
         <nav>
-          <button onClick={() => (window.location.href = "/homeL")}>🏠 Início</button>
+          <button onClick={() => navigate("/homeL")}>🏠 Início</button>
           <button className="ativo">👤 Perfil</button>
-          <button onClick={() => (window.location.href = "/")}>📚 Sair</button>
+          <button onClick={handleLogout}>📚 Sair</button>
         </nav>
       </aside>
 
@@ -49,7 +59,9 @@ export default function PerfilAluno() {
         <section className="info">
           <div className="foto-area">
             <img src={foto} alt="Foto de perfil" className="foto" />
-            <label htmlFor="uploadFoto" className="trocar-foto">Trocar foto</label>
+            <label htmlFor="uploadFoto" className="trocar-foto">
+              Trocar foto
+            </label>
             <input
               id="uploadFoto"
               type="file"
@@ -62,28 +74,45 @@ export default function PerfilAluno() {
           <div className="dados">
             {editando ? (
               <>
-                <input value={nome} onChange={(e) => setNome(e.target.value)} />
-                <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
-                <input value={telefone} onChange={(e) => setTelefone(e.target.value)} />
-                <input value={area} onChange={(e) => setArea(e.target.value)} />
-                <div className="progresso-editar">
-                  
-               
-                </div>
-                <button className="salvar" onClick={salvarAlteracoes}>💾 Salvar</button>
+                <input
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                />
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                />
+                <input
+                  value={telefone}
+                  onChange={(e) => setTelefone(e.target.value)}
+                />
+                <input
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                />
+                <div className="progresso-editar"></div>
+                <button className="salvar" onClick={salvarAlteracoes}>
+                  💾 Salvar
+                </button>
               </>
             ) : (
               <>
                 <h2>{nome}</h2>
                 <p className="bio">{bio}</p>
-                <p><strong>Telefone:</strong> {telefone}</p>
-                <p><strong>Área de estudo:</strong> {area}</p>
-
-               
+                <p>
+                  <strong>Telefone:</strong> {telefone}
+                </p>
+                <p>
+                  <strong>Área de estudo:</strong> {area}
+                </p>
 
                 <div className="botoes">
-                  <button className="editar" onClick={() => setEditando(true)}>Editar perfil</button>
-                 
+                  <button
+                    className="editar"
+                    onClick={() => setEditando(true)}
+                  >
+                    Editar perfil
+                  </button>
                 </div>
               </>
             )}
