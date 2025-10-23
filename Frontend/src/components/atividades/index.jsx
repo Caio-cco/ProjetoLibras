@@ -1,5 +1,7 @@
 import { FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Cabecalho from "../cabecalho";
+import Rodape from "../rodape";
 import "./index.scss";
 import { useState } from "react";
 
@@ -26,17 +28,21 @@ export default function Atividades() {
   });
 
   return (
+  <div>
+<Cabecalho logado={true} />
+
     <div className="atividades-page">
       <header className="atividades-header">
-        <h2>Curso de Libras</h2>
-
+        <br />
+        <br />
+        <br />
         <div className="search-row">
           <input
             className="search-input"
             placeholder="Buscar cursos..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-          />
+            />
 
           <select
             className="nivel-select"
@@ -70,13 +76,9 @@ export default function Atividades() {
           </article>
         ))}
       </main>
-
-      <footer className="onda-footer">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-          <path d="M0,20 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#6e8594" opacity="0.15" />
-          <path d="M0,40 C360,90 1080,10 1440,80 L1440,120 L0,120 Z" fill="#556b7b" opacity="0.2" />
-        </svg>
-      </footer>
+      <br />  
     </div>
+        <Rodape />
+            </div>
   );
 }
