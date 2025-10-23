@@ -48,7 +48,7 @@ export default function LoginCadastro() {
 
         localStorage.setItem("authToken", token);
         alert(`Login com sucesso! Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
-        navigate("/");
+        navigate("/homel");
       } catch (error) {
         console.error("Erro ao autenticar com o backend:", error);
         alert("Falha na autenticação com o Google.");
