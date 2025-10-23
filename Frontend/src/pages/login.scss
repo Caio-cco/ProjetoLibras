@@ -89,7 +89,7 @@ p {
 input {
   width: 100%;
   max-width: 350px;
-  margin: 8px 0;
+  margin: 13px 0;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -109,8 +109,8 @@ input:focus {
   font-weight: bold;
   border: none;
   padding: 12px;
-  border-radius: 8px;
-  margin-top: 15px;
+  border-radius: 15px;
+  margin-top: 28px;
   cursor: pointer;
   transition: background 0.3s;
 }

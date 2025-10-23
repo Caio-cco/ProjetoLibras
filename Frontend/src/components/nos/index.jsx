@@ -12,7 +12,7 @@ export default function QuemSomos() {
 
         <div className="conteudo">
           <div className="imagem">
-            <img className='imagem' src="./joker.jpg"/>
+            <img className='imagem' src="./imagem.png"/>
           </div>
 
           <div className="texto">

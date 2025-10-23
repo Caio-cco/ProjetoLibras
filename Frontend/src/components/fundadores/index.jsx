@@ -9,7 +9,7 @@ export default function Fundadores() {
       descricao:
         "Publicitário e especialista em comunicação estratégica. Cofundador e Diretor Executivo da Hand Talk, uma das startups mais premiadas do Brasil. Reconhecido pela ONU e eleito Empreendedor do Ano pela EY.",
       imagem: "./imagem.png",
-      linkedin: "https://www.linkedin.com/in/pedro-henrique-642177266",
+      linkedin: "https://www.linkedin.com/in/caiomello/",
       instagram: "https://www.instagram.com",
     },
     {
@@ -35,8 +35,8 @@ export default function Fundadores() {
       cargo: "CEO",
       descricao:
         "Gestora de Operações com foco em inovação e impacto social. Lidera equipes multidisciplinares e estratégias voltadas à inclusão digital. Participou de programas do MIT e da ONU.",
-      imagem: "https://i.imgur.com/kQZQb8z.jpg",
-      linkedin: "https://www.linkedin.com/in/joaopedro/",
+      imagem: "./pedro.jpg",
+      linkedin: "https://www.linkedin.com/in/pedro-henrique-642177266",
       instagram: "https://www.instagram.com",
     },
   ];

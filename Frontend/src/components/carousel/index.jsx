@@ -22,7 +22,7 @@ const cards = [
     title: "Libras para Avançados",
     subtitle: "Expressão e Cultura",
     desc: "Domine sua interpretação, nuances culturais e diálogos complexos.",
-    image: "/joker.jpg",
+    image: "/iniciante.png",
     button: "Ver Conteúdo",
   },
 ];
