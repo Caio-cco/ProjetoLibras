@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./perfil.scss";
 
 export default function PerfilAluno() {
-  const [nome, setNome] = useState("Pedro Henrique");
-  const [bio, setBio] = useState("Aluno dedicado no curso de Libras.");
-  const [telefone, setTelefone] = useState("(11) 99999-9999");
-  const [area, setArea] = useState("Comunicação e Educação");
-  const [progresso, setProgresso] = useState(70);
-  const [foto, setFoto] = useState("./perfil.jpg");
+  const [nome, setNome] = useState("");
+  const [bio, setBio] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [area, setArea] = useState("");
+  const [foto, setFoto] = useState("");
   const [editando, setEditando] = useState(false);
 
   const navigate = useNavigate();
@@ -102,9 +101,7 @@ export default function PerfilAluno() {
                 <p>
                   <strong>Telefone:</strong> {telefone}
                 </p>
-                <p>
-                  <strong>Área de estudo:</strong> {area}
-                </p>
+                
 
                 <div className="botoes">
                   <button

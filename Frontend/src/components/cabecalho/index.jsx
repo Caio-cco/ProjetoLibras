@@ -45,8 +45,8 @@ export default function Cabecalho({ onInscrever, logado = false }) {
             <nav className="menu">
               <div className="titulos">
                 <Link to="/atividades">Atividades</Link>
-                <a href="/">Quem Somos</a>
-                <a href="/">Contato</a>
+                <a href="#nos">Quem Somos</a>
+                <a href="#contato">Contato</a>
               </div>
             </nav>
           </div>

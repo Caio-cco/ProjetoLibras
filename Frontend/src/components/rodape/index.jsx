@@ -19,7 +19,7 @@ export default function Footer() {
         <div className="footer__credits">
           <p>
             Feito por <strong>Pedro Henrique</strong>, <strong>Caio Mello</strong>,{" "}
-            <strong>João Pedro</strong> e <strong>Marcos</strong>.
+            <strong>João Pedro</strong> e <strong>Marcos Souza</strong>.
           </p>
      
         </div>

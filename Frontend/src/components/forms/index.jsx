@@ -70,7 +70,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="form-section">
+    <section className="form-section" id="contato">
       <div className="form-container">
         <div className="form-text">
           <h2>Entre em contato<br />com a nossa equipe!</h2>
