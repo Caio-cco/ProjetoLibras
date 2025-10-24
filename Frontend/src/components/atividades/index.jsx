@@ -17,6 +17,7 @@ const sampleCards = [
 export default function Atividades() {
   const [query, setQuery] = useState("");
   const [nivelFiltro, setNivelFiltro] = useState("Todos");
+  const navigate = useNavigate(); // ADICIONADO: hook de navegação
 
   const filtered = sampleCards.filter((c) => {
     const q = query.trim().toLowerCase();
@@ -69,7 +70,16 @@ export default function Atividades() {
               <p className="subtitle">{card.subtitle}</p>
               <div className="card-footer">
                 <span className="tag">{card.tag}</span>
-                <button className="cta">Abrir</button>
+                {/* Usa o botão amarelo existente; ao clicar no card de Associação navega para /associacao */}
+                <button
+                  className="cta"
+                  onClick={() => {
+                    if (card.id === 1) navigate("/associacao");
+                    // para outros cards você pode adicionar outras ações aqui
+                  }}
+                >
+                  Abrir
+                </button>
               </div>
               <div className="card-level">Nível: {card.level}</div>
             </div>

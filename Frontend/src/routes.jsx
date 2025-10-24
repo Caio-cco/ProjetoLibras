@@ -1,11 +1,19 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+
+// 📄 Páginas
 import Home from "./pages/home";
 import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
-import Atividades from "./components/atividades";
 import HomeLogado from "./pages/homeLogado";
-import jwt_decode from "jwt-decode";
 
+// 📄 Componentes
+import Atividades from "./components/atividades";
+import AssosiacaoBasico from "./components/AssosiacaoBasico"; // ✅ nome e caminho corrigidos
+
+// =====================
+// 🔐 Função de autenticação
+// =====================
 function isAuthenticated() {
   const token = localStorage.getItem("authToken");
   if (!token) return false;
@@ -24,6 +32,9 @@ function isAuthenticated() {
   }
 }
 
+// =====================
+// 🔒 Rotas protegidas
+// =====================
 function ProtectedRoute({ children }) {
   const location = useLocation();
   if (!isAuthenticated()) {
@@ -32,6 +43,9 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+// =====================
+// 🔓 Rotas públicas (não logado)
+// =====================
 function PublicOnlyRoute({ children }) {
   if (isAuthenticated()) {
     return <Navigate to="/homeL" replace />;
@@ -39,10 +53,14 @@ function PublicOnlyRoute({ children }) {
   return children;
 }
 
+// =====================
+// 🚀 Navegação principal
+// =====================
 function Navegacao() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Página inicial (pública) */}
         <Route
           path="/"
           element={
@@ -52,6 +70,7 @@ function Navegacao() {
           }
         />
 
+        {/* Login e cadastro */}
         <Route
           path="/login"
           element={
@@ -60,6 +79,7 @@ function Navegacao() {
             </PublicOnlyRoute>
           }
         />
+
         <Route
           path="/cadastro"
           element={
@@ -69,6 +89,7 @@ function Navegacao() {
           }
         />
 
+        {/* Páginas logadas */}
         <Route
           path="/homeL"
           element={
@@ -77,6 +98,7 @@ function Navegacao() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/perfil"
           element={
@@ -85,6 +107,7 @@ function Navegacao() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/atividades"
           element={
@@ -94,6 +117,17 @@ function Navegacao() {
           }
         />
 
+        {/* ✅ Jogo de Associação (rota corrigida) */}
+        <Route
+          path="/associacao"
+          element={
+            <ProtectedRoute>
+              <AssosiacaoBasico />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Qualquer outra rota leva para Home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
