@@ -8,10 +8,9 @@ const upload = multer({ dest: 'public/storage' });
 endpoints.put('/usuario/:id/addimg', upload.single('img'), async (req, resp) => {
     let imglink = req.file.path;
     let id = req.params.id;
-    let resp = 'Imagem alterada com sucesso';
 
     await repoUsuario.alterarImagem(id, imglink);
-    resp.send({ resp });
+    resp.send({ resp: "Imagem alterada com sucesso" });
 })
 
 export default endpoints;
