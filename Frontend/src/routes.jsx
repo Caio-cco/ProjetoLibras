@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
 import HomeLogado from "./pages/homeLogado";
+import ImiteOSinal from "./pages/Imiteosinal"; // <-- nova importação
 
 // 📄 Componentes
 import Atividades from "./components/atividades";
@@ -117,12 +118,22 @@ function Navegacao() {
           }
         />
 
-        {/* ✅ Jogo de Associação (rota corrigida) */}
+        {/* ✅ Jogo de Associação */}
         <Route
           path="/associacao"
           element={
             <ProtectedRoute>
               <AssosiacaoBasico />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Rota para Imite o Sinal */}
+        <Route
+          path="/imiteosinal"
+          element={
+            <ProtectedRoute>
+              <ImiteOSinal />
             </ProtectedRoute>
           }
         />
