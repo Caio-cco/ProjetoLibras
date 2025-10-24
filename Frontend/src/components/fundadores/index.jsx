@@ -22,7 +22,7 @@ export default function Fundadores() {
       instagram: "https://www.instagram.com",
     },
     {
-      nome: "Marcos",
+      nome: "Marcos Souza",
       cargo: "CEO",
       descricao:
         "Diretor de Inteligência Artificial e cofundador da Hand Talk. Formado em Arquitetura e especializado em animação 3D no Canadá. Google Developer Expert e mentor do Google for Startups.",

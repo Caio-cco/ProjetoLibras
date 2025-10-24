@@ -3,7 +3,7 @@ import { FaRegImages } from "react-icons/fa";
 
 export default function QuemSomos() {
   return (
-    <section className="quem-somos">
+    <section className="quem-somos" id='nos'>
       <div className="container">
         <div className="header">
           <h1>Quem Somos</h1>
