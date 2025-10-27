@@ -20,7 +20,6 @@ const IconeEnviar = () => <i className="fas fa-upload icone"></i>;
 const IconeRefazer = () => <i className="fas fa-redo icone"></i>; 
 
 export default function ImiteOSinal() {
-    // ESTADOS
     const [tela, setTela] = useState("inicio"); 
     const [erroPermissao, setErroPermissao] = useState(null);
     const [videoGravadoURL, setVideoGravadoURL] = useState(null);

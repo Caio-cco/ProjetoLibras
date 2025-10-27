@@ -13,7 +13,15 @@ const BACKEND_URL = "http://localhost:5010";
 
 export default function LoginCadastro() {
   const navigate = useNavigate();
-  const [modo, setModo] = useState("login"); // controla se está no modo login ou cadastro
+  const [modo, setModo] = useState("login");
+
+
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginSenha, setLoginSenha] = useState("");
+  const [cadNome, setCadNome] = useState("");
+  const [cadEmail, setCadEmail] = useState("");
+  const [cadSenha, setCadSenha] = useState("");
+  const [cadConfSenha, setCadConfSenha] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -34,6 +42,66 @@ export default function LoginCadastro() {
 
   const irParaLogin = () => setModo("login");
   const irParaCadastro = () => setModo("cadastro");
+
+ 
+  async function handleLogin(e) {
+    e.preventDefault();
+    try {
+      if (!loginEmail || !loginSenha) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      const res = await axios.post(`${BACKEND_URL}/usuario/login`, {
+        email: loginEmail,
+        senha: loginSenha,
+      });
+
+      const { token } = res.data;
+      const userPayload = jwt_decode(token);
+
+      localStorage.setItem("authToken", token);
+      alert(`Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
+      navigate("/homel");
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.erro || "Falha ao fazer login.");
+    }
+  }
+
+  async function handleCadastro(e) {
+    e.preventDefault();
+    try {
+      if (!cadNome || !cadEmail || !cadSenha || !cadConfSenha) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+      if (/\d/.test(cadNome)) {
+        alert("O nome não pode conter números!");
+        return;
+      }
+      if (cadSenha !== cadConfSenha) {
+        alert("As senhas não coincidem!");
+        return;
+      }
+  
+      const res = await axios.post(`${BACKEND_URL}/usuario`, {
+        email: cadEmail,
+        senha: cadSenha,
+        name: cadNome,
+      });
+  
+      if (res.data.novoId) {
+        alert("Conta criada com sucesso! Faça login agora.");
+        setModo("login");
+        setLoginEmail(cadEmail);
+        setLoginSenha("");
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.erro || "Falha ao criar conta.");
+    }
+  }
 
   const loginGoogle = useGoogleLogin({
     flow: "auth-code",
@@ -60,9 +128,10 @@ export default function LoginCadastro() {
     },
   });
 
+ 
   return (
     <div className="login-cadastro-container">
-      {/* Toggle superior */}
+
       <div className="switch-container">
         <button
           className={`switch-btn ${modo === "login" ? "ativo" : ""}`}
@@ -79,18 +148,27 @@ export default function LoginCadastro() {
         <div className={`slider ${modo}`}></div>
       </div>
 
-      {/* Conteúdo */}
       <div className="conteudo-container">
         {modo === "login" ? (
           <div className="login-section">
             <h2>Bem vindo de volta</h2>
             <p>Faça login para continuar sua jornada de aprendizado</p>
 
-            <form onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="Email" />
-              <input type="password" placeholder="Senha" />
+            <form onSubmit={handleLogin}>
+              <input
+                type="email"
+                placeholder="Email"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Senha"
+                value={loginSenha}
+                onChange={(e) => setLoginSenha(e.target.value)}
+              />
 
-              <button type="button" onClick={irParaLogin} className="btn">
+              <button type="submit" className="btn">
                 Entrar
               </button>
 
@@ -122,18 +200,35 @@ export default function LoginCadastro() {
             <h2>Cadastro</h2>
             <p>Crie sua conta e comece agora</p>
 
-            <form>
-              <input type="text" placeholder="Nome" />
-              <input type="email" placeholder="Email" />
-              <input type="tel" placeholder="Telefone" />
-              <input type="password" placeholder="Senha" />
-              <input type="password" placeholder="Confirme sua senha" />
+            <form onSubmit={handleCadastro}>
+              <input
+                type="text"
+                placeholder="Nome"
+                value={cadNome}
+                onChange={(e) => setCadNome(e.target.value)}
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={cadEmail}
+                onChange={(e) => setCadEmail(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Senha"
+                value={cadSenha}
+                onChange={(e) => setCadSenha(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Confirme sua senha"
+                value={cadConfSenha}
+                onChange={(e) => setCadConfSenha(e.target.value)}
+              />
 
               <button type="submit" className="btn">
                 Cadastrar
               </button>
-
-              
             </form>
 
             <p className="link">

@@ -1,8 +1,8 @@
 @import '../../components/AssosiacaoBasico/index.scss';
 
-/* ajustes específicos para Imite o Sinal */
+
 .imite-sinal {
-    // 1. ESPAÇAMENTO COM O RODAPÉ: Sobrescreve o padding do .conteudo
+    
     .conteudo {
         padding-bottom: 90px;
         padding-top: 30px; 
@@ -57,32 +57,28 @@
         }
     }
 
-    /* ========================================================= */
-    /* Container de vídeo - Configurado para ser responsivo e para o ReactPlayer */
     .video-container {
         margin: 15px 0 25px 0; 
         width: 100%;
         max-width: 600px;
-        // Usa a proporção de 16:9 (altura/largura * 100) para o player de vídeo
-        padding-top: 56.25%; /* 9 / 16 = 0.5625 */
+
+        padding-top: 56.25%; 
         height: 0; 
         background: #bbdefb; 
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-        position: relative; /* Essencial para o posicionamento absoluto do player */
+        position: relative; 
         overflow: hidden;
         
-        // Estiliza o ReactPlayer (o elemento interno)
+
         .react-player {
-            position: absolute; /* Posição absoluta para cobrir o container */
+            position: absolute; 
             top: 0;
             left: 0;
-            // O ReactPlayer já seta width/height 100% via props, mas é bom garantir.
+            
         }
     }
-    /* ========================================================= */
-
-    // Estilos de câmera (Mantidos)
+ 
     .video-camera,
     .video-gravado {
         position: absolute;
@@ -102,7 +98,6 @@
         transform: scaleX(1);
     }
     
-    // ... (Estilos de Botões mantidos) ...
 
     .botao-significado { 
         background: #3f51b5; 
