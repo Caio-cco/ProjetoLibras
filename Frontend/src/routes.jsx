@@ -7,6 +7,7 @@ import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
 import HomeLogado from "./pages/homeLogado";
 import ImiteOSinal from "./pages/Imiteosinal"; // <-- nova importação
+import Chat from "./pages/chat";
 
 // 📄 Componentes
 import Atividades from "./components/atividades";
@@ -105,6 +106,15 @@ function Navegacao() {
           element={
             <ProtectedRoute>
               <Perfil />
+            </ProtectedRoute>
+          }
+        />
+
+          <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat />
             </ProtectedRoute>
           }
         />

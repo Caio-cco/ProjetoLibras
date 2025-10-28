@@ -173,14 +173,12 @@ export default function LoginCadastro() {
               </button>
 
               <div className="social-login">
-                <img src={FacebookIcon} alt="Facebook" />
                 <img
                   src={GoogleIcon}
                   alt="Google"
                   onClick={loginGoogle}
                   style={{ cursor: "pointer" }}
                 />
-                <img src={AppleIcon} alt="Apple" />
               </div>
             </form>
 
