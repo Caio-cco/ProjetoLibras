@@ -1,7 +1,7 @@
 import { OAuth2Client } from "google-auth-library";
 import { Router } from "express";
 import * as repo from "../Repository/loginRepository.js";
-import { generateToken } from "../Utils/jwt.js";
+import { generateToken } from "../utils/jwt.js";
 
 const endpoints = Router();
 
