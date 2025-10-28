@@ -6,10 +6,12 @@ import jwt_decode from "jwt-decode";
 import "./login.scss";
 
 import GoogleIcon from "../icons/google.png";
-import FacebookIcon from "../icons/facebook.png";
-import AppleIcon from "../icons/apple.png";
 
-const BACKEND_URL = "http://localhost:5010";
+
+const BACKEND_URL =
+  import.meta.env.MODE === "production"
+    ? "https://projeto-libras-3sdnp2863-caio-ccos-projects.vercel.app"
+    : "http://localhost:5010";
 
 export default function LoginCadastro() {
   const navigate = useNavigate();
