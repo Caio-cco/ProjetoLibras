@@ -15,4 +15,9 @@ endpoints.post('/cursos/inserircurso', async (req, resp) => {
     resp.send({ NovoId: id });
 })
 
+endpoints.get('/dificuldades', async (req, resp) => {
+    let dif = await repoCursos.dificuldadeTabela();
+    resp.send ({ dif });
+})
+
 export default endpoints;

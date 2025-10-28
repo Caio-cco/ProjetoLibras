@@ -28,3 +28,12 @@ export async function verificarProgresso() {
     const [registros] = await conection.query(comando);
     return registros;
 }
+
+export async function dificuldadeTabela() {
+    const comando = `
+        select * from dificuldade;
+    `;
+
+    const [registros] = await conection.query(comando);
+    return registros;
+}

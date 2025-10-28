@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Cabecalho from "../cabecalho";
 import Rodape from "../rodape";
 import "./index.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 const sampleCards = [
@@ -39,6 +39,7 @@ const sampleCards = [
 
 
 export default function Atividades() {
+  const [dificuldade, setDificuldade] = useState([]);
   const [query, setQuery] = useState("");
   const [nivelFiltro, setNivelFiltro] = useState("Todos");
   const navigate = useNavigate();
@@ -55,6 +56,22 @@ export default function Atividades() {
     }
     return true;
   });
+
+  const fetchData = async (url, setter) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
+      const data = await res.json();
+      setter(data.registros || []); 
+    } catch (err) {
+      console.error(err);
+      setter([]); 
+    }
+  };
+
+  useEffect(() => {
+    fetchData('http://localhost:5010/dificuldade', setDificuldade);
+  }, []);
 
   return (
     <div>
@@ -82,6 +99,12 @@ export default function Atividades() {
               <option value="Básico">Básico</option>
               <option value="Intermediário">Intermediário</option>
               <option value="Avançado">Avançado</option>
+
+              {/* {dificuldade?.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.dificuldade}
+                </option>
+              ))} */}
             </select>
           </div>
         </header>

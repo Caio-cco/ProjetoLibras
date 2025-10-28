@@ -13,4 +13,13 @@ endpoints.put('/usuario/:id/addimg', upload.single('img'), async (req, resp) => 
     resp.send({ resp: "Imagem alterada com sucesso" });
 })
 
+endpoints.put('/usuario/esqueciasenha', async (req, resp) => {
+    let novaSenha = req.body;
+    let nome = a;
+    let email = a;
+
+    await repoUsuario.esqueciASenha(nome, email, novaSenha);
+    resp.send({ resp: "Senha Alterada com Sucesso" });
+})
+
 export default endpoints;

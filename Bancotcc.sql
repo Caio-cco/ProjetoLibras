@@ -1,3 +1,5 @@
+drop database if exists tcc;
+
 create database tcc;
 
 use tcc;

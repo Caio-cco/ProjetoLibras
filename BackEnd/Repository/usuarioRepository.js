@@ -9,3 +9,13 @@ export async function alterarImagem(id, imglink) {
     
     const [info] = await conection.query(comando, [imglink, id]);
 }
+
+export async function esqueciASenha(nome, email, senha) {
+    const comando = `
+        update usuario
+            set senha = MD5(?)
+            where nome = ? and email = ?;
+    `;
+
+    const [info] = await conection.query(comando, [senha, nome, email]);
+}

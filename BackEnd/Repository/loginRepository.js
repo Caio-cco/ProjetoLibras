@@ -4,7 +4,7 @@ import { conection } from './conection.js';
 export async function validarCredenciais(email, senha) {
 
   const [rows] = await conection.execute(
-    'SELECT * FROM usuario WHERE email = ? AND senha = ?',
+    'SELECT * FROM usuario WHERE email = ? AND senha = MD5(?)',
     [email, senha]
   );
   return rows[0] || null;
@@ -14,7 +14,7 @@ export async function validarCredenciais(email, senha) {
 export async function criarConta({ email, senha, name }) {
 
   const [result] = await conection.execute(
-    'INSERT INTO usuario (email, senha, nome, login_social) VALUES (?, ?, ?, 0)',
+    'INSERT INTO usuario (email, senha, nome, login_social) VALUES (?, MD5(?), ?, 0)',
     [email, senha, name]
   );
   return result.insertId;
