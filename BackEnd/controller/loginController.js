@@ -7,18 +7,25 @@ const endpoints = Router();
 
 const GOOGLE_CLIENT_ID = "324833504461-pirdui28unoelj2lotec7m2e5fs09avl.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
-const REDIRECT_URI = "postmessage"; 
+
+// Detecta se está em produção (Vercel) ou local
+const isProduction = process.env.NODE_ENV === "production";
+const REDIRECT_URI = isProduction
+  ? "https://projetolibras.onrender.com"
+  : "http://localhost:5173";
+
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI);
 
-
-
+// Login com email e senha
 endpoints.post("/usuario/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
-    if (!email || !senha) return res.status(400).send({ erro: "Email ou senha obrigatórios." });
+    if (!email || !senha)
+      return res.status(400).send({ erro: "Email ou senha obrigatórios." });
 
     const credenciais = await repo.validarCredenciais(email, senha);
-    if (!credenciais) return res.status(401).send({ erro: "Credenciais inválidas" });
+    if (!credenciais)
+      return res.status(401).send({ erro: "Credenciais inválidas" });
 
     const token = generateToken(credenciais);
     res.send({ token });
@@ -28,11 +35,12 @@ endpoints.post("/usuario/login", async (req, res) => {
   }
 });
 
-
+// Cadastro normal
 endpoints.post("/usuario", async (req, res) => {
   try {
     const novoLogin = req.body;
-    if (!novoLogin.email || !novoLogin.senha) return res.status(400).send({ erro: "Email ou senha obrigatórios." });
+    if (!novoLogin.email || !novoLogin.senha)
+      return res.status(400).send({ erro: "Email ou senha obrigatórios." });
 
     const id = await repo.criarConta(novoLogin);
     res.send({ novoId: id });
@@ -42,21 +50,30 @@ endpoints.post("/usuario", async (req, res) => {
   }
 });
 
-
+// Login com Google OAuth
 endpoints.post("/usuario/google", async (req, res) => {
   try {
     const { code } = req.body;
-    if (!code) return res.status(400).send({ erro: "Código de autorização não fornecido." });
+    if (!code)
+      return res.status(400).send({ erro: "Código de autorização não fornecido." });
 
-    const { tokens } = await googleClient.getToken(code);
-    if (!tokens.id_token) return res.status(400).send({ erro: "ID Token não retornado pelo Google." });
+    // Troca o código pelo token do Google
+    const { tokens } = await googleClient.getToken({
+      code,
+      redirect_uri: REDIRECT_URI,
+    });
 
+    if (!tokens.id_token)
+      return res.status(400).send({ erro: "ID Token não retornado pelo Google." });
+
+    // Valida o token e pega os dados do usuário
     const ticket = await googleClient.verifyIdToken({
       idToken: tokens.id_token,
       audience: GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
 
+    // Cria ou atualiza usuário no banco
     const usuario = await repo.upsertUsuarioSocial({
       email: payload.email,
       name: payload.name,
