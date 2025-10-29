@@ -9,7 +9,9 @@ app.use(cors({
     origin: [
         
         "http://localhost:5173", 
-        "https://projeto-libras-3sdnp2863-caio-ccos-projects.vercel.app"], 
+        "https://projeto-libras-3sdnp2863-caio-ccos-projects.vercel.app",
+        "https://projeto-libras-ten.vercel.app"
+    ], 
 
     credentials: true }));
 
