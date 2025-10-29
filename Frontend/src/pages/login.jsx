@@ -10,7 +10,7 @@ import GoogleIcon from "../icons/google.png";
 
 const BACKEND_URL =
   import.meta.env.MODE === "production"
-    ? "https://projeto-libras-3sdnp2863-caio-ccos-projects.vercel.app"
+    ? "https://projetolibras.onrender.com"
     : "http://localhost:5010";
 
 export default function LoginCadastro() {
