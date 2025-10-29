@@ -3,7 +3,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode'; 
 import GoogleIcon from '../../icons/google.png'; 
 
-const BACKEND_URL = "https://projetolibras.onrender.com";
+const BACKEND_URL = "http://localhost:5010";
 
 export default function GoogleLoginButton() {
   const login = useGoogleLogin({
