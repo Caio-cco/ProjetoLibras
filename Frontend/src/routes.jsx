@@ -8,6 +8,7 @@ import Perfil from "./pages/perfil";
 import HomeLogado from "./pages/homeLogado";
 import ImiteOSinal from "./pages/Imiteosinal"; // <-- nova importação
 import Chat from "./pages/chat";
+import JogoDasFrases from "./pages/Frase"; // Adicione este import
 
 // 📄 Componentes
 import Atividades from "./components/atividades";
@@ -144,6 +145,16 @@ function Navegacao() {
           element={
             <ProtectedRoute>
               <ImiteOSinal />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Rota para o Jogo das Frases */}
+        <Route
+          path="/frase"
+          element={
+            <ProtectedRoute>
+              <JogoDasFrases />
             </ProtectedRoute>
           }
         />
