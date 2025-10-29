@@ -7,16 +7,14 @@ const endpoints = Router();
 
 const GOOGLE_CLIENT_ID = "324833504461-pirdui28unoelj2lotec7m2e5fs09avl.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
-
-// Detecta se está em produção (Vercel) ou local
 const isProduction = process.env.NODE_ENV === "production";
 const REDIRECT_URI = isProduction
-  ? "https://projetolibras.onrender.com"
+  ? "https://projeto-libras-ten.vercel.app"
   : "http://localhost:5173";
 
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI);
 
-// Login com email e senha
+
 endpoints.post("/usuario/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
@@ -35,7 +33,7 @@ endpoints.post("/usuario/login", async (req, res) => {
   }
 });
 
-// Cadastro normal
+
 endpoints.post("/usuario", async (req, res) => {
   try {
     const novoLogin = req.body;
@@ -50,14 +48,14 @@ endpoints.post("/usuario", async (req, res) => {
   }
 });
 
-// Login com Google OAuth
+
 endpoints.post("/usuario/google", async (req, res) => {
   try {
     const { code } = req.body;
     if (!code)
       return res.status(400).send({ erro: "Código de autorização não fornecido." });
 
-    // Troca o código pelo token do Google
+    
     const { tokens } = await googleClient.getToken({
       code,
       redirect_uri: REDIRECT_URI,
@@ -66,14 +64,14 @@ endpoints.post("/usuario/google", async (req, res) => {
     if (!tokens.id_token)
       return res.status(400).send({ erro: "ID Token não retornado pelo Google." });
 
-    // Valida o token e pega os dados do usuário
+   
     const ticket = await googleClient.verifyIdToken({
       idToken: tokens.id_token,
       audience: GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
 
-    // Cria ou atualiza usuário no banco
+   
     const usuario = await repo.upsertUsuarioSocial({
       email: payload.email,
       name: payload.name,
