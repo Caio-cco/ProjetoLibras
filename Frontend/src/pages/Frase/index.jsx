@@ -26,7 +26,7 @@ const frasesQuiz = [
     {
         id: 4,
         frase: "Minha casa é amarela.",
-        respostaCorreta: ["MINHA", "CASA", "AMARELA"], // Ajustei para 3 palavras como esperado
+        respostaCorreta: ["MINHA", "CASA", "AMARELA"], 
         palavrasDisponiveis: ["MINHA", "CARRO", "CASA", "AZUL", "AMARELA"]
     },
     {

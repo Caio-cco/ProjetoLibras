@@ -1,0 +1,254 @@
+.quiz-basico {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f0f0f0; 
+}
+
+.banner-conteudo.quiz-banner {
+    position: relative;
+    width: 100%;
+    height: 350px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+}
+
+.banner-imagem {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    z-index: 1;
+}
+
+.banner-texto-overlay {
+    position: relative; 
+    color: #fff;
+    text-align: center;
+    z-index: 2; 
+    padding: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+
+    h1 {
+        font-size: 3rem;
+        margin: 0;
+        margin-bottom: 5px;
+    }
+    p {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+}
+
+.progresso-area {
+    margin: 20px auto 40px; 
+    width: 80%; 
+    max-width: 600px;
+    text-align: right;
+    z-index: 10;
+}
+
+.barra-progresso {
+    background: #e9ecef;
+    border-radius: 6px;
+    height: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.barra-progresso .preenchimento {
+    background: linear-gradient(to right, #f7a600, #ffce00);
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+.legenda-progresso {
+    font-size: 0.95rem;
+    color: #333;
+    text-align: center;
+}
+
+.conteudo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-top: -80px; 
+    transition: opacity 0.2s;
+}
+
+.conteudo[aria-busy="true"] {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    padding: 40px;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+}
+
+.card h2 {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.opcoes-quiz {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.botao-opcao {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    background: #fff;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.botao-opcao:hover:not(:disabled) {
+    background: #f9f9f9;
+    border-color: #f7a600;
+}
+
+.botao-opcao:disabled {
+    cursor: default;
+}
+
+.letra-opcao {
+    background: #f7a600; 
+    color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+}
+
+.botao-opcao.certo {
+    background: #d4edda;
+    border-color: #28a745;
+}
+.botao-opcao.certo .letra-opcao {
+    background: #28a745;
+}
+
+.botao-opcao.errado {
+    background: #f8d7da;
+    border-color: #dc3545;
+    opacity: 0.7; 
+}
+.botao-opcao.errado .letra-opcao {
+    background: #dc3545;
+}
+
+.modal-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; 
+}
+
+.modal-content {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    transform: translateY(-20px);
+    opacity: 0;
+    animation: modal-aparecer 0.3s ease-out forwards;
+}
+
+@keyframes modal-aparecer {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.modal-content p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    width: 100%;
+    border: none;
+}
+
+.modal-actions .btn-voltar,
+.modal-actions .btn-continuar {
+    background: #f7a600; 
+    color: #fff;
+}
+
+.modal-actions .btn-voltar:hover,
+.modal-actions .btn-continuar:hover {
+    background: #e09700;
+}
+
+.modal-actions .btn-refazer {
+    background: #fff;
+    color: #333;
+    border: 2px solid #f7a600;
+}
+
+.modal-actions .btn-refazer:hover {
+    background: #fff8e8;
+}
+
+.modal-content.fim h3 {
+    color: #28a745; 
+}
