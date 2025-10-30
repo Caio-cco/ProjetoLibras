@@ -5,6 +5,12 @@ import { Router } from 'express';
 const endpoints = Router();
 const upload = multer({ dest: 'public/storage' });
 
+endpoints.get('usuario/perfil', async (req, resp) => {
+    let id = req.user.id_usuario;
+    let info = await repoUsuario.perfilInformacoes(id);
+    resp.send({ info });
+})
+
 endpoints.put('/usuario/:id/addimg', upload.single('img'), async (req, resp) => {
     let imglink = req.file.path;
     let id = req.params.id;

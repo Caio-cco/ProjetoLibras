@@ -57,12 +57,17 @@ export default function Atividades() {
     return true;
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNivelFiltro({ ...formulario, [name]: value });
+  };
+
   const fetchData = async (url, setter) => {
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
       const data = await res.json();
-      setter(data.registros || []); 
+      setter(data.dif || []); 
     } catch (err) {
       console.error(err);
       setter([]); 
@@ -70,7 +75,7 @@ export default function Atividades() {
   };
 
   useEffect(() => {
-    fetchData('http://localhost:5010/dificuldade', setDificuldade);
+    fetchData('http://localhost:5010/dificuldades', setDificuldade);
   }, []);
 
   return (
@@ -96,16 +101,14 @@ export default function Atividades() {
               aria-label="Selecionar nível"
             >
               <option value="Todos">Todos</option>
-              <option value="Básico">Básico</option>
-              <option value="Intermediário">Intermediário</option>
-              <option value="Avançado">Avançado</option>
 
-              {/* {dificuldade?.map((item) => (
+              {dificuldade?.map((item) => (
                 <option key={item.id} value={item.id}>
-                  {item.dificuldade}
+                  {item.nome}
                 </option>
-              ))} */}
+              ))}
             </select>
+            
           </div>
         </header>
 

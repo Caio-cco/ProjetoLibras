@@ -8,16 +8,16 @@ endpoints.get('/cursos/progresso', async (req, resp) => {
     resp.send(registros);
 })
 
+endpoints.get('/dificuldades', async (req, resp) => {
+    let dif = await repoCursos.dificuldadeTabela();
+    resp.send ({ dif });
+})
+
 endpoints.post('/cursos/inserircurso', async (req, resp) => {
     let cursoInfo = req.body;
     let id = await repoCursos.criarCurso(cursoInfo);
 
     resp.send({ NovoId: id });
-})
-
-endpoints.get('/dificuldades', async (req, resp) => {
-    let dif = await repoCursos.dificuldadeTabela();
-    resp.send ({ dif });
 })
 
 export default endpoints;

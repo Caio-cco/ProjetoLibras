@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import loginEndpoints from "./controller/loginController.js";
+import { adicionarRotas } from "./rotas.js";
 
 const app = express();
 
@@ -21,8 +22,8 @@ app.use(cors({
 
 app.use(express.json());
 
-
-app.use("/", loginEndpoints);
+adicionarRotas(app);
+//app.use("/", loginEndpoints);
 
 
 app.get("/", (req, res) => {

@@ -19,3 +19,14 @@ export async function esqueciASenha(nome, email, senha) {
 
     const [info] = await conection.query(comando, [senha, nome, email]);
 }
+
+export async function perfilInformacoes(id) {
+    const comando = `
+        select nome, foto_url, telefone, 
+            from usuario
+            where id_usuario = ?;
+    `;
+
+    const [info] = await conection.query(comando, id);
+    return info;
+}
