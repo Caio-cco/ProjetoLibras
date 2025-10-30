@@ -9,6 +9,7 @@ import HomeLogado from "./pages/homeLogado";
 import ImiteOSinal from "./pages/Imiteosinal"; // <-- nova importação
 import Chat from "./pages/chat";
 import JogoDasFrases from "./pages/Frase"; // Adicione este import
+import Teoria from "./pages/Teoria"; // Add this import
 
 // 📄 Componentes
 import Atividades from "./components/atividades";
@@ -155,6 +156,16 @@ function Navegacao() {
           element={
             <ProtectedRoute>
               <JogoDasFrases />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Rota para Teoria */}
+        <Route
+          path="/teoria"
+          element={
+            <ProtectedRoute>
+              <Teoria />
             </ProtectedRoute>
           }
         />

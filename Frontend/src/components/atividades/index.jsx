@@ -127,6 +127,7 @@ export default function Atividades() {
                       if (card.title === "Associação") navigate("/associacao");
                       else if (card.title === "Imite o Sinal") navigate("/imiteosinal");
                       else if (card.title === "Jogo das Frases") navigate("/frase");
+                      else if (card.title === "Teoria") navigate("/teoria");
                       else navigate(`/atividade/${card.id}`);
                     }}
                   >

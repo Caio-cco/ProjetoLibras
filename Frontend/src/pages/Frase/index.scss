@@ -1,13 +1,5 @@
-@use "sass:color"; // necessário para color.adjust
+@use "sass:color";
 
-/* ⚠️ IMPORTANTE: Você pode precisar adicionar `@use "sass:color";` no topo do arquivo.
-   Se o seu ambiente estiver reclamando de `color.adjust`, adicione a linha abaixo:
-   @use "sass:color";
-*/
-
-/* ================================================================= */
-/* DEFINIÇÃO DE CORES (DEVE ESTAR NO TOPO) */
-/* ================================================================= */
 $cor-primaria: #12355B;
 $cor-secundaria: #3f51b5;
 $cor-destaque: #FFD200;
@@ -17,26 +9,17 @@ $cor-borda-clara: #e9ecef;
 $cor-texto-escuro: #212529;
 $cor-texto-claro: #ffffff;
 
-
-/* ================================================================= */
-/* CONTAINER PRINCIPAL (NOVO) */
-/* ================================================================= */
 .jogo-das-frases {
-    /* Define o fundo de toda a página para que o componente seja exibido corretamente */
     background-color: $cor-fundo-pagina;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* ================================================================= */
-/* BANNER (Topo) - Estilos consistentes com o componente corrigido */
-/* ================================================================= */
-
 .banner-conteudo-atividade {
     position: relative;
     width: 100%;
-    height: 300px; /* Altura fixa do banner */
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,7 +35,6 @@ $cor-texto-claro: #ffffff;
     object-position: center bottom;
 }
 
-/* Cria o overlay semi-transparente acima da imagem */
 .banner-conteudo-atividade::before {
     content: "";
     position: absolute;
@@ -69,13 +51,10 @@ $cor-texto-claro: #ffffff;
     color: $cor-texto-claro;
     text-align: center;
     z-index: 2;
-
-    /* Leve fundo para o texto */
     background-color: rgba(0, 0, 0, 0.1);
     padding: 15px 30px;
     border-radius: 8px;
     max-width: 80%;
-
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -93,17 +72,13 @@ $cor-texto-claro: #ffffff;
     color: $cor-texto-claro;
 }
 
-
-/* ================================================================= */
-/* CONTEÚDO PRINCIPAL E CARD */
-/* ================================================================= */
 .conteudo-principal {
     background: $cor-fundo-pagina;
     padding: 40px 5%;
     display: flex;
     justify-content: center;
     min-height: 60vh;
-    flex-grow: 1; /* Permite que o conteúdo se expanda */
+    flex-grow: 1;
 }
 
 .card-atividade {
@@ -115,9 +90,6 @@ $cor-texto-claro: #ffffff;
     padding: 30px;
 }
 
-/* ------------------------------------------------------------------ */
-/* PROGRESSO E FEEDBACK */
-/* ------------------------------------------------------------------ */
 .progress-container {
     margin-bottom: 30px;
     padding: 10px 20px;
@@ -176,10 +148,6 @@ $cor-texto-claro: #ffffff;
     font-weight: normal;
 }
 
-
-/* ------------------------------------------------------------------ */
-/* SEÇÃO VÍDEO */
-/* ------------------------------------------------------------------ */
 .secao-video {
     margin-bottom: 40px;
     border: 2px solid $cor-secundaria;
@@ -206,10 +174,6 @@ $cor-texto-claro: #ffffff;
     }
 }
 
-
-/* ------------------------------------------------------------------ */
-/* SEÇÃO RESPOSTA E PALAVRAS */
-/* ------------------------------------------------------------------ */
 .secao-resposta {
     border: 1px solid $cor-borda-clara;
     border-radius: 10px;
@@ -231,10 +195,8 @@ $cor-texto-claro: #ffffff;
         border-radius: 8px;
         padding: 15px;
         font-size: 1.2em;
-        color: #6c757d;
         background-color: #f8f9fa;
         cursor: pointer;
-
         color: $cor-texto-escuro;
         font-weight: 500;
 
@@ -273,7 +235,6 @@ $cor-texto-claro: #ffffff;
             transition: all 0.2s;
 
             &:hover {
-                // CORREÇÃO SASS: substitui lighten() por color.adjust()
                 background-color: color.adjust($cor-secundaria, $lightness: 10%);
                 color: $cor-fundo-card;
                 transform: translateY(-1px);
@@ -282,9 +243,6 @@ $cor-texto-claro: #ffffff;
     }
 }
 
-/* ------------------------------------------------------------------ */
-/* BOTÕES DE AÇÃO (Verificar / Avançar) */
-/* ------------------------------------------------------------------ */
 .botoes-acao {
     display: flex;
     justify-content: flex-end;
@@ -312,7 +270,6 @@ $cor-texto-claro: #ffffff;
         color: $cor-texto-claro;
 
         &:hover:not(:disabled) {
-            // CORREÇÃO SASS: substitui darken() por color.adjust()
             background-color: color.adjust($cor-secundaria, $lightness: -10%);
         }
     }
@@ -322,7 +279,6 @@ $cor-texto-claro: #ffffff;
         color: $cor-texto-claro;
 
         &:hover:not(:disabled) {
-            // CORREÇÃO SASS: substitui darken() por color.adjust()
             background-color: color.adjust(#dc3545, $lightness: -10%);
         }
     }
@@ -332,7 +288,6 @@ $cor-texto-claro: #ffffff;
         color: $cor-texto-claro;
 
         &:hover:not(:disabled) {
-            // CORREÇÃO SASS: substitui darken() por color.adjust()
             background-color: color.adjust(#28a745, $lightness: -10%);
         }
     }
