@@ -1,17 +1,20 @@
 import * as repoUsuario from '../Repository/usuarioRepository.js';
 import multer from 'multer';
 import { Router } from 'express';
+import { getAuthentication } from '../utils/jwt.js';
+
+const autenticador = getAuthentication();
 
 const endpoints = Router();
 const upload = multer({ dest: 'public/storage' });
 
-endpoints.get('usuario/perfil', async (req, resp) => {
-    let id = req.user.id_usuario;
+endpoints.get('/user/perfil', autenticador, async (req, resp) => {
+    let id = req.user.id;
     let info = await repoUsuario.perfilInformacoes(id);
     resp.send({ info });
 })
 
-endpoints.put('/usuario/:id/addimg', upload.single('img'), async (req, resp) => {
+endpoints.put('/user/:id/addimg', autenticador, upload.single('img'), async (req, resp) => {
     let imglink = req.file.path;
     let id = req.params.id;
 
@@ -19,7 +22,7 @@ endpoints.put('/usuario/:id/addimg', upload.single('img'), async (req, resp) => 
     resp.send({ resp: "Imagem alterada com sucesso" });
 })
 
-endpoints.put('/usuario/esqueciasenha', async (req, resp) => {
+endpoints.put('/user/esqueciasenha', autenticador, async (req, resp) => {
     let novaSenha = req.body;
     let nome = a;
     let email = a;

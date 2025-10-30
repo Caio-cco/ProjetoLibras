@@ -35,9 +35,11 @@ export default function LoginCadastro() {
           navigate("/");
         } else {
           localStorage.removeItem("authToken");
+          localStorage.removeItem("name");
         }
       } catch {
         localStorage.removeItem("authToken");
+        localStorage.removeItem("name");
       }
     }
   }, [navigate]);
@@ -61,8 +63,10 @@ export default function LoginCadastro() {
 
       const { token } = res.data;
       const userPayload = jwt_decode(token);
+      const name = userPayload.nome;
 
       localStorage.setItem("authToken", token);
+      localStorage.setItem("name", name);
       alert(`Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
       navigate("/homel");
     } catch (err) {
@@ -115,8 +119,10 @@ export default function LoginCadastro() {
 
         const { token } = res.data;
         const userPayload = jwt_decode(token);
+        const name = userPayload.nome;
 
         localStorage.setItem("authToken", token);
+        localStorage.setItem("name", name);
         alert(`Login com sucesso! Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
         navigate("/homel");
       } catch (error) {

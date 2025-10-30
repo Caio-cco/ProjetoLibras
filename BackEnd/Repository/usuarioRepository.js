@@ -22,7 +22,7 @@ export async function esqueciASenha(nome, email, senha) {
 
 export async function perfilInformacoes(id) {
     const comando = `
-        select nome, foto_url, telefone, 
+        select nome, foto_url, telefone
             from usuario
             where id_usuario = ?;
     `;

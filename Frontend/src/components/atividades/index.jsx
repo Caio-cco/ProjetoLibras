@@ -57,11 +57,6 @@ export default function Atividades() {
     return true;
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNivelFiltro({ ...formulario, [name]: value });
-  };
-
   const fetchData = async (url, setter) => {
     try {
       const res = await fetch(url);

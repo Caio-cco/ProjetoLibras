@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./perfil.scss";
 
@@ -9,6 +9,7 @@ export default function PerfilAluno() {
   const [area, setArea] = useState("");
   const [foto, setFoto] = useState("");
   const [editando, setEditando] = useState(false);
+  const [perfil, setPerfil] = useState([]);
 
   const navigate = useNavigate();
 
@@ -27,9 +28,28 @@ export default function PerfilAluno() {
 
   function handleLogout() {
     localStorage.removeItem("authToken"); 
+    localStorage.removeItem("name");
     navigate("/", { replace: true });  
     window.history.pushState(null, "", "/"); 
   }
+
+  const fetchData = async (url, setter) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
+      const data = await res.json();
+      setter(data.info || []); 
+    } catch (err) {
+      console.error(err);
+      setter([]); 
+    }
+  };
+
+  useEffect(() => {
+    fetchData('http://localhost:5010/user/perfil', setPerfil);
+  }, []);
+
+  const name = localStorage.getItem("name");
 
   return (
     <div className="perfil-page">
@@ -58,6 +78,7 @@ export default function PerfilAluno() {
 
         <section className="info">
           <div className="foto-area">
+            {/* <img src={foto} alt="Foto de perfil" className="foto" /> */}
             <img src={foto} alt="Foto de perfil" className="foto" />
             <label htmlFor="uploadFoto" className="trocar-foto">
               Trocar foto
@@ -97,7 +118,8 @@ export default function PerfilAluno() {
               </>
             ) : (
               <>
-                <h2>{nome}</h2>
+                {/* <h2>{nome}</h2> */}
+                <h2>{name}</h2>
                 <p className="bio">{bio}</p>
                 <p>
                   <strong>Telefone:</strong> {telefone}
