@@ -14,6 +14,11 @@ endpoints.get('/user/perfil', autenticador, async (req, resp) => {
     resp.send({ info });
 })
 
+endpoints.put('/user/attperfil', autenticador, async (req, resp) => {
+    let id = req.user.id;
+    let att = a;
+})
+
 endpoints.put('/user/:id/addimg', autenticador, upload.single('img'), async (req, resp) => {
     let imglink = req.file.path;
     let id = req.params.id;

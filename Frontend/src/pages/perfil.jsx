@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./perfil.scss";
 
 export default function PerfilAluno() {
@@ -9,7 +10,7 @@ export default function PerfilAluno() {
   const [area, setArea] = useState("");
   const [foto, setFoto] = useState("");
   const [editando, setEditando] = useState(false);
-  const [perfil, setPerfil] = useState([]);
+  const [perfil, setPerfil] = useState({});
 
   const navigate = useNavigate();
 
@@ -33,15 +34,29 @@ export default function PerfilAluno() {
     window.history.pushState(null, "", "/"); 
   }
 
+  const token = localStorage.getItem("authToken");
+
+  axios.get('http://localhost:5010/user/perfil', {
+    headers: {
+      'x-access-token': token
+    }
+  })
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
   const fetchData = async (url, setter) => {
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
       const data = await res.json();
-      setter(data.info || []); 
+      setter(data.info[0] || {}); 
     } catch (err) {
       console.error(err);
-      setter([]); 
+      setter({}); 
     }
   };
 
@@ -79,7 +94,7 @@ export default function PerfilAluno() {
         <section className="info">
           <div className="foto-area">
             {/* <img src={foto} alt="Foto de perfil" className="foto" /> */}
-            <img src={foto} alt="Foto de perfil" className="foto" />
+            <img src={perfil.foto_url} alt="Foto de perfil" className="foto" />
             <label htmlFor="uploadFoto" className="trocar-foto">
               Trocar foto
             </label>
@@ -119,10 +134,11 @@ export default function PerfilAluno() {
             ) : (
               <>
                 {/* <h2>{nome}</h2> */}
-                <h2>{name}</h2>
+                {/* <h2>{name}</h2> */}
+                <h2>{perfil.nome}</h2>
                 <p className="bio">{bio}</p>
                 <p>
-                  <strong>Telefone:</strong> {telefone}
+                  <strong>Telefone:</strong> {perfil.telefone}
                 </p>
                 
 

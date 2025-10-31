@@ -30,3 +30,22 @@ export async function perfilInformacoes(id) {
     const [info] = await conection.query(comando, id);
     return info;
 }
+
+export async function attPerfil(novoPerfil) {
+    const comando = `
+        update usuario
+            inner join usuario_extra on usuario_extra.id_user = usuario.id_usuario
+            set usuario.nome = ?
+                usuario.telefone = ?
+                usuario_extra.bio = ?
+                usuario_extra.area = ?
+                where usuario.id_usuario = ?;
+    `;
+    const [info] = await conection.query(comando, [
+        novoPerfil.nome,
+        novoPerfil.telefone,
+        novoPerfil.bio,
+        novoPerfil.area,
+        novoPerfil.id
+    ]);
+}
