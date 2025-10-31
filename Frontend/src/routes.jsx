@@ -13,6 +13,8 @@ import Teoria from "./pages/Teoria";
 import AssociacaoIntermediario from "./pages/AssosiacaoIntermediario";
 import FrasesIntermediario from "./pages/FraseIntermediario";
 import Quiz from "./pages/Quiz"; 
+import QuizIntermediario from "./pages/QuizIntermediario";
+import TeoriaIntermediario from "./pages/TeoriaIntermediario";
 
 // 📄 Componentes
 import Atividades from "./components/atividades";
@@ -143,6 +145,16 @@ function Navegacao() {
           }
         />
 
+
+        <Route
+          path="/quiz-intermediario"
+          element={ 
+            <ProtectedRoute>
+              <QuizIntermediario />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Jogo de Associação */}
         <Route
           path="/associacao"
@@ -197,6 +209,15 @@ function Navegacao() {
           element={
             <ProtectedRoute>
               <Teoria />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teoria-intermediario"
+          element={
+            <ProtectedRoute>
+              <TeoriaIntermediario />
             </ProtectedRoute>
           }
         />

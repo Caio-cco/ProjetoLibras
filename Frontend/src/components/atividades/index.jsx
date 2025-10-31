@@ -89,10 +89,13 @@ export default function Atividades() {
     
     // --- CONTEÚDO TEÓRICO ---
     else if (title === "Teoria") {
-      route = "/teoria"; 
+      if (level === "Básico") route = "/teoria";
+      else if (level === "Intermediário") route = "/teoria-intermediario";
     } 
     
     else if (title === "Quiz") {
+     if (level === "Básico") route = "/quiz";
+     else if (level === "Intermediário") route = "/quiz-intermediario";
     }
     
     // --- EM BREVE / FALHA ---
