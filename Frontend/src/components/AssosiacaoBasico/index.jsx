@@ -4,6 +4,7 @@ import Cabecalho from "../cabecalho";
 import Rodape from "../rodape";
 import "./index.scss";
 
+// Componente Modal de Feedback (Ajustado apenas o nome do componente para Rodape)
 const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades, tipo }) => {
   if (tipo === 'certo-rodada' || tipo === 'erro-rodada') {
     return null;
@@ -37,7 +38,8 @@ const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades
         
         {tipo === 'erro-pular' && (
           <div className="modal-actions">
-            <button className="btn-continuar" onClick={onVoltarAtividades}>
+            {/* O onRefazer agora é usado como "Continuar" para avançar a rodada */}
+            <button className="btn-continuar" onClick={onRefazer}> 
               Continuar
             </button>
           </div>
@@ -82,6 +84,7 @@ export default function AssosiacaoBasico() {
   }
 
   function iniciarRodada() {
+    // Lógica para selecionar 3 pares por rodada de forma cíclica
     const inicio = ((rodadaAtual - 1) * 3) % todosPares.length; 
     
     let paresSelecionados = [];
@@ -117,6 +120,7 @@ export default function AssosiacaoBasico() {
   }
 
   function avancarOuFinalizar() {
+    setFeedback(null); // Limpa o feedback de certo/errado
     if (rodadaAtual < totalRodadas) {
       setRodadaAtual((ant) => ant + 1);
     } else {
@@ -152,16 +156,11 @@ export default function AssosiacaoBasico() {
       setErrosNaRodada(novosErros);
 
       if (novosErros >= 2) {
+        // Exibe o modal, mas a transição para a próxima rodada é feita via botão 'Continuar'
         setModalData({ 
-            mensagem: "Você errou duas vezes. Esta rodada será pulada. Vamos para a próxima!", 
+            mensagem: "Você errou duas vezes. Esta rodada será pulada. Clique em Continuar para ir para a próxima!", 
             tipo: 'erro-pular' 
         });
-        
-        setTimeout(() => {
-          setModalData(null); 
-          avancarOuFinalizar();
-        }, 1500); 
-
       } else {
         setTimeout(() => {
           setFeedback(null);
@@ -172,14 +171,23 @@ export default function AssosiacaoBasico() {
     }
   }
   
+  // Função que gerencia o botão 'Refazer' e o 'Continuar' (erro-pular)
   const handleRefazer = () => {
+    if (modalData && modalData.tipo === 'erro-pular') {
+      // Ação de 'Continuar' no erro-pular: fecha o modal e avança a rodada
+      setModalData(null);
+      avancarOuFinalizar();
+    } else {
+      // Ação de 'Refazer Atividade': zera o placar e volta para a rodada 1
       setRodadaAtual(1);
       setAcertosTotais(0);
       setModalData(null);
+    }
   };
   
   const handleVoltarAtividades = () => {
-      navigate("/atividades");
+    setModalData(null); 
+    navigate("/atividades");
   };
 
   const porcentagem = Math.round((rodadaAtual / totalRodadas) * 100);
@@ -191,7 +199,7 @@ export default function AssosiacaoBasico() {
           mensagem={modalData.mensagem}
           acertos={modalData.acertos}
           total={modalData.total}
-          onRefazer={handleRefazer}
+          onRefazer={handleRefazer} 
           onVoltarAtividades={handleVoltarAtividades}
           tipo={modalData.tipo}
         />
@@ -199,7 +207,8 @@ export default function AssosiacaoBasico() {
       
       <Cabecalho logado={true} />
 
-      <div className="banner-conteudo">
+      {/* O padding-top para compensar o cabeçalho fixo será aplicado ao banner via CSS */}
+      <div className="banner-conteudo"> 
         <img src="/mãoazul.png" alt="Mão azul" className="banner-imagem"/>
         <div className="banner-texto">
           <h1>Associação</h1>
@@ -216,6 +225,7 @@ export default function AssosiacaoBasico() {
         </div>
       </section>
 
+      {/* Conteúdo principal com o flex: 1 para empurrar o rodapé */}
       <main className="conteudo" aria-busy={!!modalData}>
         <div className="card">
           <h2>Clique em um sinal e depois em seu significado</h2>
@@ -273,4 +283,3 @@ export default function AssosiacaoBasico() {
     </div>
   );
 }
-

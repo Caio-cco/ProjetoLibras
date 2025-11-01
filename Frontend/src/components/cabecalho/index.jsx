@@ -3,140 +3,88 @@ import { Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import "./index.scss";
 
+import Sidebar from '../Sidebar/index.jsx'; 
+
+
 export default function Cabecalho({ onInscrever, logado = false }) {
-  const [menuAberto, setMenuAberto] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [fotoPerfil, setFotoPerfil] = useState(null);
+  const [menuAberto, setMenuAberto] = useState(false); 
+  const [menuLateralAberto, setMenuLateralAberto] = useState(false); 
+  const [isMobile, setIsMobile] = useState(false);
+  const [fotoPerfil, setFotoPerfil] = useState(null);
+  const [nomeUsuario, setNomeUsuario] = useState(null); 
 
-  const alternarMenu = () => setMenuAberto(!menuAberto);
-  const fecharMenu = () => setMenuAberto(false);
+  const alternarMenu = () => setMenuAberto(!menuAberto);
+  const fecharMenu = () => setMenuAberto(false);
 
-  // Verifica se é mobile
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 850);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const abrirMenuLateral = () => setMenuLateralAberto(true);
+  const fecharMenuLateral = () => setMenuLateralAberto(false);
 
-  // Atualiza foto de perfil automaticamente
-  useEffect(() => {
-    const foto = localStorage.getItem("fotoPerfil");
-    setFotoPerfil(foto);
-    window.addEventListener("storage", () =>
-      setFotoPerfil(localStorage.getItem("fotoPerfil"))
-    );
-  }, []);
+  useEffect(() => {
+    const foto = localStorage.getItem("fotoPerfil");
+    const nome = localStorage.getItem("name"); 
+    setFotoPerfil(foto);
+    setNomeUsuario(nome);
+    
+    const handleStorageChange = () => {
+        setFotoPerfil(localStorage.getItem("fotoPerfil"));
+        setNomeUsuario(localStorage.getItem("name"));
+    };
 
-  return (
-    <header className="cabecalho">
-      {/* Logo */}
-      <div className="imagem">
-        <img
-          src="https://img.elo7.com.br/product/zoom/3A21A1B/matriz-de-bordado-libras-lingua-brasileira-de-sinais-linguagem-de-sinais.jpg"
-          alt="Logo LIBRAS"
-        />
-      </div>
+    window.addEventListener("storage", handleStorageChange);
+    
+    return () => {
+        window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
-      {/* ====== MENU DESKTOP ====== */}
-      {!isMobile && (
-        <>
-          <div className="cabecalho-centro">
-            <nav className="menu">
-              <div className="titulos">
-                <Link to="/atividades">Atividades</Link>
-                <a href="#nos">Quem Somos</a>
-                <a href="#contato">Contato</a>
-              </div>
-            </nav>
-          </div>
 
-          <div className="cabecalho-direita">
-            {!logado ? (
-              <div className="botoes desktop-only">
-                <Link to="/login" className="link-login">
-                  Login
-                </Link>
-                <button className="bot">
-                  <Link to="/login" className="link-login">
-                    Cadastre-se
-                  </Link>
-                </button>
-              </div>
-            ) : (
-              <Link to="/perfil" className="icone-perfil">
-                {fotoPerfil ? (
-                  <img
-                    src={fotoPerfil}
-                    alt="Foto de perfil"
-                    className="foto-perfil"
-                  />
-                ) : (
-                  <FaUserCircle size={35} />
-                )}
-              </Link>
-            )}
-          </div>
-        </>
-      )}
+  return (
+    <>
+      <header className="cabecalho">
+        <div className="imagem">
+            <Link to={logado ? "/homeL" : "/"} className="logo-link">
+                <img src="/joker.jpg" alt="Falar é Mágico" />
+            </Link>
+        </div>
 
-      {/* ====== MENU MOBILE ====== */}
-      {isMobile && (
-        <>
-          {/* Ícone hambúrguer */}
-          <div
-            className={`hamburguer ${menuAberto ? "ativo" : ""}`}
-            onClick={alternarMenu}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+        {!isMobile && (
+          <>
+            <div className="cabecalho-centro">
+                <Link to="/atividades">Atividades</Link>
+                <Link to="/quem-somos">Quem Somos</Link>
+                <Link to="/contato">Contato</Link>
+            </div>
+            
+            <div className="cabecalho-direita">
+              {!logado ? (
+                <div className="botoes-login-cadastro">
+                </div>
+              ) : (
+                <div className="icone-perfil" onClick={abrirMenuLateral}>
+                  {fotoPerfil ? (
+                    <img
+                      src={fotoPerfil}
+                      alt="Foto de perfil"
+                      className="foto-perfil"
+                    />
+                  ) : (
+                    <FaUserCircle size={35} />
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        )}
 
-          {/* Fundo escurecido */}
-          {menuAberto && (
-            <div className="fundo-escuro" onClick={fecharMenu}></div>
-          )}
+      </header>
 
-          {/* Menu lateral */}
-          <nav className={`menu-mobile ${menuAberto ? "aberto" : ""}`}>
-            <div className="titulos">
-              <Link to="/atividades" onClick={fecharMenu}>
-                Atividades
-              </Link>
-              <a href="/" onClick={fecharMenu}>
-                Quem Somos
-              </a>
-              <a href="/" onClick={fecharMenu}>
-                Contato
-              </a>
-            </div>
-
-            {!logado ? (
-              <div className="botoes mobile-only">
-                <Link to="/login" className="link-login" onClick={fecharMenu}>
-                  Login
-                </Link>
-                <button className="bot" onClick={onInscrever}>
-                  Inscrever-se
-                </button>
-              </div>
-            ) : (
-              <Link to="/perfil" className="icone-perfil" onClick={fecharMenu}>
-                {fotoPerfil ? (
-                  <img
-                    src={fotoPerfil}
-                    alt="Foto de perfil"
-                    className="foto-perfil"
-                  />
-                ) : (
-                  <FaUserCircle size={35} />
-                )}
-              </Link>
-            )}
-          </nav>
-        </>
-      )}
-    </header>
-  );
+      <Sidebar 
+          estaAberto={menuLateralAberto} 
+          fecharMenu={fecharMenuLateral}
+          fotoPerfil={fotoPerfil}
+          logado={logado}
+          nomeUsuario={nomeUsuario}
+      />
+    </>
+  );
 }

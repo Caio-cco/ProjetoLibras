@@ -1,11 +1,24 @@
-@import '../../components/AssosiacaoBasico/index.scss';
+/* CONTEÚDO FINAL PARA: ImiteOSinal/index.scss */
 
+@import '../../components/AssosiacaoBasico/index.scss'; 
 
 .imite-sinal {
     
     .conteudo {
+        /* 1. Remove qualquer margin-top negativo */
+        margin-top: 0; 
+        
+        /* 2. ADICIONADO: Padding-top para criar o espaço entre o Banner e o Card */
+        padding-top: 30px; /* Cria um espaço limpo abaixo do banner */
+        
+        /* 3. Centraliza o card verticalmente, na área de conteúdo */
+        align-items: center; 
+        
+        /* 4. Mantém o espaço antes do rodapé */
         padding-bottom: 90px;
-        padding-top: 30px; 
+        
+        /* Garante o preenchimento de espaço vertical */
+        flex: 1;
     }
     
     .card { 
@@ -36,6 +49,8 @@
             color: #7986cb; 
         }
     }
+
+    /* O restante dos seus estilos específicos (alerta, video-container, botões) */
     
     .alerta-erro, .alerta-observacao {
         width: 100%;
@@ -61,7 +76,6 @@
         margin: 15px 0 25px 0; 
         width: 100%;
         max-width: 600px;
-
         padding-top: 56.25%; 
         height: 0; 
         background: #bbdefb; 
@@ -70,15 +84,13 @@
         position: relative; 
         overflow: hidden;
         
-
         .react-player {
             position: absolute; 
             top: 0;
             left: 0;
-            
         }
     }
- 
+    
     .video-camera,
     .video-gravado {
         position: absolute;
@@ -98,7 +110,6 @@
         transform: scaleX(1);
     }
     
-
     .botao-significado { 
         background: #3f51b5; 
         color: #fff; 
@@ -125,5 +136,20 @@
     .modal-actions {
         justify-content: center;
         width: auto;
+    }
+    
+    .btn-refazer {
+        background: #fff;
+        color: #3f51b5;
+        border: 2px solid #3f51b5;
+        padding: 14px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s ease;
+        width: auto; 
+    }
+    .btn-refazer:hover {
+        background: #f0f0f0;
     }
 }
