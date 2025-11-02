@@ -15,6 +15,8 @@ import FrasesIntermediario from "./pages/FraseIntermediario";
 import Quiz from "./pages/Quiz"; 
 import QuizIntermediario from "./pages/QuizIntermediario";
 import TeoriaIntermediario from "./pages/TeoriaIntermediario";
+import QuizAvancado from "./pages/QuizAvançado";
+import AssosiacaoAvancado from "./pages/AssosiacaoAvancado";
 
 // 📄 Componentes
 import Atividades from "./components/atividades";
@@ -155,6 +157,15 @@ function Navegacao() {
           }
         />
 
+        <Route
+            path="/quiz-avancado"
+            element={ 
+              <ProtectedRoute>
+                <QuizAvancado />
+              </ProtectedRoute>
+            }
+        />
+
         {/* Jogo de Associação */}
         <Route
           path="/associacao"
@@ -172,6 +183,15 @@ function Navegacao() {
               <AssociacaoIntermediario />
             </ProtectedRoute>
           }
+        />
+
+        <Route
+          path="/associacao-avancado"
+          element={
+            <ProtectedRoute>
+              <AssosiacaoAvancado />
+            </ProtectedRoute>
+          }
         />
 
         {/* Rota para Imite o Sinal */}

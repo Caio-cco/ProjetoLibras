@@ -1,0 +1,242 @@
+.associacao-intermediario {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #fff;
+}
+
+.progresso-area {
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+}
+
+.barra-progresso {
+  background: #ddd;
+  border-radius: 6px;
+  height: 6px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.barra-progresso .preenchimento {
+  background: #f7a600;
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.conteudo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 30px;
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+.card h2 {
+  margin-bottom: 20px;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.coluna {
+  display: contents; 
+}
+
+button.botao-sinal,
+button.botao-significado {
+  border: 2px solid #f7a600;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fff;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 65px;
+  height: 100%; 
+}
+
+button.ativo {
+  background: #fff4d1;
+}
+
+button.certo { background: #d4edda; border-color: #28a745; }
+button.errado { background: #f8d7da; border-color: #dc3545; }
+
+.emoji { font-size: 2rem; }
+
+.coluna.sinais > button { grid-column: 1; }
+.coluna.significados > button { grid-column: 2; }
+
+.coluna.sinais > button:nth-child(1),
+.coluna.significados > button:nth-child(1) { grid-row: 1; }
+
+.coluna.sinais > button:nth-child(2),
+.coluna.significados > button:nth-child(2) { grid-row: 2; }
+
+.coluna.sinais > button:nth-child(3),
+.coluna.significados > button:nth-child(3) { grid-row: 3; }
+
+.banner-conteudo {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.banner-imagem {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.banner-texto {
+  position: absolute;
+  color: #fff;
+  text-align: center;
+  z-index: 1;
+  padding: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+}
+
+.banner-texto h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.banner-texto p {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: #fff; 
+}
+
+.modal-overlay {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  
+  background: rgba(0, 0, 0, 0.7); 
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  z-index: 9999; 
+}
+
+.modal-content {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: modal-aparecer 0.3s ease-out forwards;
+}
+
+@keyframes modal-aparecer {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h3 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.modal-content p {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  width: 100%;
+}
+
+.modal-actions .btn-voltar,
+.modal-actions .btn-continuar {
+  background: #f7a600; 
+  color: #fff;
+  border: none;
+}
+
+.modal-actions .btn-voltar:hover,
+.modal-actions .btn-continuar:hover {
+  background: #e09700;
+}
+
+.modal-actions .btn-refazer {
+  background: #fff;
+  color: #333;
+  border: 2px solid #f7a600;
+}
+
+.modal-actions .btn-refazer:hover {
+  background: #fff8e8;
+}
+
+.modal-content.fim h3 {
+  color: #28a745; 
+}
+
+.modal-content.erro-pular h3 {
+  color: #dc3545; 
+}
+
+.alerta-erro {
+    color: #dc3545;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.conteudo[aria-busy="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}

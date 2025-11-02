@@ -93,9 +93,11 @@ export default function Atividades() {
       else if (level === "Intermediário") route = "/teoria-intermediario";
     } 
     
+    // --- QUIZ --- 
     else if (title === "Quiz") {
      if (level === "Básico") route = "/quiz";
      else if (level === "Intermediário") route = "/quiz-intermediario";
+     else if (level === "Avançado") route = "/quiz-avancado";
     }
     
     // --- EM BREVE / FALHA ---
