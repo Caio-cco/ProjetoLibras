@@ -1,65 +1,64 @@
-/* 1. Container Principal e Resets */
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
-  padding: 0;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+}
+
+body {
+  padding-top: 60px;
+  margin: 0;
 }
 
 .associacao-basico {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background: #f0f0f0; /* Cor de fundo suave como no Quiz */
+  min-height: calc(100vh - 60px);
+  background: #f0f0f0;
 }
 
-/* --- Banner com altura maior e compensação do Cabeçalho Fixo --- */
 .banner-conteudo {
   position: relative;
   width: 100%;
-  height: 300px; /* Altura generosa para o banner (Ajuste conforme o Quiz) */
+  height: 300px;
+  /* Altura visual do banner */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  
-  /* 🌟 CORREÇÃO ESSENCIAL: Compensa o cabeçalho fixo (60px) 🌟 */
-  padding-top: 60px; 
 }
 
-/* Garante que o conteúdo do banner (texto, imagem) comece abaixo do padding */
-.banner-texto {
-  position: relative; /* Mudado de absolute para ser posicionado abaixo do padding-top */
-  color: #fff;
-  text-align: center;
-  z-index: 2; 
-  padding: 20px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-}
-
-.banner-imagem {
-  /* No componente de Associação você usa uma tag <img>. 
-     Ajustamos para que ela preencha o espaço abaixo do cabeçalho */
+/* Fundo/Gradiente */
+.banner-conteudo::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+  opacity: 0.85;
+  z-index: 0;
+}
+
+.banner-imagem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 1;
 }
 
-/* Opcional: Estilo de Fundo para o banner (se a sua imagem não for de fundo) */
-.banner-conteudo::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Se a imagem for transparente, adicione uma cor de fundo sólida ou gradiente */
-    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
-    z-index: 0; 
+.banner-texto {
+  position: relative;
+  color: #fff;
+  text-align: center;
+  z-index: 2;
+  padding: 20px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .banner-texto h1 {
@@ -72,13 +71,10 @@ html, body, #root {
   font-size: 1.5rem;
   margin: 0;
 }
-/* --- Fim do Banner --- */
 
-
-/* --- Área de Progresso e Conteúdo Principal --- */
 .progresso-area {
-  margin: 20px auto 40px; /* Mais espaço na parte inferior do progresso */
-  width: 80%; 
+  margin: 20px auto 40px;
+  width: 80%;
   max-width: 600px;
   text-align: right;
   z-index: 10;
@@ -105,14 +101,13 @@ html, body, #root {
 }
 
 .conteudo {
-  flex: 1; /* Ocupa o espaço restante e empurra o rodapé */
+  flex: 1;
   display: flex;
   justify-content: center;
   padding: 20px;
-  /* 🌟 CORREÇÃO DE DESIGN: Puxa o card para cima para sobrepor o banner 🌟 */
-  margin-top: -80px; 
+  margin-top: 20px;
   transition: opacity 0.2s;
-  padding-bottom: 50px; /* Garante o espaço antes do rodapé */
+  padding-bottom: 50px;
 }
 
 .conteudo[aria-busy="true"] {
@@ -123,8 +118,8 @@ html, body, #root {
 .card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* Sombra mais destacada */
-  padding: 40px; /* Mais padding interno */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  padding: 40px;
   max-width: 900px;
   width: 100%;
   text-align: center;
@@ -137,7 +132,6 @@ html, body, #root {
   font-weight: 500;
 }
 
-/* --- Grade de Associação (mantida) --- */
 .grade {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -145,26 +139,113 @@ html, body, #root {
   gap: 20px;
 }
 
-/* ... (Estilos de botões e modal mantidos para brevidade, mas devem ser incluídos) ... */
-
 button.botao-sinal,
 button.botao-significado {
-    /* Ajustado para ter o estilo limpo do Quiz, mas mantendo a grade de 3x2 */
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    padding: 15px 20px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    background: #fff;
-    width: 100%;
-    min-height: 80px; /* Maior altura para os botões de associação */
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  background: #fff;
+  width: 100%;
+  min-height: 80px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.emoji { font-size: 2.5rem; } /* Aumenta o tamanho dos emojis */
+.emoji {
+  font-size: 2.5rem;
+}
 
-/* ... (Inclua todos os estilos do Quiz para botões e modal) ... */
+.botao-sinal.ativo,
+.botao-significado.ativo {
+  border-color: #f7a600;
+  box-shadow: 0 0 0 3px rgba(247, 166, 0, 0.5);
+}
+
+.botao-sinal.certo,
+.botao-significado.certo {
+  background-color: #e6ffed;
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.botao-sinal.errado,
+.botao-significado.errado {
+  background-color: #ffeaea;
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.alerta-erro {
+  color: #dc3545;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #007bff;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.btn-voltar {
+  background-color: #f7a600;
+  color: white;
+}
+
+.btn-voltar:hover {
+  background-color: #e09700;
+}
+
+.btn-refazer {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-refazer:hover {
+  background-color: #0056b3;
+}
