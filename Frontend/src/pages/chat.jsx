@@ -22,7 +22,7 @@ export default function VideoChat() {
   const connectionRef = useRef();
 
   useEffect(() => {
-    // 🔒 Busca o token correto
+   
     const token = localStorage.getItem("authToken");
     if (!token) {
       alert("Você precisa estar logado para acessar o chat.");
@@ -30,7 +30,7 @@ export default function VideoChat() {
       return;
     }
 
-    // 🕒 Verifica se o token ainda é válido
+    
     try {
       const decoded = jwt_decode(token);
       const now = Date.now() / 1000;
@@ -85,6 +85,7 @@ export default function VideoChat() {
         audio: true,
       });
       setStream(currentStream);
+      console.log("Tracks de vídeo:", currentStream.getVideoTracks());
       if (myVideo.current) {
         myVideo.current.srcObject = currentStream;
       }
