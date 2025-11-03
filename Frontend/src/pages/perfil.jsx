@@ -78,7 +78,6 @@ export default function PerfilAluno() {
 
   return (
     <div className="perfil-page">
-      {/* REMOVIDO: <aside className="sidebar"> e todo seu conteúdo */}
 
       <main className="perfil-conteudo">
         <h1>Perfil do Aluno</h1>

@@ -2,8 +2,10 @@ import { OAuth2Client } from "google-auth-library";
 import { Router } from "express";
 import * as repo from "../Repository/loginRepository.js";
 import { generateToken } from "../utils/jwt.js";
+import { getAuthentication } from '../utils/jwt.js';
 
 const endpoints = Router();
+const autenticador = getAuthentication();
 
 const GOOGLE_CLIENT_ID = "324833504461-pirdui28unoelj2lotec7m2e5fs09avl.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
@@ -15,7 +17,7 @@ const REDIRECT_URI = isProduction
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI);
 
 
-endpoints.post("/usuario/login", async (req, res) => {
+endpoints.post("/usuario/login", autenticador, async (req, res) => {
   try {
     const { email, senha } = req.body;
     if (!email || !senha)
