@@ -66,7 +66,6 @@ export default function PerfilAluno() {
 
   return (
     <div className="perfil-page">
-      {/* REMOVIDO: <aside className="sidebar"> e todo seu conteúdo */}
 
       <main className="perfil-conteudo">
         <h1>Perfil do Aluno</h1>
@@ -74,7 +73,7 @@ export default function PerfilAluno() {
         <section className="info">
           <div className="foto-area">
             <img src={perfil.foto_url} alt="Foto de perfil" className="foto" />
-                {/* <img src={`${baseURL}${fotoPath}`} alt="Foto de perfil" className="foto" /> */}
+                
             <label htmlFor="uploadFoto" className="trocar-foto">
               Trocar foto
             </label>

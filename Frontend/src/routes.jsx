@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-
-// 📄 Páginas
 import Home from "./pages/home";
 import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
@@ -18,13 +16,11 @@ import TeoriaIntermediario from "./pages/TeoriaIntermediario";
 import QuizAvancado from "./pages/QuizAvançado";
 import AssosiacaoAvancado from "./pages/AssosiacaoAvancado";
 
-// 📄 Componentes
+
 import Atividades from "./components/atividades";
 import AssosiacaoBasico from "./components/AssosiacaoBasico"; 
 
-// =====================
-// 🔐 Função de autenticação
-// =====================
+
 function isAuthenticated() {
   const token = localStorage.getItem("authToken");
   if (!token) return false;
@@ -43,9 +39,7 @@ function isAuthenticated() {
   }
 }
 
-// =====================
-// 🔒 Rotas protegidas
-// =====================
+
 function ProtectedRoute({ children }) {
   const location = useLocation();
   if (!isAuthenticated()) {
@@ -54,9 +48,7 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-// =====================
-// 🔓 Rotas públicas (não logado)
-// =====================
+
 function PublicOnlyRoute({ children }) {
   if (isAuthenticated()) {
     return <Navigate to="/homeL" replace />;
@@ -64,9 +56,7 @@ function PublicOnlyRoute({ children }) {
   return children;
 }
 
-// =====================
-// 🚀 Navegação principal
-// =====================
+
 function Navegacao() {
   return (
     <BrowserRouter>
@@ -81,7 +71,7 @@ function Navegacao() {
           }
         />
 
-        {/* Login e cadastro */}
+        
         <Route
           path="/login"
           element={
@@ -100,7 +90,6 @@ function Navegacao() {
           }
         />
 
-        {/* Páginas logadas */}
         <Route
           path="/homeL"
           element={
@@ -137,7 +126,6 @@ function Navegacao() {
           }
         />
         
-        {/* Rota para o Quiz */}
         <Route
           path="/quiz"
           element={
@@ -166,7 +154,6 @@ function Navegacao() {
             }
         />
 
-        {/* Jogo de Associação */}
         <Route
           path="/associacao"
           element={
@@ -194,7 +181,6 @@ function Navegacao() {
           }
         />
 
-        {/* Rota para Imite o Sinal */}
         <Route
           path="/imiteosinal"
           element={
@@ -204,7 +190,7 @@ function Navegacao() {
           }
         />
 
-        {/* Rota para o Jogo das Frases */}
+
         <Route
           path="/frase"
           element={
@@ -223,7 +209,6 @@ function Navegacao() {
           }
         />
 
-        {/* Rota para Teoria */}
         <Route
           path="/teoria"
           element={
@@ -242,7 +227,7 @@ function Navegacao() {
           }
         />
 
-        {/* Qualquer outra rota leva para Home */}
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
