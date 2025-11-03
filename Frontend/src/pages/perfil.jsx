@@ -64,6 +64,18 @@ export default function PerfilAluno() {
     const baseURL = "http://localhost:5010/";
     const fotoPath = perfil.foto_url?.replace(/\\/g, "/");
 
+    let checkpfp = localStorage.getItem("checkpfp");
+    const pfppath1 = perfil.foto_url;
+    const pfppath2 = `${baseURL}${fotoPath}`;
+    let pfppath;
+
+    if (checkpfp === "1") {
+        pfppath = pfppath1;
+    }
+    else {
+        pfppath = pfppath2;
+    }
+
   return (
     <div className="perfil-page">
       {/* REMOVIDO: <aside className="sidebar"> e todo seu conteúdo */}
@@ -73,8 +85,7 @@ export default function PerfilAluno() {
 
         <section className="info">
           <div className="foto-area">
-            <img src={perfil.foto_url} alt="Foto de perfil" className="foto" />
-                {/* <img src={`${baseURL}${fotoPath}`} alt="Foto de perfil" className="foto" /> */}
+            <img src={pfppath} alt="Foto de perfil" className="foto" />
             <label htmlFor="uploadFoto" className="trocar-foto">
               Trocar foto
             </label>
