@@ -17,7 +17,7 @@ const REDIRECT_URI = isProduction
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI);
 
 
-endpoints.post("/usuario/login", autenticador, async (req, res) => {
+endpoints.post("/usuario/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
     if (!email || !senha)
