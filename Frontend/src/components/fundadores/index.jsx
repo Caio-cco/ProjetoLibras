@@ -8,9 +8,9 @@ export default function Fundadores() {
       cargo: "CEO",
       descricao:
         "Publicitário e especialista em comunicação estratégica. Cofundador e Diretor Executivo da Hand Talk, uma das startups mais premiadas do Brasil. Reconhecido pela ONU e eleito Empreendedor do Ano pela EY.",
-      imagem: "./imagem.png",
+      imagem: "./caio.jpg",
       linkedin: "https://www.linkedin.com/in/caiomello/",
-      instagram: "https://www.instagram.com",
+      instagram: "https://www.instagram.com/_eljadon/",
     },
     {
       nome: "João Pedro",
@@ -26,18 +26,18 @@ export default function Fundadores() {
       cargo: "CEO",
       descricao:
         "Diretor de Inteligência Artificial e cofundador da Hand Talk. Formado em Arquitetura e especializado em animação 3D no Canadá. Google Developer Expert e mentor do Google for Startups.",
-      imagem: "https://i.imgur.com/nSfFX9O.jpg",
+      imagem: "./marcos.png",
       linkedin: "https://www.linkedin.com/in/marcos/",
-      instagram: "https://www.instagram.com",
+      instagram: "https://www.instagram.com/markcyss15?igsh=cHRveTE5b3pueHVz",
     },
     {
       nome: "Pedro Henrique",
       cargo: "CEO",
       descricao:
-        "Gestora de Operações com foco em inovação e impacto social. Lidera equipes multidisciplinares e estratégias voltadas à inclusão digital. Participou de programas do MIT e da ONU.",
+        "Sou Pedro Henrique, tenho 18 anos e curso Tecnologia da Informação. Neste TCC, atuei na parte de front-end, desenvolvendo a interface do projeto e aprimorando meus conhecimentos na área de TI.",
       imagem: "./pedro.jpg",
       linkedin: "https://www.linkedin.com/in/pedro-henrique-642177266",
-      instagram: "https://www.instagram.com",
+      instagram: "https://www.instagram.com/ph_ferreira.__",
     },
   ];
 

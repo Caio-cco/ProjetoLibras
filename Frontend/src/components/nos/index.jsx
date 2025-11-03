@@ -30,7 +30,7 @@ export default function QuemSomos() {
             <div className="bloco">
               <h2>Nossa História</h2>
               <p>
-                O [nome do site] nasceu de uma necessidade percebida durante o desenvolvimento do
+                O Falar é Magico nasceu de uma necessidade percebida durante o desenvolvimento do
                 nosso TCC: criar uma plataforma acessível e prática para o ensino de LIBRAS. Com a
                 ideia de promover inclusão e facilitar a comunicação com a comunidade surda,
                 decidimos juntar nossos conhecimentos e desenvolver essa ferramenta.
