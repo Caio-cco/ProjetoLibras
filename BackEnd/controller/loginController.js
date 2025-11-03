@@ -2,7 +2,7 @@ import { OAuth2Client } from "google-auth-library";
 import { Router } from "express";
 import * as repo from "../Repository/loginRepository.js";
 import { generateToken } from "../utils/jwt.js";
-import { getAuthentication } from '../utils/jwt.js';
+import { getAuthentication } from "../utils/jwt.js";
 
 const endpoints = Router();
 const autenticador = getAuthentication();
@@ -57,7 +57,6 @@ endpoints.post("/usuario/google", async (req, res) => {
     if (!code)
       return res.status(400).send({ erro: "Código de autorização não fornecido." });
 
-    
     const { tokens } = await googleClient.getToken({
       code,
       redirect_uri: REDIRECT_URI,
@@ -66,14 +65,12 @@ endpoints.post("/usuario/google", async (req, res) => {
     if (!tokens.id_token)
       return res.status(400).send({ erro: "ID Token não retornado pelo Google." });
 
-   
     const ticket = await googleClient.verifyIdToken({
       idToken: tokens.id_token,
       audience: GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
 
-   
     const usuario = await repo.upsertUsuarioSocial({
       email: payload.email,
       name: payload.name,

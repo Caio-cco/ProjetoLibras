@@ -1,18 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
-import {
-  Mic,
-  MicOff,
-  Video,
-  VideoOff,
-  PhoneOff,
-} from "lucide-react";
+import { Mic, MicOff, Video, VideoOff, PhoneOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import "./chat.scss";
 
-const socket = io("http://localhost:3001");
-
 export default function VideoChat() {
+  const navigate = useNavigate();
   const [stream, setStream] = useState(null);
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState("");
@@ -20,14 +15,75 @@ export default function VideoChat() {
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(true);
   const [userId, setUserId] = useState("");
+  const [socket, setSocket] = useState(null);
 
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
 
+  useEffect(() => {
+    // 🔒 Busca o token correto
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("Você precisa estar logado para acessar o chat.");
+      navigate("/login");
+      return;
+    }
+
+    // 🕒 Verifica se o token ainda é válido
+    try {
+      const decoded = jwt_decode(token);
+      const now = Date.now() / 1000;
+      if (decoded.exp && decoded.exp < now) {
+        alert("Sessão expirada. Faça login novamente.");
+        localStorage.removeItem("authToken");
+        navigate("/login");
+        return;
+      }
+    } catch {
+      alert("Token inválido. Faça login novamente.");
+      localStorage.removeItem("authToken");
+      navigate("/login");
+      return;
+    }
+
+    
+    const s = io("https://projetolibras.onrender.com", {
+      auth: { token },
+    });
+
+    setSocket(s);
+
+    s.on("connect", () => console.log("✅ Conectado ao servidor de chat."));
+    s.on("connect_error", (err) => {
+      console.error("Erro de autenticação no socket:", err.message);
+      alert("Falha na autenticação. Faça login novamente.");
+      navigate("/login");
+    });
+
+    s.on("callUser", ({ from, signal }) => {
+      setReceivingCall(true);
+      setCaller(from);
+      connectionRef.current = signal;
+    });
+
+    s.on("me", (id) => setUserId(id));
+
+    startStream();
+
+    return () => {
+      s.disconnect();
+      s.off("callUser");
+      s.off("me");
+    };
+  }, []);
+
   const startStream = async () => {
     try {
-      const currentStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      const currentStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
       setStream(currentStream);
       if (myVideo.current) {
         myVideo.current.srcObject = currentStream;
@@ -37,23 +93,6 @@ export default function VideoChat() {
       alert("Não foi possível acessar a câmera/microfone. Verifique permissões.");
     }
   };
-
-  useEffect(() => {
-    startStream();
-
-    socket.on("callUser", ({ from, signal }) => {
-      setReceivingCall(true);
-      setCaller(from);
-      connectionRef.current = signal;
-    });
-
-    socket.on("me", (id) => setUserId(id));
-
-    return () => {
-      socket.off("callUser");
-      socket.off("me");
-    };
-  }, []);
 
   const toggleMic = () => {
     if (stream) {
@@ -130,12 +169,7 @@ export default function VideoChat() {
 
         {callAccepted && (
           <div className="video-wrapper">
-            <video
-              playsInline
-              ref={userVideo}
-              autoPlay
-              className="video"
-            />
+            <video playsInline ref={userVideo} autoPlay className="video" />
           </div>
         )}
       </div>
@@ -155,7 +189,9 @@ export default function VideoChat() {
       {receivingCall && !callAccepted && (
         <div className="incoming-call">
           <p>Alguém está te ligando...</p>
-          <button onClick={answerCall} className="answer-btn">Atender</button>
+          <button onClick={answerCall} className="answer-btn">
+            Atender
+          </button>
         </div>
       )}
     </div>

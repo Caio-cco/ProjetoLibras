@@ -2,11 +2,12 @@ import express from "express";
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import jwt from "jsonwebtoken";
 import loginEndpoints from "./controller/loginController.js";
 import { adicionarRotas } from "./rotas.js";
 
 const app = express();
-const server = createServer(app); 
+const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
@@ -22,7 +23,6 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 5010;
 
-
 app.use(express.json());
 app.use(
   cors({
@@ -37,21 +37,37 @@ app.use(
   })
 );
 
+
 adicionarRotas(app);
 app.use(loginEndpoints);
 
 app.get("/", (req, res) => {
-  res.send("API está rodando ");
+  res.send("API está rodando e protegendo o chat!");
+});
+
+
+io.use((socket, next) => {
+  const token = socket.handshake.auth?.token;
+  if (!token) return next(new Error("Token ausente."));
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "chavesecreta");
+    socket.user = decoded;
+    next();
+  } catch (err) {
+    console.error("Token inválido:", err);
+    next(new Error("Autenticação inválida."));
+  }
 });
 
 
 io.on("connection", (socket) => {
-  console.log("🟢 Novo usuário conectado:", socket.id);
+  console.log(` Usuário conectado: ${socket.user.email} | Socket ID: ${socket.id}`);
 
   socket.on("join-room", (roomId) => {
     socket.join(roomId);
-    console.log(`Usuário ${socket.id} entrou na sala ${roomId}`);
-    socket.to(roomId).emit("user-joined", socket.id);
+    console.log(`Usuário ${socket.user.email} entrou na sala ${roomId}`);
+    socket.to(roomId).emit("user-joined", socket.user.email);
   });
 
   socket.on("offer", (data) => {
@@ -67,12 +83,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("Usuário desconectado:", socket.id);
+    console.log(`Usuário desconectado! ${socket.user.email}`);
   });
 });
 
-
-
 server.listen(PORT, () => {
-  console.log(` Servidor rodando `);
+  console.log(`Api rodando `);
 });
