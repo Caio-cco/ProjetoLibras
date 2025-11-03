@@ -42,7 +42,11 @@ export default function PerfilAluno() {
 
   const fetchData = async (url, setter) => {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, {
+    headers: {
+        "x-access-token": token,
+    },
+});
       if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
       const data = await res.json();
       setter(data.info[0] || {}); 
@@ -56,7 +60,9 @@ export default function PerfilAluno() {
     fetchData('http://localhost:5010/user/perfil', setPerfil);
   }, []);
 
-  const name = localStorage.getItem("name");
+    const name = localStorage.getItem("name");
+    const baseURL = "http://localhost:5010/";
+    const fotoPath = perfil.foto_url?.replace(/\\/g, "/");
 
   return (
     <div className="perfil-page">
@@ -68,6 +74,7 @@ export default function PerfilAluno() {
         <section className="info">
           <div className="foto-area">
             <img src={perfil.foto_url} alt="Foto de perfil" className="foto" />
+                {/* <img src={`${baseURL}${fotoPath}`} alt="Foto de perfil" className="foto" /> */}
             <label htmlFor="uploadFoto" className="trocar-foto">
               Trocar foto
             </label>
