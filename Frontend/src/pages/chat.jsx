@@ -22,7 +22,6 @@ export default function VideoChat() {
   const connectionRef = useRef();
 
   useEffect(() => {
-   
     const token = localStorage.getItem("authToken");
     if (!token) {
       alert("Você precisa estar logado para acessar o chat.");
@@ -30,7 +29,6 @@ export default function VideoChat() {
       return;
     }
 
-    
     try {
       const decoded = jwt_decode(token);
       const now = Date.now() / 1000;
@@ -47,7 +45,6 @@ export default function VideoChat() {
       return;
     }
 
-    
     const s = io("https://projetolibras.onrender.com", {
       auth: { token },
     });
@@ -88,12 +85,21 @@ export default function VideoChat() {
       console.log("Tracks de vídeo:", currentStream.getVideoTracks());
       if (myVideo.current) {
         myVideo.current.srcObject = currentStream;
+        console.log("Stream aplicado imediatamente ao vídeo local");
       }
     } catch (err) {
       console.error("Erro ao acessar câmera/microfone:", err);
       alert("Não foi possível acessar a câmera/microfone. Verifique permissões.");
     }
   };
+
+  // 🔁 Garante que o vídeo local seja atualizado assim que o stream mudar
+  useEffect(() => {
+    if (myVideo.current && stream) {
+      myVideo.current.srcObject = stream;
+      console.log("Stream aplicado ao vídeo local via useEffect");
+    }
+  }, [stream]);
 
   const toggleMic = () => {
     if (stream) {
