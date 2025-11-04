@@ -1,90 +1,184 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import "./index.scss";
 
-import Sidebar from '../Sidebar/index.jsx'; 
+export default function Cabecalho({ logado = false }) {
+  const [isMobile, setIsMobile] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [fotoPerfil, setFotoPerfil] = useState(null);
 
+  const navigate = useNavigate();
+  const location = useLocation();
 
-export default function Cabecalho({ onInscrever, logado = false }) {
-  const [menuAberto, setMenuAberto] = useState(false); 
-  const [menuLateralAberto, setMenuLateralAberto] = useState(false); 
-  const [isMobile, setIsMobile] = useState(false);
-  const [fotoPerfil, setFotoPerfil] = useState(null);
-  const [nomeUsuario, setNomeUsuario] = useState(null); 
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 850);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-  const alternarMenu = () => setMenuAberto(!menuAberto);
-  const fecharMenu = () => setMenuAberto(false);
+  useEffect(() => {
+    const foto = localStorage.getItem("fotoPerfil");
+    setFotoPerfil(foto);
 
-  const abrirMenuLateral = () => setMenuLateralAberto(true);
-  const fecharMenuLateral = () => setMenuLateralAberto(false);
+    const handleStorageChange = () =>
+      setFotoPerfil(localStorage.getItem("fotoPerfil"));
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
-  useEffect(() => {
-    const foto = localStorage.getItem("fotoPerfil");
-    const nome = localStorage.getItem("name"); 
-    setFotoPerfil(foto);
-    setNomeUsuario(nome);
-    
-    const handleStorageChange = () => {
-        setFotoPerfil(localStorage.getItem("fotoPerfil"));
-        setNomeUsuario(localStorage.getItem("name"));
-    };
+  const toggleMenu = () => setMenuOpen((s) => !s);
 
-    window.addEventListener("storage", handleStorageChange);
-    
-    return () => {
-        window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
 
+    if (!element) return;
 
-  return (
-    <>
-      <header className="cabecalho">
-        <div className="imagem">
-            <Link to={logado ? "/homeL" : "/"} className="logo-link">
-                <img src="/joker.jpg" alt="Falar é Mágico" />
-            </Link>
-        </div>
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
+    setMenuOpen(false);
+  };
 
-        {!isMobile && (
-          <>
-            <div className="cabecalho-centro">
-                <Link to="/atividades">Atividades</Link>
-                <Link to="/quem-somos">Quem Somos</Link>
-                <Link to="/contato">Contato</Link>
-            </div>
-            
-            <div className="cabecalho-direita">
-              {!logado ? (
-                <div className="botoes-login-cadastro">
-                </div>
-              ) : (
-                <div className="icone-perfil" onClick={abrirMenuLateral}>
-                  {fotoPerfil ? (
-                    <img
-                      src={fotoPerfil}
-                      alt="Foto de perfil"
-                      className="foto-perfil"
-                    />
-                  ) : (
-                    <FaUserCircle size={35} />
-                  )}
-                </div>
-              )}
-            </div>
-          </>
-        )}
+  const goToSection = (id) => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => scrollToSection(id), 300);
+    } else {
+      scrollToSection(id);
+    }
+  };
 
-      </header>
+  return (
+    <>
+      <header className="cabecalho">
+        {/* Logo — NÃO MEXER */}
+        <div className="cabecalho-left">
+          <div className="imagem">
+            <Link to={logado ? "/homeL" : "/"}>
+              <img src="/joker.jpg" alt="Logo Falar é Mágico" />
+            </Link>
+          </div>
+        </div>
 
-      <Sidebar 
-          estaAberto={menuLateralAberto} 
-          fecharMenu={fecharMenuLateral}
-          fotoPerfil={fotoPerfil}
-          logado={logado}
-          nomeUsuario={nomeUsuario}
-      />
-    </>
-  );
+        {/* Links do meio */}
+        <div className={`cabecalho-center ${menuOpen ? "open" : ""}`}>
+          <nav className="titulos">
+            <Link to="/atividades" onClick={() => setMenuOpen(false)}>
+              Atividades
+            </Link>
+
+            <a
+              href="#quem-somos"
+              onClick={(e) => {
+                e.preventDefault();
+                goToSection("quem-somos");
+              }}
+            >
+              Quem Somos
+            </a>
+
+            <a
+              href="#contato"
+              onClick={(e) => {
+                e.preventDefault();
+                goToSection("contato");
+              }}
+            >
+              Contato
+            </a>
+          </nav>
+        </div>
+
+        {/* Botões + Perfil */}
+        <div className="cabecalho-right">
+          {!logado ? (
+            <div className="botoes-desktop">
+              <Link to="/login" className="btn-login">
+                Entrar
+              </Link>
+              <Link to="/cadastro" className="btn-inscrever">
+                Inscrever-se
+              </Link>
+            </div>
+          ) : (
+            <Link to="/perfil" className="icone-perfil">
+              {fotoPerfil ? (
+                <img
+                  src={fotoPerfil}
+                  alt="Foto perfil"
+                  className="foto-perfil"
+                />
+              ) : (
+                <FaUserCircle size={36} />
+              )}
+            </Link>
+          )}
+
+          <button
+            className={`hamburguer ${menuOpen ? "ativo" : ""}`}
+            aria-label="Abrir menu"
+            onClick={toggleMenu}
+            type="button"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+      </header>
+
+      {/* MENU MOBILE */}
+      <div
+        className={`menu-mobile ${menuOpen ? "aberto" : ""}`}
+        aria-hidden={!menuOpen}
+      >
+        <nav className="menu-mobile-links">
+          <Link to="/atividades" onClick={() => setMenuOpen(false)}>
+            Atividades
+          </Link>
+
+          <a
+            href="#quem-somos"
+            onClick={(e) => {
+              e.preventDefault();
+              goToSection("quem-somos");
+            }}
+          >
+            Quem Somos
+          </a>
+
+          <a
+            href="#contato"
+            onClick={(e) => {
+              e.preventDefault();
+              goToSection("contato");
+            }}
+          >
+            Contato
+          </a>
+        </nav>
+
+        <div className="menu-mobile-botoes">
+          {!logado ? (
+            <>
+              <Link to="/login" className="btn-login full">
+                Entrar
+              </Link>
+              <Link to="/cadastro" className="btn-inscrever full">
+                Inscrever-se
+              </Link>
+            </>
+          ) : (
+            <Link to="/perfil" className="btn-login full">
+              Meu Perfil
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {menuOpen && <div className="fundo-escuro" onClick={toggleMenu} />}
+    </>
+  );
 }
+
+

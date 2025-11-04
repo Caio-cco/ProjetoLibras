@@ -74,6 +74,7 @@ export default function Atividades() {
     if (title === "Associação") {
       if (level === "Básico") route = "/associacao";
       else if (level === "Intermediário") route = "/associacao-intermediario";
+          else if (level === "Avançado") route = "/associacao-avancado";
     } 
     
     // --- JOGO DAS FRASES ---

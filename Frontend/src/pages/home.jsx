@@ -11,11 +11,9 @@ import "./home.scss";
 export default function Home() {
   const navigate = useNavigate();
 
-
   return (
     <div className="full">
       <Cabecalho />
-
 
       <div className="imagem">
         <Inicio />
@@ -23,10 +21,19 @@ export default function Home() {
 
       <div className="carousel">
         <Carousel />
-        <Fundadores />
-        <Nos />
-        <Rodape />
       </div>
+
+      <div className="fundadores">
+        <Fundadores />
+      </div>
+
+      {/* ALVO DO SCROLL */}
+      <div id="quem-somos" className="secao-quem-somos">
+        <Nos />
+      </div>
+
+      <Rodape />
     </div>
   );
 }
+

@@ -16,222 +16,239 @@ import TeoriaIntermediario from "./pages/TeoriaIntermediario";
 import QuizAvancado from "./pages/QuizAvançado";
 import AssosiacaoAvancado from "./pages/AssosiacaoAvancado";
 
-
 import Atividades from "./components/atividades";
 import AssosiacaoBasico from "./components/AssosiacaoBasico"; 
 
+// >>> IMPORT CORRIGIDO PARA O COMPONENTE "QUEM SOMOS" <<<
+import Nos from "./components/nos"; 
+// ----------------------------------------------------
+
 
 function isAuthenticated() {
-  const token = localStorage.getItem("authToken");
-  if (!token) return false;
+  const token = localStorage.getItem("authToken");
+  if (!token) return false;
 
-  try {
-    const decoded = jwt_decode(token);
-    const now = Date.now() / 1000;
-    if (decoded.exp && decoded.exp < now) {
-      localStorage.removeItem("authToken");
-      return false;
-    }
-    return true;
-  } catch {
-    localStorage.removeItem("authToken");
-    return false;
-  }
+  try {
+    const decoded = jwt_decode(token);
+    const now = Date.now() / 1000;
+    if (decoded.exp && decoded.exp < now) {
+      localStorage.removeItem("authToken");
+      return false;
+    }
+    return true;
+  } catch {
+    localStorage.removeItem("authToken");
+    return false;
+  }
 }
 
 
 function ProtectedRoute({ children }) {
-  const location = useLocation();
-  if (!isAuthenticated()) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
-  }
-  return children;
+  const location = useLocation();
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+  return children;
 }
 
 
 function PublicOnlyRoute({ children }) {
-  if (isAuthenticated()) {
-    return <Navigate to="/homeL" replace />;
-  }
-  return children;
+  if (isAuthenticated()) {
+    return <Navigate to="/homeL" replace />;
+  }
+  return children;
 }
 
 
 function Navegacao() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* Página inicial (pública) */}
-        <Route
-          path="/"
-          element={
-            <PublicOnlyRoute>
-              <Home />
-            </PublicOnlyRoute>
-          }
-        />
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Página inicial (pública) */}
+        <Route
+          path="/"
+          element={
+            <PublicOnlyRoute>
+              <Home />
+            </PublicOnlyRoute>
+          }
+        />
 
-        
-        <Route
-          path="/login"
-          element={
-            <PublicOnlyRoute>
-              <LoginCadastro />
-            </PublicOnlyRoute>
-          }
-        />
+        {/* Rotas de autenticação (públicas) */}
+        <Route
+          path="/login"
+          element={
+            <PublicOnlyRoute>
+              <LoginCadastro />
+            </PublicOnlyRoute>
+          }
+        />
 
-        <Route
-          path="/cadastro"
-          element={
-            <PublicOnlyRoute>
-              <LoginCadastro />
-            </PublicOnlyRoute>
-          }
-        />
+        <Route
+          path="/cadastro"
+          element={
+            <PublicOnlyRoute>
+              <LoginCadastro />
+            </PublicOnlyRoute>
+          }
+        />
 
-        <Route
-          path="/homeL"
-          element={
-            <ProtectedRoute>
-              <HomeLogado />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/perfil"
-          element={
-            <ProtectedRoute>
-              <Perfil />
-            </ProtectedRoute>
-          }
-        />
-
-          <Route
-          path="/chat"
-          element={
-            <ProtectedRoute>
-              <Chat />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/atividades"
-          element={
-            <ProtectedRoute>
-              <Atividades />
-            </ProtectedRoute>
-          }
-        />
+        {/* >>> ROTAS PÚBLICAS DO CABEÇALHO CORRIGIDAS <<< */}
+        <Route
+            path="/quem-somos"
+            element={<Nos />} // Usa o componente Nos importado
+        />
         
-        <Route
-          path="/quiz"
-          element={
-            <ProtectedRoute>
-              <Quiz />
-            </ProtectedRoute>
-          }
-        />
+        <Route
+            path="/contato"
+            element={<Nos />} // Temporariamente usa Nos, ajuste quando criar o componente Contato
+        />
+        {/* ----------------------------------------------- */}
+
+
+        {/* Rotas Protegidas (logadas) */}
+        <Route
+          path="/homeL"
+          element={
+            <ProtectedRoute>
+              <HomeLogado />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/perfil"
+          element={
+            <ProtectedRoute>
+              <Perfil />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/atividades"
+          element={
+            <ProtectedRoute>
+              <Atividades />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/quiz"
+          element={
+            <ProtectedRoute>
+              <Quiz />
+            </ProtectedRoute>
+          }
+        />
 
 
         <Route
-          path="/quiz-intermediario"
-          element={ 
-            <ProtectedRoute>
-              <QuizIntermediario />
-            </ProtectedRoute>
-          }
-        />
+          path="/quiz-intermediario"
+          element={ 
+            <ProtectedRoute>
+              <QuizIntermediario />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
             path="/quiz-avancado"
             element={ 
-              <ProtectedRoute>
-                <QuizAvancado />
-              </ProtectedRoute>
+              <ProtectedRoute>
+                <QuizAvancado />
+              </ProtectedRoute>
             }
         />
 
-        <Route
-          path="/associacao"
-          element={
-            <ProtectedRoute>
-              <AssosiacaoBasico />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/associacao-intermediario"
-          element={
-            <ProtectedRoute>
-              <AssociacaoIntermediario />
-            </ProtectedRoute>
-          }
-        />
-
         <Route
-          path="/associacao-avancado"
+          path="/associacao"
           element={
-            <ProtectedRoute>
-              <AssosiacaoAvancado />
-            </ProtectedRoute>
+            <ProtectedRoute>
+              <AssosiacaoBasico />
+            </ProtectedRoute>
           }
-        />
-
-        <Route
-          path="/imiteosinal"
-          element={
-            <ProtectedRoute>
-              <ImiteOSinal />
-            </ProtectedRoute>
-          }
-        />
-
-
-        <Route
-          path="/frase"
-          element={
-            <ProtectedRoute>
-              <JogoDasFrases />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/frase-intermediario"
-          element={
-            <ProtectedRoute>
-              <FrasesIntermediario />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/teoria"
-          element={
-            <ProtectedRoute>
-              <Teoria />
-            </ProtectedRoute>
-          }
-        />
+        />
 
         <Route
-          path="/teoria-intermediario"
-          element={
-            <ProtectedRoute>
-              <TeoriaIntermediario />
-            </ProtectedRoute>
-          }
-        />
+          path="/associacao-intermediario"
+          element={
+            <ProtectedRoute>
+              <AssociacaoIntermediario />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/associacao-avancado"
+          element={
+            <ProtectedRoute>
+              <AssosiacaoAvancado />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/imiteosinal"
+          element={
+            <ProtectedRoute>
+              <ImiteOSinal />
+            </ProtectedRoute>
+          }
+        />
 
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
-  );
+        <Route
+          path="/frase"
+          element={
+            <ProtectedRoute>
+              <JogoDasFrases />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/frase-intermediario"
+          element={
+            <ProtectedRoute>
+              <FrasesIntermediario />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teoria"
+          element={
+            <ProtectedRoute>
+              <Teoria />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/teoria-intermediario"
+          element={
+            <ProtectedRoute>
+              <TeoriaIntermediario />
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default Navegacao;
