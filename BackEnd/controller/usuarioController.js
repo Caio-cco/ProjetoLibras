@@ -16,7 +16,11 @@ endpoints.get('/user/perfil', autenticador, async (req, resp) => {
 
 endpoints.put('/user/attperfil', autenticador, async (req, resp) => {
     let id = req.user.id;
-    let att = a;
+    let novoPerfil = req.body;
+    
+    await repoUsuario.attPerfil(id, novoPerfil);
+
+    resp.send({ resp: "Dados modificados com sucesso!" });
 })
 
 endpoints.put('/user/:id/addimg', autenticador, upload.single('img'), async (req, resp) => {

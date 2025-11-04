@@ -11,8 +11,41 @@ export default function PerfilAluno() {
     const [foto, setFoto] = useState(null);
     const [editando, setEditando] = useState(false);
     const [perfil, setPerfil] = useState({});
+    const [perfilatt,setPerfilatt] = useState({
+      nome: "",
+      telefone: "",
+    });
 
     const navigate = useNavigate();
+
+    const handleSubmit = async () => {
+
+      const dadosParaEnviar = {
+        perfilatt: {
+          nome: nome,
+          telefone: telefone
+        }
+      };
+    
+      try {
+        const res = await fetch('http://localhost:5010/user/attperfil', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dadosParaEnviar),
+        });
+        if (!res.ok) {
+          throw new Error('Erro ao atualizar perfil');
+        }
+        alert('Perfil Atualizado!');
+        setPerfilatt({
+          nome: '',
+          telefone: '',
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Falha ao cadastrar, verifique se as informações estão inseridas corretamente!');
+      }
+    } 
 
     const salvarAlteracoes = () => {
         setEditando(false);
@@ -90,7 +123,7 @@ export default function PerfilAluno() {
     fetchData('http://localhost:5010/user/perfil', setPerfil);
   }, []);
 
-  const name = localStorage.getItem("name");
+  //const name = localStorage.getItem("name");
   const baseURL = "http://localhost:5010/";
   const fotoPath = perfil.foto_url?.replace(/\\/g, "/");
 
@@ -184,6 +217,8 @@ export default function PerfilAluno() {
 
                 <input
 
+                  placeholder="nome"
+
                   value={nome}
 
                   onChange={(e) => setNome(e.target.value)}
@@ -191,6 +226,8 @@ export default function PerfilAluno() {
                 />
 
                 <textarea
+
+                  placeholder="bio"
 
                   value={bio}
 
@@ -200,6 +237,8 @@ export default function PerfilAluno() {
 
                 <input
 
+                  placeholder="telefone"
+
                   value={telefone}
 
                   onChange={(e) => setTelefone(e.target.value)}
@@ -207,6 +246,8 @@ export default function PerfilAluno() {
                 />
 
                 <input
+
+                  placeholder="area"
 
                   value={area}
 
@@ -217,6 +258,7 @@ export default function PerfilAluno() {
                 <div className="progresso-editar"></div>
 
                 <button className="salvar" onClick={salvarAlteracoes}>
+                {/* <button className="salvar" onClick={handleSubmit}> */}
 
                   💾 Salvar
 

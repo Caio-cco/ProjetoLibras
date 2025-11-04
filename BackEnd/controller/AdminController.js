@@ -1,4 +1,4 @@
-import { cadastro } from '../Repository/cadastroRepository.js';
+import { cadastro } from '../Repository/adminRepository.js';
 import { Router } from 'express';
 
 const api = Router();
