@@ -21,17 +21,17 @@ endpoints.post("/usuario/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
     if (!email || !senha)
-      return res.status(400).send({ erro: "Email ou senha obrigatórios." });
+      return res.status(400).send({ erro: "Email e senha obrigatorios" });
 
     const credenciais = await repo.validarCredenciais(email, senha);
     if (!credenciais)
-      return res.status(401).send({ erro: "Credenciais inválidas" });
+      return res.status(401).send({ erro: "Credenciais invalidas" });
 
     const token = generateToken(credenciais);
     res.send({ token });
   } catch (err) {
     console.error(err);
-    res.status(500).send({ erro: "Falha ao autenticar usuário." });
+    res.status(500).send({ erro: "Falha na autenticação" });
   }
 });
 
@@ -40,13 +40,13 @@ endpoints.post("/usuario", async (req, res) => {
   try {
     const novoLogin = req.body;
     if (!novoLogin.email || !novoLogin.senha)
-      return res.status(400).send({ erro: "Email ou senha obrigatórios." });
+      return res.status(400).send({ erro: "Email e senha são campos obrigatórios" });
 
     const id = await repo.criarConta(novoLogin);
     res.send({ novoId: id });
   } catch (err) {
     console.error(err);
-    res.status(400).send({ erro: err.message || "Falha ao cadastrar usuário." });
+    res.status(400).send({ erro: err.message || "Falha no cadastro" });
   }
 });
 
@@ -55,7 +55,7 @@ endpoints.post("/usuario/google", async (req, res) => {
   try {
     const { code } = req.body;
     if (!code)
-      return res.status(400).send({ erro: "Código de autorização não fornecido." });
+      return res.status(400).send({ erro: "codigo de alteração não recebido" });
 
     const { tokens } = await googleClient.getToken({
       code,
@@ -63,7 +63,7 @@ endpoints.post("/usuario/google", async (req, res) => {
     });
 
     if (!tokens.id_token)
-      return res.status(400).send({ erro: "ID Token não retornado pelo Google." });
+      return res.status(400).send({ erro: "IDToken não teve retorno do Google." });
 
     const ticket = await googleClient.verifyIdToken({
       idToken: tokens.id_token,
@@ -81,7 +81,7 @@ endpoints.post("/usuario/google", async (req, res) => {
     res.send({ token });
   } catch (err) {
     console.error("Erro no login com Google:", err);
-    res.status(500).send({ erro: "Falha ao autenticar com o Google." });
+    res.status(500).send({ erro: "Falha na autenticação com google" });
   }
 });
 

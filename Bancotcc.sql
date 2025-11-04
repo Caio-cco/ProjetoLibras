@@ -99,6 +99,6 @@ create table cargo (
     foreign key (id_usuario) references usuario(id_usuario)
 );
 
-ALTER TABLE usuario MODIFY COLUMN senha VARCHAR(255) NULL;
+alter table usuario modify COLUMN senha varchar(255) null;
 
-ALTER TABLE usuario ADD COLUMN login_social TINYINT(1) DEFAULT 0;
+alter table usuario ADD COLUMN login_social tinyint(1) default 0;
