@@ -1,7 +1,5 @@
 drop database if exists tcc;
-
 create database tcc;
-
 use tcc;
 
 create table usuario (
@@ -101,4 +99,49 @@ create table cargo (
 
 alter table usuario modify COLUMN senha varchar(255) null;
 
-alter table usuario ADD COLUMN login_social tinyint(1) default 0;
+alter table usuario add COLUMN login_social tinyint(1) default 0;
+
+create table imagem_sinal (
+    id_imagem int auto_increment primary key,
+    url_imagem varchar(255) not null,
+    descricao varchar(255) null
+);
+
+
+create table atividade (
+    id_atividade int auto_increment primary key,
+    titulo varchar(200) not null,
+    descricao text,
+    tipo enum('associar', 'video', 'montar_frase') not null
+);
+
+
+create table pergunta (
+    id_pergunta int auto_increment primary key,
+    id_atividade int not null,
+    enunciado text not null,
+    imagem_url varchar(255) null,
+    video_url varchar(255) null,
+    foreign key (id_atividade) references atividade(id_atividade)
+);
+
+
+create table resposta (
+    id_resposta int auto_increment primary key,
+    id_pergunta int not null,
+    texto varchar(255) null,
+    imagem_url varchar(255) null,
+    correta boolean default false,
+    foreign key (id_pergunta) references pergunta(id_pergunta)
+);
+
+
+create table resposta_usuario (
+    id_resposta_usuario int auto_increment primary key,
+    id_pergunta int not null,
+    resposta_texto varchar(255) null,
+    resposta_imagem varchar(255) null,
+    correta boolean,
+    data_resposta timestamp default current_timestamp,
+    foreign key (id_pergunta) references pergunta(id_pergunta)
+);
