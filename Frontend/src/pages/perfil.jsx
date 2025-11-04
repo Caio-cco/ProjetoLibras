@@ -8,7 +8,7 @@ export default function PerfilAluno() {
     const [bio, setBio] = useState("");
     const [telefone, setTelefone] = useState("");
     const [area, setArea] = useState("");
-    const [foto, setFoto] = useState("");
+    const [foto, setFoto] = useState(null);
     const [editando, setEditando] = useState(false);
     const [perfil, setPerfil] = useState({});
 
@@ -22,26 +22,31 @@ export default function PerfilAluno() {
     const id = localStorage.getItem("id");
 
     const handleUpload = async () => {
-    const formData = new FormData();
-    formData.append("imglink", foto);
+        const formData = new FormData();
+        formData.append("img", foto);
 
-    const res = await fetch(`http://localhost:5010/user/${id}/addimg`, {
-        method: "PUT",
-        body: formData,
-        headers: {"x-access-token": token},
-    });
+        const res = await fetch(`http://localhost:5010/user/${id}/addimg`, {
+            method: "PUT",
+            body: formData,
+            headers: {"x-access-token": token},
+        });
 
-    const data = await res.json();
-    alert(data.mensagem);
+        const data = await res.json();
+        alert(data.mensagem);
     };
 
-  const trocarFoto = (e) => {
-    const arquivo = e.target.files[0];
-    if (arquivo) {
-      const url = URL.createObjectURL(arquivo);
-      setFoto(url);
-    }
-  };
+    useEffect(() => {
+        if (!foto) return;
+        handleUpload(foto);
+    }, [foto]); 
+
+//   const trocarFoto = (e) => {
+//     const arquivo = e.target.files[0];
+//     if (arquivo) {
+//       const url = URL.createObjectURL(arquivo);
+//       setFoto(url);
+//     }
+//   };
 
     axios.get('http://localhost:5010/user/perfil', {
         headers: {
@@ -161,7 +166,7 @@ export default function PerfilAluno() {
 
               accept="image/*"
 
-              onChange={trocarFoto}
+              onChange={(e) => setFoto(e.target.files?.[0] ?? null)}
 
               style={{ display: "none" }}
 
