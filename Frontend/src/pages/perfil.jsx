@@ -19,28 +19,33 @@ export default function PerfilAluno() {
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
-
+      
       const dadosParaEnviar = {
-        perfilatt: {
-          nome: nome,
-          telefone: telefone
-        }
+        ...perfilatt,
+          nome: nome.trim() === "" ? perfil.nome: nome,
+          telefone: telefone.trim() === "" ? perfil.telefone: telefone
       };
     
       try {
         const res = await fetch('http://localhost:5010/user/attperfil', {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+              'Content-Type': 'application/json',
+              "x-access-token": token
+          },
           body: JSON.stringify(dadosParaEnviar),
         });
         if (!res.ok) {
           throw new Error('Erro ao atualizar perfil');
         }
-        alert('Perfil Atualizado!');
+        const data = await res.json();
+        alert(data.resp);
         setPerfilatt({
           nome: '',
           telefone: '',
         });
+        setEditando(false);
+        window.location.reload();
       } catch (err) {
         console.error(err);
         alert('Falha ao cadastrar, verifique se as informações estão inseridas corretamente!');
@@ -65,21 +70,14 @@ export default function PerfilAluno() {
         });
 
         const data = await res.json();
-        alert(data.mensagem);
+        alert(data.resp);
+        window.location.reload();
     };
 
     useEffect(() => {
         if (!foto) return;
         handleUpload(foto);
     }, [foto]); 
-
-//   const trocarFoto = (e) => {
-//     const arquivo = e.target.files[0];
-//     if (arquivo) {
-//       const url = URL.createObjectURL(arquivo);
-//       setFoto(url);
-//     }
-//   };
 
     axios.get('http://localhost:5010/user/perfil', {
         headers: {
@@ -96,7 +94,6 @@ export default function PerfilAluno() {
   function handleLogout() {
     localStorage.removeItem("authToken");
     localStorage.removeItem("name");
-    localStorage.removeItem("checkpfp");
     localStorage.removeItem("id");
     navigate("/", { replace: true });  
     window.history.pushState(null, "", "/");
@@ -123,20 +120,18 @@ export default function PerfilAluno() {
     fetchData('http://localhost:5010/user/perfil', setPerfil);
   }, []);
 
-  //const name = localStorage.getItem("name");
   const baseURL = "http://localhost:5010/";
   const fotoPath = perfil.foto_url?.replace(/\\/g, "/");
 
-  let checkpfp = localStorage.getItem("checkpfp");
   const pfppath1 = perfil.foto_url;
   const pfppath2 = `${baseURL}${fotoPath}`;
   let pfppath;
 
-  if (checkpfp === "1") {
+  if (pfppath1 && pfppath1.startsWith("https://")){
     pfppath = pfppath1;
   }
   else {
-    pfppath = pfppath2;
+    pfppath = pfppath2
   }
 
   return (
@@ -172,7 +167,6 @@ export default function PerfilAluno() {
         </nav>
 
       </aside>
-
 
 
       <main className="perfil-conteudo">
@@ -257,8 +251,7 @@ export default function PerfilAluno() {
 
                 <div className="progresso-editar"></div>
 
-                <button className="salvar" onClick={salvarAlteracoes}>
-                {/* <button className="salvar" onClick={handleSubmit}> */}
+                <button className="salvar" onClick={handleSubmit}>
 
                   💾 Salvar
 

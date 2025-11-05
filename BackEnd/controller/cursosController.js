@@ -15,11 +15,4 @@ endpoints.get('/dificuldades', autenticador, async (req, resp) => {
     resp.send ({ dif });
 })
 
-endpoints.post('/cursos/inserircurso', async (req, resp) => {
-    let cursoInfo = req.body;
-    let id = await repoCursos.criarCurso(cursoInfo);
-
-    resp.send({ NovoId: id });
-})
-
 export default endpoints;

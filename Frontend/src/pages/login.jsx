@@ -36,13 +36,11 @@ export default function LoginCadastro() {
         } else {
           localStorage.removeItem("authToken");
           localStorage.removeItem("name");
-          localStorage.removeItem("checkpfp");
           localStorage.removeItem("id");
         }
       } catch {
         localStorage.removeItem("authToken");
         localStorage.removeItem("name");
-        localStorage.removeItem("checkpfp");
         localStorage.removeItem("id");
       }
     }
@@ -68,12 +66,10 @@ export default function LoginCadastro() {
       const { token } = res.data;
       const userPayload = jwt_decode(token);
       const name = userPayload.nome;
-      const checkpfp = 0;
       const id = userPayload.id;
 
       localStorage.setItem("authToken", token);
       localStorage.setItem("name", name);
-      localStorage.setItem("checkpfp", checkpfp);
       localStorage.setItem("id", id);
       alert(`Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
       navigate("/homel");
@@ -128,12 +124,10 @@ export default function LoginCadastro() {
         const { token } = res.data;
         const userPayload = jwt_decode(token);
         const name = userPayload.nome;
-        const checkpfp = 1;
         const id = userPayload.id;
 
         localStorage.setItem("authToken", token);
         localStorage.setItem("name", name);
-        localStorage.setItem("checkpfp", checkpfp);
         localStorage.setItem("id", id);
         alert(`Login com sucesso! Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
         navigate("/homel");

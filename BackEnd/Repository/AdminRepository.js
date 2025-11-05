@@ -1,13 +1,18 @@
 import { conection } from "./conection.js"; 
 
-export async function cadastro(novoCadastro) {
+export async function criarCurso(cursoInfo) {
     const comando = `
-        insert into registro 
-        (nome, telefone, email, senha)
-        values (?, ?, ?, ?)
+        insert into curso (titulo, descricao, id_dificuldade, id_instrutor)
+            values
+            (?, ?, ?, ?);
     `;
 
-    const [info] = await conection.query(comando, [novoCadastro.nome, novoCadastro.telefone, novoCadastro.email, novoCadastro.senha]);
+    const [info] = await conection.query(comando, [
+        cursoInfo.titulo,
+        cursoInfo.descricao,
+        cursoInfo.dificuldade,
+        cursoInfo.instrutor
+    ])
 
     return info.insertId;
 }

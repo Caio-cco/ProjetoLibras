@@ -35,9 +35,9 @@ export async function attPerfil(id, novoPerfil) {
     const comando = `
         update usuario
             set 
-                usuario.nome = ?,
-                usuario.telefone = ?,
-            where usuario.id_usuario = ?;
+                nome = ?,
+                telefone = ?
+            where id_usuario = ?;
     `;
     const [info] = await conection.query(comando, [
         novoPerfil.nome,
