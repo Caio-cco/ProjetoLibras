@@ -7,23 +7,23 @@ import { useState, useEffect } from "react";
 
 
 const sampleCards = [
-  { id: 1, title: "Associação", subtitle: "Associe a palavra ao sinal", tag: "Fácil", level: "Básico", imageClass: "associacao-img" },
+  { id: 1, title: "Associação", subtitle: "Associe a palavra ao sinal", tag: "Fácil", level: "Iniciante", imageClass: "associacao-img" },
   { id: 2, title: "Associação", subtitle: "Associe a frase ao sinal", tag: "Teste", level: "Intermediário", imageClass: "associacao-img" },
   { id: 3, title: "Associação", subtitle: "Associe o contexto ao sinal", tag: "Desafio", level: "Avançado", imageClass: "associacao-img" },
 
-  { id: 4, title: "Quiz", subtitle: "Teste de sinais básicos", tag: "Fácil", level: "Básico", imageClass: "quiz-img" },
+  { id: 4, title: "Quiz", subtitle: "Teste de sinais básicos", tag: "Fácil", level: "Iniciante", imageClass: "quiz-img" },
   { id: 5, title: "Quiz", subtitle: "Teste de frases e vocabulário", tag: "Teste", level: "Intermediário", imageClass: "quiz-img" },
   { id: 6, title: "Quiz", subtitle: "Teste de gramática e contexto", tag: "Desafio", level: "Avançado", imageClass: "quiz-img" },
 
-  { id: 10, title: "Jogo das Frases", subtitle: "Construa frases simples", tag: "Fácil", level: "Básico", imageClass: "frases-img" },
+  { id: 10, title: "Jogo das Frases", subtitle: "Construa frases simples", tag: "Fácil", level: "Iniciante", imageClass: "frases-img" },
   { id: 11, title: "Jogo das Frases", subtitle: "Use classificadores e verbos", tag: "Teste", level: "Intermediário", imageClass: "frases-img" },
   { id: 12, title: "Jogo das Frases", subtitle: "Crie textos completos", tag: "Desafio", level: "Avançado", imageClass: "frases-img" },
 
-  { id: 13, title: "Teoria", subtitle: "Alfabeto, números e cumprimentos", tag: "Aprender", level: "Básico", imageClass: "teorico-img" },
+  { id: 13, title: "Teoria", subtitle: "Alfabeto, números e cumprimentos", tag: "Aprender", level: "Iniciante", imageClass: "teorico-img" },
   { id: 14, title: "Teoria", subtitle: "Gramática e estrutura da Libras", tag: "Aprender", level: "Intermediário", imageClass: "teorico-img" },
   { id: 15, title: "Teoria", subtitle: "História, cultura e regionalismos", tag: "Aprender", level: "Avançado", imageClass: "teorico-img" },
 
-  { id: 16, title: "Em Breve", subtitle: "Novas atividades e desafios", tag: "Novidade", level: "Básico", imageClass: "em-breve-img" }
+  { id: 16, title: "Em Breve", subtitle: "Novas atividades e desafios", tag: "Novidade", level: "Iniciante", imageClass: "em-breve-img" }
 ];
 
 
@@ -44,9 +44,15 @@ export default function Atividades() {
     return true;
   });
 
+  const token = localStorage.getItem("authToken");
+
   const fetchData = async (url, setter) => {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, {
+    headers: {
+        "x-access-token": token,
+    },
+});
       if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
       const data = await res.json();
       setter(data.dif || []); 
@@ -68,14 +74,14 @@ export default function Atividades() {
 
     // --- JOGO DE ASSOCIAÇÃO ---
     if (title === "Associação") {
-      if (level === "Básico") route = "/associacao";
+      if (level === "Iniciante") route = "/associacao";
       else if (level === "Intermediário") route = "/associacao-intermediario";
           else if (level === "Avançado") route = "/associacao-avancado";
     } 
     
     // --- JOGO DAS FRASES ---
     else if (title === "Jogo das Frases") {
-      if (level === "Básico") route = "/frase";
+      if (level === "Iniciante") route = "/frase";
       else if (level === "Intermediário") route = "/frase-intermediario";
     } 
     
@@ -86,13 +92,13 @@ export default function Atividades() {
     
     // --- CONTEÚDO TEÓRICO ---
     else if (title === "Teoria") {
-      if (level === "Básico") route = "/teoria";
+      if (level === "Iniciante") route = "/teoria";
       else if (level === "Intermediário") route = "/teoria-intermediario";
     } 
     
     // --- QUIZ --- 
     else if (title === "Quiz") {
-     if (level === "Básico") route = "/quiz";
+     if (level === "Iniciante") route = "/quiz";
      else if (level === "Intermediário") route = "/quiz-intermediario";
      else if (level === "Avançado") route = "/quiz-avancado";
     }

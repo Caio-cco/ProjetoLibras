@@ -19,7 +19,7 @@ create table dificuldade (
 
 insert into dificuldade (nome) values 
 ('Iniciante'), 
-('intermediário'), 
+('Intermediário'), 
 ('Avançado');
 
 create table curso (
