@@ -22,4 +22,10 @@ endpoints.post('/selectFrases', autenticador, async (req, resp) => {
 
     resp.send(registros);
 })
+
+endpoints.post('/selectImagens', autenticador, async (req, resp) => {
+    let registros = await repoAtv.selecionarImagens();
+
+    resp.send(registros);
+})
 export default endpoints;
