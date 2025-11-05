@@ -11,4 +11,4 @@ endpoints.post('/cursos/inserircurso', autenticador, async (req, resp) => {
 
     resp.send({ NovoId: id });
 })
-export default api;
+export default endpoints;
