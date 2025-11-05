@@ -4,7 +4,6 @@ import Home from "./pages/home";
 import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
 import HomeLogado from "./pages/homeLogado";
-import ImiteOSinal from "./pages/Imiteosinal";
 import Chat from "./pages/chat";
 import JogoDasFrases from "./pages/Frase"; 
 import Teoria from "./pages/Teoria"; 
@@ -93,17 +92,15 @@ function Navegacao() {
           }
         />
 
-        {/* >>> ROTAS PÚBLICAS DO CABEÇALHO CORRIGIDAS <<< */}
         <Route
             path="/quem-somos"
-            element={<Nos />} // Usa o componente Nos importado
+            element={<Nos />} 
         />
         
         <Route
             path="/contato"
-            element={<Nos />} // Temporariamente usa Nos, ajuste quando criar o componente Contato
+            element={<Nos />} 
         />
-        {/* ----------------------------------------------- */}
 
 
         {/* Rotas Protegidas (logadas) */}
@@ -197,16 +194,6 @@ function Navegacao() {
             </ProtectedRoute>
           }
         />
-
-        <Route
-          path="/imiteosinal"
-          element={
-            <ProtectedRoute>
-              <ImiteOSinal />
-            </ProtectedRoute>
-          }
-        />
-
 
         <Route
           path="/frase"

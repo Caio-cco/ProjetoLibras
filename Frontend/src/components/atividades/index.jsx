@@ -15,10 +15,6 @@ const sampleCards = [
   { id: 5, title: "Quiz", subtitle: "Teste de frases e vocabulário", tag: "Teste", level: "Intermediário", imageClass: "quiz-img" },
   { id: 6, title: "Quiz", subtitle: "Teste de gramática e contexto", tag: "Desafio", level: "Avançado", imageClass: "quiz-img" },
 
-  { id: 7, title: "Imite o Sinal", subtitle: "Pratique sinais simples", tag: "Fácil", level: "Básico", imageClass: "imite-sinal-img" },
-  { id: 8, title: "Imite o Sinal", subtitle: "Pratique frases curtas", tag: "Teste", level: "Intermediário", imageClass: "imite-sinal-img" },
-  { id: 9, title: "Imite o Sinal", subtitle: "Pratique conversação", tag: "Desafio", level: "Avançado", imageClass: "imite-sinal-img" },
-
   { id: 10, title: "Jogo das Frases", subtitle: "Construa frases simples", tag: "Fácil", level: "Básico", imageClass: "frases-img" },
   { id: 11, title: "Jogo das Frases", subtitle: "Use classificadores e verbos", tag: "Teste", level: "Intermediário", imageClass: "frases-img" },
   { id: 12, title: "Jogo das Frases", subtitle: "Crie textos completos", tag: "Desafio", level: "Avançado", imageClass: "frases-img" },
