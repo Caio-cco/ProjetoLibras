@@ -1,10 +1,21 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// 👇 adiciona esse trecho aqui
 export default defineConfig({
   plugins: [react()],
   define: {
-    global: 'globalThis'
-  }
-})
+    global: "globalThis", 
+  },
+  server: {
+   
+    proxy: {
+      "/api": {
+        target: "http://localhost:5010", 
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+    
+    historyApiFallback: true,
+  },
+});
