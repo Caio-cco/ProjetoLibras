@@ -21,7 +21,7 @@
   align-items: center;
 
   .imagem img {
-    height: 35px;
+    height: 75px;
     display: block;
   }
 }
@@ -44,9 +44,7 @@
     font-weight: 500;
     transition: 0.2s;
 
-    &:hover {
-      color: #0077ff;
-    }
+
   }
 }
 
@@ -93,7 +91,7 @@
 
 .foto-perfil {
   width: 40px;
-  height: 20px;
+  height: 30px;
   border-radius: 50%;
   object-fit: cover;
 }

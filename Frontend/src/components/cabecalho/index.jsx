@@ -55,7 +55,7 @@ export default function Cabecalho({ logado = false }) {
         <div className="cabecalho-left">
           <div className="imagem">
             <Link to={logado ? "/homeL" : "/"}>
-              <img src="/joker.jpg" alt="Logo Falar é Mágico" />
+              <img src="/logo.png" alt="Logo Falar é Mágico" />
             </Link>
           </div>
         </div>
