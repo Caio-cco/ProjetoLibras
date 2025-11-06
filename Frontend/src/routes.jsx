@@ -14,7 +14,7 @@ import QuizIntermediario from "./pages/QuizIntermediario";
 import TeoriaIntermediario from "./pages/TeoriaIntermediario";
 import QuizAvancado from "./pages/QuizAvançado";
 import AssosiacaoAvancado from "./pages/AssosiacaoAvancado";
-
+import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
 import AssosiacaoBasico from "./components/AssosiacaoBasico"; 
 
@@ -112,6 +112,15 @@ function Navegacao() {
             </ProtectedRoute>
           }
         />
+   <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+
 
         <Route
           path="/perfil"

@@ -157,12 +157,10 @@ export default function PerfilAluno() {
         <nav>
 
           <button onClick={() => navigate("/homeL")}>🏠 Início</button>
-
+          <button onClick={() => navigate("/chat")}>🎓 chat</button>
           <button onClick={() => navigate("/atividades")} >📚 Atividades</button>
-
           <button className="ativo">👤 Perfil</button>
-
-          <button onClick={handleLogout}> 🚪 Sair</button>
+          <button className="sair" onClick={handleLogout}>🚪 Sair</button>
 
         </nav>
 

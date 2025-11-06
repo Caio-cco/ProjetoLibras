@@ -1,92 +1,97 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 .cabecalho {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 72px;
-  padding: 0 22px;
+  height: 60px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ffffff;
+  background: #fbfbfb;
   z-index: 1200;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* logo */
 .cabecalho-left {
   display: flex;
   align-items: center;
+
   .imagem img {
-    height: 56px;
+    height: 45px;
     display: block;
   }
 }
 
-/* centro */
 .cabecalho-center {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .titulos {
   display: flex;
   gap: 48px;
-  font-size: 18px;
-  font-weight: 500;
-}
-.titulos a {
-  color: #111;
-  text-decoration: none;
-  transition: .15s;
-}
-.titulos a:hover {
-  color: #ffb800;
+  font-size: 17px;
+
+  a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+
+    &:hover {
+      color: #0077ff;
+    }
+  }
 }
 
-/* direita */
 .cabecalho-right {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* ---- BOTÕES ---- */
 .botoes-desktop {
   display: flex;
-  gap: 12px;
+  gap: 6px;
   align-items: center;
 }
 
 .btn-login {
   padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid #444;
   background: transparent;
   color: #222;
   text-decoration: none;
-  font-weight: 600;
-}
-.btn-login:hover {
-  background: #eee;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: 0.2s;
+
+  &:hover {
+    background: #eee;
+  }
 }
 
 .btn-inscrever {
-  padding: 8px 16px;
+  padding: 10px 15px;
   border-radius: 10px;
-  background: #111;
-  color: #fff;
+  border: 1px solid black;
+  background: #fff;
+  color: #000;
   text-decoration: none;
-  font-weight: 700;
-}
-.btn-inscrever:hover {
-  opacity: 0.9;
+  font-weight: bold;
+  transition: 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
 }
 
-/* perfil */
 .foto-perfil {
   width: 40px;
   height: 40px;
@@ -94,48 +99,119 @@
   object-fit: cover;
 }
 
-/* hamb */
+/* ===== HAMBURGUER ===== */
 .hamburguer {
   display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 34px;
   height: 26px;
   border: none;
   background: none;
   cursor: pointer;
-}
-.hamburguer span {
-  display: block;
-  height: 3px;
-  width: 22px;
-  background: #222;
-  margin: 4px 0;
+  gap: 4px;
+  transition: 0.3s;
+
+  span {
+    display: block;
+    height: 3px;
+    width: 22px;
+    background: #222;
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  &.ativo span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  &.ativo span:nth-child(2) {
+    opacity: 0;
+  }
+
+  &.ativo span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
 }
 
-/* mobile menu */
+/* ===== MENU MOBILE ===== */
 .menu-mobile {
   position: fixed;
-  top: 72px;
+  top: 60px;
   left: 0;
   right: 0;
+  background: #fbfbfb;
+  border-top: 1px solid #ddd;
   opacity: 0;
   pointer-events: none;
-  transition: .3s;
-}
-.menu-mobile.aberto {
-  opacity: 1;
-  pointer-events: auto;
+  transform: translateY(-10px);
+  transition: 0.3s ease;
+  z-index: 1100;
+
+  &.aberto {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .menu-mobile-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    gap: 20px;
+
+    a {
+      color: #000;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
+
+      &:hover {
+        color: #0077ff;
+      }
+    }
+  }
+
+  .menu-mobile-botoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 20px;
+
+    .full {
+      width: 80%;
+      text-align: center;
+    }
+  }
 }
 
-/* overlay */
+/* ===== FUNDO ESCURO ===== */
 .fundo-escuro {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 1000;
+
+  &.mostrar {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
-/* responsive */
-@media(max-width:850px){
-  .botoes-desktop{ display:none; }
-  .hamburguer{ display:block; }
-}
+/* ===== RESPONSIVO ===== */
+@media (max-width: 850px) {
+  .cabecalho-center,
+  .botoes-desktop {
+    display: none;
+  }
 
+  .hamburguer {
+    display: flex;
+  }
+}
