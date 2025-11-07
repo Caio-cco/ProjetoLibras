@@ -21,47 +21,26 @@ export default function Cabecalho({ logado = false }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // useEffect(() => {
-  //   const foto = localStorage.getItem("fotoPerfil");
-  //   setFotoPerfil(foto);
+  const fetchData = async (url, setter) => {
+    try {
+      const res = await fetch(url, {
+        headers: {
+            "x-access-token": token,
+        },
+      });
+      if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
+      const data = await res.json();
+      setter(data.info[0] || {});
 
-  //   const handleStorageChange = () =>
-  //     setFotoPerfil(localStorage.getItem("fotoPerfil"));
-  //   window.addEventListener("storage", handleStorageChange);
-  //   return () => window.removeEventListener("storage", handleStorageChange);
-  // }, []);
+    } catch (err) {
+      console.error(err);
+      setter({});
+    }
+  };
 
   useEffect(() => {
-    if (token) {
-      axios
-        .get("http://localhost:5010/user/perfil", {
-          headers: { "x-access-token": token },
-        })
-        .then((res) => setPerfil(res.data.info[0]))
-        .catch(() => console.warn("Erro ao buscar perfil."));
-    }
+    fetchData('http://localhost:5010/user/perfil', setPerfil);
   }, []);
-
-  // const fetchData = async (url, setter) => {
-  //   try {
-  //     const res = await fetch(url, {
-  //       headers: {
-  //           "x-access-token": token,
-  //       },
-  //     });
-  //     if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
-  //     const data = await res.json();
-  //     setter(data.info[0] || {});
-
-  //   } catch (err) {
-  //     console.error(err);
-  //     setter({});
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchData('http://localhost:5010/user/perfil', setPerfil);
-  // }, []);
 
   const toggleMenu = () => setMenuOpen((s) => !s);
 
