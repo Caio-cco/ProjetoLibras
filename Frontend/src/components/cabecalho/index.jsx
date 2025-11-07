@@ -40,7 +40,7 @@ export default function Cabecalho({ logado = false }) {
         .then((res) => setPerfil(res.data.info[0]))
         .catch(() => console.warn("Erro ao buscar perfil."));
     }
-  }, [token]);
+  }, []);
 
   // const fetchData = async (url, setter) => {
   //   try {
