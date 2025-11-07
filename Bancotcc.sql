@@ -31,10 +31,8 @@ create table curso (
     titulo varchar(200) not null,
     descricao text,
     id_dificuldade int not null,
-    id_instrutor int not null,
     data_criacao timestamp default current_timestamp,
     foreign key (id_dificuldade) references dificuldade(id_dificuldade),
-    foreign key (id_instrutor) references usuario(id_usuario)
 );
 
 
