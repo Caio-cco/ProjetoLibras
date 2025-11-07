@@ -3,7 +3,6 @@ import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
-import loginEndpoints from "./controller/loginController.js";
 import { adicionarRotas } from "./rotas.js";
 
 const app = express();
@@ -39,7 +38,6 @@ app.use(
 
 
 adicionarRotas(app);
-app.use(loginEndpoints);
 
 app.get("/", (req, res) => {
   res.send("API está rodando e protegendo o chat!");
@@ -60,9 +58,8 @@ io.use((socket, next) => {
   }
 });
 
-
 io.on("connection", (socket) => {
-  console.log(` Usuário conectado: ${socket.user.email} | Socket ID: ${socket.id}`);
+  console.log(`Usuário conectado: ${socket.user.email} | Socket ID: ${socket.id}`);
 
   socket.on("join-room", (roomId) => {
     socket.join(roomId);
@@ -70,17 +67,11 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("user-joined", socket.user.email);
   });
 
-  socket.on("offer", (data) => {
-    socket.to(data.roomId).emit("offer", data);
-  });
-
-  socket.on("answer", (data) => {
-    socket.to(data.roomId).emit("answer", data);
-  });
-
-  socket.on("ice-candidate", (data) => {
-    socket.to(data.roomId).emit("ice-candidate", data.candidate);
-  });
+  socket.on("offer", (data) => socket.to(data.roomId).emit("offer", data));
+  socket.on("answer", (data) => socket.to(data.roomId).emit("answer", data));
+  socket.on("ice-candidate", (data) =>
+    socket.to(data.roomId).emit("ice-candidate", data.candidate)
+  );
 
   socket.on("disconnect", () => {
     console.log(`Usuário desconectado! ${socket.user.email}`);
@@ -88,5 +79,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Api rodando `);
+  console.log(` Api subiu!`);
 });
