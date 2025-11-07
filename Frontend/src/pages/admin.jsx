@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   BookOpen,
@@ -8,6 +8,7 @@ import {
   Search,
   Filter,
 } from "lucide-react";
+import axios from "axios";
 import {
   BarChart,
   Bar,
@@ -19,40 +20,51 @@ import {
 } from "recharts";
 import "./admin.scss";
 
+const API_URL = "http://localhost:5010";
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [abaAtiva, setAbaAtiva] = useState("dashboard");
   const [busca, setBusca] = useState("");
   const [filtroNivel, setFiltroNivel] = useState("Todos");
+  const [cursos, setCursos] = useState([]);
+  const [alunos, setAlunos] = useState([]);
 
-  // Dados simulados
-  const cursos = [
-    { id: 1, nome: "Curso de Libras Iniciante", nivel: "Iniciante", alunos: 25 },
-    { id: 2, nome: "Curso de Libras Intermediário", nivel: "Intermediário", alunos: 18 },
-    { id: 3, nome: "Curso de Libras Avançado", nivel: "Avançado", alunos: 12 },
-  ];
+  useEffect(() => {
+    buscarAlunos();
+  }, [busca]);
 
-  const alunos = [
-    { id: 1, nome: "Pedro Henrique", curso: "Iniciante", progresso: "80%" },
-    { id: 2, nome: "Maria Eduarda", curso: "Intermediário", progresso: "45%" },
-    { id: 3, nome: "João Silva", curso: "Avançado", progresso: "100%" },
-    { id: 4, nome: "Laura Costa", curso: "Iniciante", progresso: "67%" },
-  ];
+  async function buscarAlunos() {
+    try {
+      const token = localStorage.getItem("authToken");
+      const resp = await axios.get(`${API_URL}/admin/usuarios`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { nome: busca || null },
+      });
+      setAlunos(resp.data);
+    } catch (err) {
+      console.error("Erro ao carregar alunos:", err);
+    }
+  }
 
-  // Filtragem
-  const cursosFiltrados = cursos.filter(
-    (c) =>
-      (filtroNivel === "Todos" || c.nivel === filtroNivel) &&
-      c.nome.toLowerCase().includes(busca.toLowerCase())
-  );
-
-  const alunosFiltrados = alunos.filter((a) =>
-    a.nome.toLowerCase().includes(busca.toLowerCase())
-  );
+  useEffect(() => {
+    async function buscarCursos() {
+      try {
+        const token = localStorage.getItem("authToken");
+        const resp = await axios.get(`${API_URL}/cursos`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCursos(resp.data);
+      } catch (err) {
+        console.error("Erro ao carregar cursos:", err);
+      }
+    }
+    buscarCursos();
+  }, []);
 
   const dadosGrafico = cursos.map((c) => ({
-    nome: c.nivel,
-    alunos: c.alunos,
+    nome: c.titulo || c.nome,
+    alunos: c.totalAlunos || 0,
   }));
 
   function handleLogout() {
@@ -62,7 +74,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="admin-page">
-      {/* Sidebar fixa */}
       <aside className="admin-sidebar">
         <h2 className="logo" onClick={() => navigate("/")}>
           🤟 Falar é Mágico
@@ -96,7 +107,6 @@ export default function AdminDashboard() {
         </nav>
       </aside>
 
-      {/* Conteúdo principal */}
       <main className="admin-conteudo">
         <header>
           <h1>
@@ -137,7 +147,6 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        {/* Exibição de dados */}
         <section className="dados-lista">
           {abaAtiva === "dashboard" ? (
             <div className="dashboard-section">
@@ -147,9 +156,9 @@ export default function AdminDashboard() {
               </div>
 
               <div className="grafico-container">
-                <h3>Alunos por Nível</h3>
+                <h3>Alunos por Curso</h3>
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={dadosGrafico} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+                  <BarChart data={dadosGrafico}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="nome" />
                     <YAxis />
@@ -169,11 +178,11 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {cursosFiltrados.map((curso) => (
+                {cursos.map((curso) => (
                   <tr key={curso.id}>
-                    <td>{curso.nome}</td>
-                    <td>{curso.nivel}</td>
-                    <td>{curso.alunos}</td>
+                    <td>{curso.titulo}</td>
+                    <td>{curso.nivel || "—"}</td>
+                    <td>{curso.totalAlunos || 0}</td>
                   </tr>
                 ))}
               </tbody>
@@ -188,11 +197,11 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {alunosFiltrados.map((aluno) => (
+                {alunos.map((aluno) => (
                   <tr key={aluno.id}>
                     <td>{aluno.nome}</td>
                     <td>{aluno.curso}</td>
-                    <td>{aluno.progresso}</td>
+                    <td>{aluno.progresso}%</td>
                   </tr>
                 ))}
               </tbody>

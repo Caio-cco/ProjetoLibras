@@ -9,6 +9,7 @@ export function adicionarRotas(api) {
     api.use(loginController)
     api.use(cursosController)
     api.use(usuarioController)
+    api.use(adminController)
 
     api.use('/public/storage', express.static('public/storage'))
 }

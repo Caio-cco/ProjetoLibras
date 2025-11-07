@@ -5,10 +5,27 @@ import { getAuthentication } from '../utils/jwt.js';
 const endpoints = Router();
 const autenticador = getAuthentication();
 
-endpoints.post('/cursos/inserircurso', autenticador, async (req, resp) => {
-    let cursoInfo = req.body;
-    let id = await repoAdmin.criarCurso(cursoInfo);
 
-    resp.send({ NovoId: id });
-})
+endpoints.get('/cursos', autenticador, async (req, resp) => {
+  try {
+    const cursos = await repoAdmin.listarCursos();
+    resp.send(cursos);
+  } catch (err) {
+    console.error('Erro ao listar cursos:', err);
+    resp.status(500).send({ erro: 'Erro ao listar cursos.' });
+  }
+});
+
+
+endpoints.get('/admin/usuarios', autenticador, async (req, resp) => {
+  try {
+    const filtro = req.query.nome || null;
+    const usuarios = await repoAdmin.listarUsuariosComCursos(filtro);
+    resp.send(usuarios);
+  } catch (err) {
+    console.error('Erro ao buscar usuários:', err);
+    resp.status(500).send({ erro: 'Erro ao buscar usuários.' });
+  }
+});
+
 export default endpoints;
