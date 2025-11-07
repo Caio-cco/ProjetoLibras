@@ -214,15 +214,16 @@ export default function Atividades() {
     const [dificuldade, setDificuldade] = useState([]);
     const [query, setQuery] = useState("");
     const [nivelFiltro, setNivelFiltro] = useState("Todos");
+    const [cursos, setCursos] = useState([]);
     const navegar = useNavigate();
 
-    const filtered = sampleCards.filter((c) => {
+    const filtered = cursos.filter((c) => {
         const q = query.trim().toLowerCase();
 
-        if (q && !`${c.title} ${c.subtitle} ${c.level}`.toLowerCase().includes(q)) return false;
+        if (q && !`${c.titulo} ${c.descricao} ${c.nome}`.toLowerCase().includes(q)) return false;
 
         if (nivelFiltro && nivelFiltro !== "Todos") {
-            return c.level === nivelFiltro;
+            return c.nome === nivelFiltro;
         }
         return true;
     });
@@ -245,12 +246,13 @@ export default function Atividades() {
 
     useEffect(() => {
         fetchData('http://localhost:5010/dificuldades', setDificuldade);
+        fetchData('http://localhost:5010/obtercursos', setCursos);
     }, []);
 
 
     const lidarComNavegacao = (card) => {
-        const title = card.title;
-        const level = card.level;
+        const title = card.titulo;
+        const level = card.nome;
         let rota = null;
 
         // --- JOGO DE ASSOCIAÇÃO ---
@@ -330,6 +332,15 @@ export default function Atividades() {
                     </div>
                 </header>
 
+                {/* <main className="cards-grid">
+                    {filtered.map((card) => (
+                        <Card
+                            key={card.id}
+                            atividade={card}
+                            aoNavegar={lidarComNavegacao}
+                        />
+                    ))}
+                </main> */}
                 <main className="cards-grid">
                     {filtered.map((card) => (
                         <Card

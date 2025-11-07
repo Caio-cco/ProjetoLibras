@@ -52,3 +52,14 @@ export async function salvarProgresso(id_usuario, id_curso, progresso, possuiPro
         [registros] = await conection.query(comando, [progresso, id_usuario, id_curso]);
     }
 }
+
+export async function verificarCursos() {
+    const comando = `
+        select * from curso
+            inner join dificuldade on dificuldade.id_dificuldade = curso.id_dificuldade
+            order by id_curso;
+    `;
+
+    const [registros] = await conection.query(comando);
+    return registros;
+}

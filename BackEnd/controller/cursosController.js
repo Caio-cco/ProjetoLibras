@@ -5,6 +5,11 @@ import { getAuthentication } from '../utils/jwt.js';
 const endpoints = Router();
 const autenticador = getAuthentication();
 
+endpoints.get('/obtercursos', async (req, resp) => {
+    let registros = await repoCursos.verificarCursos();
+    resp.send(registros);
+})
+
 endpoints.get('/cursos/progresso', autenticador, async (req, resp) => {
     let registros = await repoCursos.verificarProgresso();
     resp.send(registros);

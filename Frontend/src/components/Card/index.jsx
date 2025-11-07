@@ -8,7 +8,7 @@ export default function Card({ atividade, aoNavegar }) {
         aoNavegar(atividade);
     };
 
-    const nivelEmMinusculas = atividade.level.toLowerCase();
+    const nivelEmMinusculas = atividade.nome.toLowerCase();
 
     return (
         <article
@@ -16,11 +16,11 @@ export default function Card({ atividade, aoNavegar }) {
             onClick={() => aoNavegar(atividade)} 
             style={{ cursor: 'pointer' }}
         >
-            <div className={`card-media ${atividade.imageClass}`}>
-            </div>
+            {/* <div className={`card-media ${atividade.imageClass}`}>
+            </div> */}
             <div className="card-body">
-                <h3>{atividade.title} - {atividade.level}</h3>
-                <p className="subtitle">{atividade.subtitle}</p>
+                <h3>{atividade.titulo} - {atividade.nome}</h3>
+                <p className="subtitle">{atividade.descricao}</p>
                 <div className="card-footer-clean">
                     <button
                         className="cta"
