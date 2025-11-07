@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
+import axios from "axios";
 import "./index.scss";
 
 export default function Cabecalho({ logado = false }) {
   const [isMobile, setIsMobile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [fotoPerfil, setFotoPerfil] = useState(null);
+  const [perfil, setPerfil] = useState({});
+
+  const token = localStorage.getItem("authToken");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,15 +21,47 @@ export default function Cabecalho({ logado = false }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  useEffect(() => {
-    const foto = localStorage.getItem("fotoPerfil");
-    setFotoPerfil(foto);
+  // useEffect(() => {
+  //   const foto = localStorage.getItem("fotoPerfil");
+  //   setFotoPerfil(foto);
 
-    const handleStorageChange = () =>
-      setFotoPerfil(localStorage.getItem("fotoPerfil"));
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
+  //   const handleStorageChange = () =>
+  //     setFotoPerfil(localStorage.getItem("fotoPerfil"));
+  //   window.addEventListener("storage", handleStorageChange);
+  //   return () => window.removeEventListener("storage", handleStorageChange);
+  // }, []);
+
+  useEffect(() => {
+    if (token) {
+      axios
+        .get("http://localhost:5010/user/perfil", {
+          headers: { "x-access-token": token },
+        })
+        .then((res) => setPerfil(res.data.info[0]))
+        .catch(() => console.warn("Erro ao buscar perfil."));
+    }
+  }, [token]);
+
+  // const fetchData = async (url, setter) => {
+  //   try {
+  //     const res = await fetch(url, {
+  //       headers: {
+  //           "x-access-token": token,
+  //       },
+  //     });
+  //     if (!res.ok) throw new Error(`Erro ao buscar dados de ${url}`);
+  //     const data = await res.json();
+  //     setter(data.info[0] || {});
+
+  //   } catch (err) {
+  //     console.error(err);
+  //     setter({});
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchData('http://localhost:5010/user/perfil', setPerfil);
+  // }, []);
 
   const toggleMenu = () => setMenuOpen((s) => !s);
 
@@ -47,6 +82,13 @@ export default function Cabecalho({ logado = false }) {
       scrollToSection(id);
     }
   };
+
+  const baseURL = "http://localhost:5010/";
+  const fotoPath = perfil.foto_url?.replace(/\\/g, "/");
+  const fotoFinal =
+    perfil.foto_url?.startsWith("https://")
+      ? perfil.foto_url
+      : `${baseURL}${fotoPath}`;
 
   return (
     <>
@@ -102,7 +144,7 @@ export default function Cabecalho({ logado = false }) {
             </div>
           ) : (
             <Link to="/perfil" className="icone-perfil">
-              {fotoPerfil ? (
+              {/* {fotoPerfil ? (
                 <img
                   src={fotoPerfil}
                   alt="Foto perfil"
@@ -110,7 +152,8 @@ export default function Cabecalho({ logado = false }) {
                 />
               ) : (
                 <FaUserCircle size={36} />
-              )}
+              )} */}
+              <img src={fotoFinal} alt="Foto perfil" className="foto-perfil" />
             </Link>
           )}
 
