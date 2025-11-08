@@ -233,7 +233,7 @@ export default function JogoDasFrasesImagens() {
       <Cabecalho logado={true} />
 
       <div className="banner-conteudo">
-        <img src="/maolaranja.png" alt="Mão azul" className="banner-imagem" />
+        <img src="/maovermelha.png" alt="Mão vermelha" className="banner-imagem" />
         <div className="banner-texto">
           <h1>Jogo da Frase (Sinais)</h1>
           <p>Organize os sinais na estrutura correta de LIBRAS</p>

@@ -5,39 +5,77 @@ import Rodape from "../../components/rodape";
 import "./index.scss";
 
 const frasesQuiz = [
-    {
-        id: 1,
-        frase: "Eu gosto de estudar LIBRAS",
-        respostaCorreta: ["EU", "GOSTAR", "ESTUDAR", "LIBRAS"],
-        palavrasDisponiveis: ["EU", "GOSTAR", "ESTUDAR", "LIBRAS", "VOCÊ", "NÃO"]
-    },
-    {
-        id: 2,
-        frase: "Bom dia, tudo bem?",
-        respostaCorreta: ["BOM", "DIA", "TUDO", "BEM"],
-        palavrasDisponiveis: ["TARDE", "BOM", "NOITE", "TUDO", "BEM", "DIA"]
-    },
-    {
-        id: 3,
-        frase: "Qual é o seu nome?",
-        respostaCorreta: ["QUAL", "SEU", "NOME"],
-        palavrasDisponiveis: ["QUAL", "SEU", "IDADE", "NOME", "PROFISSÃO"]
-    },
-    {
-        id: 4,
-        frase: "Minha casa é amarela.",
-        respostaCorreta: ["MINHA", "CASA", "AMARELA"], 
-        palavrasDisponiveis: ["MINHA", "CARRO", "CASA", "AZUL", "AMARELA"]
-    },
-    {
-        id: 5,
-        frase: "Eu quero água agora.",
-        respostaCorreta: ["EU", "QUERER", "ÁGUA", "AGORA"],
-        palavrasDisponiveis: ["VOCÊ", "QUERER", "ÁGUA", "COMIDA", "AGORA", "EU"]
-    },
+  {
+    id: 1,
+    frase: "Eu gosto de estudar LIBRAS",
+    respostaCorreta: [
+      "/sinais/eu.png",
+      "/sinais/gostar.png",
+      "/sinais/estudar.png",
+      "/sinais/libras.png"
+    ],
+    palavrasDisponiveis: [
+      { caminho: "/sinais/eu.png", label: "EU" },
+      { caminho: "/sinais/gostar.png", label: "GOSTAR" },
+      { caminho: "/sinais/estudar.png", label: "ESTUDAR" },
+      { caminho: "/sinais/libras.png", label: "LIBRAS" },
+      { caminho: "/sinais/voce.png", label: "VOCÊ" },
+      { caminho: "/sinais/nao.png", label: "NÃO" }
+    ]
+  },
+  {
+    id: 2,
+    frase: "Bom dia, tudo bem?",
+    respostaCorreta: ["/sinais/bom.png", "/sinais/dia.png", "/sinais/tudo.png", "/sinais/bem.png"],
+    palavrasDisponiveis: [
+      { caminho: "/sinais/tarde.png", label: "TARDE" },
+      { caminho: "/sinais/bom.png", label: "BOM" },
+      { caminho: "/sinais/noite.png", label: "NOITE" },
+      { caminho: "/sinais/tudo.png", label: "TUDO" },
+      { caminho: "/sinais/bem.png", label: "BEM" },
+      { caminho: "/sinais/dia.png", label: "DIA" }
+    ]
+  },
+  {
+    id: 3,
+    frase: "Qual é o seu nome?",
+    respostaCorreta: ["/sinais/qual.png", "/sinais/seu.png", "/sinais/nome.png"],
+    palavrasDisponiveis: [
+      { caminho: "/sinais/qual.png", label: "QUAL" },
+      { caminho: "/sinais/seu.png", label: "SEU" },
+      { caminho: "/sinais/idade.png", label: "IDADE" },
+      { caminho: "/sinais/nome.png", label: "NOME" },
+      { caminho: "/sinais/profissao.png", label: "PROFISSÃO" }
+    ]
+  },
+  {
+    id: 4,
+    frase: "Minha casa é amarela.",
+    respostaCorreta: ["/sinais/minha.png", "/sinais/casa.png", "/sinais/amarela.png"],
+    palavrasDisponiveis: [
+      { caminho: "/sinais/minha.png", label: "MINHA" },
+      { caminho: "/sinais/carro.png", label: "CARRO" },
+      { caminho: "/sinais/casa.png", label: "CASA" },
+      { caminho: "/sinais/azul.png", label: "AZUL" },
+      { caminho: "/sinais/amarela.png", label: "AMARELA" }
+    ]
+  },
+  {
+    id: 5,
+    frase: "Eu quero água agora.",
+    respostaCorreta: ["/sinais/eu.png", "/sinais/querer.png", "/sinais/agua.png", "/sinais/agora.png"],
+    palavrasDisponiveis: [
+      { caminho: "/sinais/voce.png", label: "VOCÊ" },
+      { caminho: "/sinais/querer.png", label: "QUERER" },
+      { caminho: "/sinais/agua.png", label: "ÁGUA" },
+      { caminho: "/sinais/comida.png", label: "COMIDA" },
+      { caminho: "/sinais/agora.png", label: "AGORA" },
+      { caminho: "/sinais/eu.png", label: "EU" }
+    ]
+  },
 ];
 
-export default function JogoDasFrases() {
+export default function JogoDasFrasesImagens() {
   const [indiceAtual, setIndiceAtual] = useState(0);
   const [fraseMontada, setFraseMontada] = useState([]);
   const [statusVerificacao, setStatusVerificacao] = useState(null);
@@ -45,27 +83,25 @@ export default function JogoDasFrases() {
   const [modal, setModal] = useState(null);
   const navigate = useNavigate();
 
-  const videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ";
-
   const perguntaAtual = frasesQuiz[indiceAtual];
   const totalPerguntas = frasesQuiz.length;
 
   const respostaEstaCorreta = useMemo(() => {
-      if (!perguntaAtual) return false;
-      if (fraseMontada.length !== perguntaAtual.respostaCorreta.length) {
-          return false;
-      }
-      return fraseMontada.every((palavra, index) => palavra === perguntaAtual.respostaCorreta[index]);
+    if (!perguntaAtual) return false;
+    if (fraseMontada.length !== perguntaAtual.respostaCorreta.length) {
+      return false;
+    }
+    return fraseMontada.every((caminho, index) => caminho === perguntaAtual.respostaCorreta[index]);
   }, [fraseMontada, perguntaAtual]);
 
-  const adicionarPalavra = (palavra) => {
-      if (statusVerificacao) return;
-      setFraseMontada([...fraseMontada, palavra]);
+  const adicionarPalavra = (palavraCaminho) => {
+    if (statusVerificacao) return;
+    setFraseMontada([...fraseMontada, palavraCaminho]);
   };
 
   const removerUltimaPalavra = () => {
-      if (statusVerificacao) return;
-      setFraseMontada(fraseMontada.slice(0, -1));
+    if (statusVerificacao) return;
+    setFraseMontada(fraseMontada.slice(0, -1));
   };
 
   const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades, tipo }) => {
@@ -73,7 +109,7 @@ export default function JogoDasFrases() {
       <div className="modal-overlay">
         <div className={`modal-content ${tipo}`}>
           <h3>{mensagem}</h3>
-          
+
           {tipo === 'fim' && (
             <>
               <p>Seu placar final: <strong>{acertos} de {total}</strong></p>
@@ -89,7 +125,7 @@ export default function JogoDasFrases() {
               </div>
             </>
           )}
-          
+
           {(tipo === 'certo-rodada' || tipo === 'erro-rodada') && (
             <div className="modal-actions">
               <button className="btn-continuar" onClick={onVoltarAtividades}>
@@ -129,7 +165,7 @@ export default function JogoDasFrases() {
       const mensagemFinal = acertos >= Math.ceil(totalPerguntas * 0.6)
         ? "🎉 Parabéns! Você completou o jogo com sucesso!"
         : "Que tal tentar novamente para melhorar sua pontuação?";
-      
+
       setModal({
         tipo: 'fim',
         mensagem: mensagemFinal,
@@ -148,13 +184,49 @@ export default function JogoDasFrases() {
   };
 
   const getCampoRespostaClass = () => {
-      if (statusVerificacao === 'correta') return 'campo-resposta correta';
-      if (statusVerificacao === 'incorreta') return 'campo-resposta incorreta';
-      return 'campo-resposta';
+    if (statusVerificacao === 'correta') return 'campo-resposta correta';
+    if (statusVerificacao === 'incorreta') return 'campo-resposta incorreta';
+    return 'campo-resposta';
   };
 
   const isVerificarDisabled = fraseMontada.length === 0 || statusVerificacao !== null;
   const mostrarResultadoCorreto = statusVerificacao === 'correta';
+
+
+  // Componente auxiliar para renderizar a frase montada com imagens
+  const FraseMontadaDisplay = ({ fraseMontada, onRemover }) => (
+    <div
+      className={`${getCampoRespostaClass()} imagem-container`}
+      onClick={onRemover}
+    >
+      {fraseMontada.length > 0 ? (
+        fraseMontada.map((caminho, index) => (
+          <img
+            key={index}
+            src={caminho}
+            alt={`Sinal ${index + 1}`}
+            className="sinal-montado-img"
+          />
+        ))
+      ) : (
+        "Clique nos sinais abaixo para montar a frase"
+      )}
+    </div>
+  );
+
+  // Componente auxiliar para renderizar a resposta correta com imagens
+  const RespostaCorretaDisplay = ({ respostaCorreta }) => (
+    <div className="resposta-correta-display imagem-container">
+      {respostaCorreta.map((caminho, index) => (
+        <img
+          key={index}
+          src={caminho}
+          alt={`Sinal Correto ${index + 1}`}
+          className="sinal-montado-img"
+        />
+      ))}
+    </div>
+  );
 
 
   return (
@@ -162,14 +234,14 @@ export default function JogoDasFrases() {
       <Cabecalho logado={true} />
 
       <div className="banner-conteudo">
-        <img 
+        <img
           src="/mãoazul.png"
-          alt="Mão azul" 
+          alt="Mão azul"
           className="banner-imagem"
         />
         <div className="banner-texto">
-          <h1>Jogo da Frase</h1>
-          <p>Organize as palavras na estrutura correta de LIBRAS</p>
+          <h1>Jogo da Frase (Sinais)</h1>
+          <p>Organize os sinais na estrutura correta de LIBRAS</p>
         </div>
       </div>
 
@@ -188,57 +260,48 @@ export default function JogoDasFrases() {
             </div>
           </div>
 
-          <section className="secao-video">
-            <div className="video-player">
-              <iframe
-                title="Vídeo de Sinais"
-                src={videoUrl}
-                frameBorder="0"
-                allowFullScreen
-              ></iframe>
-            </div>
-            <p className="instrucao-quiz">Monte a frase em LIBRAS, clicando nas palavras disponíveis.</p>
-          </section>
-
-          <section className="secao-resposta">
+          {/* Nova seção para exibir a frase alvo */}
+          <section className="secao-frase-alvo-visual">
             <h2 className="titulo-frase-alvo">
               "{perguntaAtual.frase}"
             </h2>
+            <p className="instrucao-quiz">Monte a frase em LIBRAS, clicando nos sinais disponíveis abaixo.</p>
+          </section>
 
+          <section className="secao-resposta">
             <div className="area-montagem-frase">
-              <h3 className="titulo-resposta">Sua resposta em LIBRAS:</h3>
-              <div
-                className={getCampoRespostaClass()}
-                onClick={!statusVerificacao ? removerUltimaPalavra : undefined}
-              >
-                {fraseMontada.length > 0 ? (
-                  fraseMontada.join(' ')
-                ) : (
-                  "Clique nas palavras abaixo para montar a frase"
-                )}
-              </div>
+              <h3 className="titulo-resposta">Sua resposta em Sinais:</h3>
+              <FraseMontadaDisplay
+                fraseMontada={fraseMontada}
+                onRemover={!statusVerificacao ? removerUltimaPalavra : undefined}
+              />
             </div>
 
             {mostrarResultadoCorreto && (
               <div className="feedback-correto">
                 ✅ Resposta correta!
-                <div className="resposta-correta-display">
-                  {perguntaAtual.respostaCorreta.join(' ')}
-                </div>
+                <RespostaCorretaDisplay
+                  respostaCorreta={perguntaAtual.respostaCorreta}
+                />
               </div>
             )}
 
             <div className="area-palavras-disponiveis">
-              <h3 className="titulo-palavras">Palavras disponíveis:</h3>
+              <h3 className="titulo-palavras">Sinais disponíveis:</h3>
               <div className="botoes-palavras">
-                {perguntaAtual.palavrasDisponiveis.map((palavra) => (
+                {perguntaAtual.palavrasDisponiveis.map((palavraObj, index) => (
                   <button
-                    key={palavra}
-                    className="btn-palavra"
-                    onClick={() => adicionarPalavra(palavra)}
+                    key={palavraObj.caminho}
+                    className="btn-palavra sinal-img-btn"
+                    onClick={() => adicionarPalavra(palavraObj.caminho)}
                     disabled={statusVerificacao}
+                    title={`Adicionar ${palavraObj.label}`}
                   >
-                    {palavra}
+                    <img
+                      src={palavraObj.caminho}
+                      alt={palavraObj.label}
+                      className="sinal-disponivel-img"
+                    />
                   </button>
                 ))}
               </div>

@@ -15,7 +15,7 @@ const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades
     <div className="modal-overlay">
       <div className={`modal-content ${tipo}`}>
         <h3>{mensagem}</h3>
-
+        
         {tipo === 'fim' && (
           <>
             <p>Sua pontuação final: <strong>{acertos} / {total} etapas</strong></p>
@@ -38,15 +38,21 @@ export default function AssosiacaoBasico() {
   const [totalEtapas, setTotalEtapas] = useState(0);
   const PARES_POR_ETAPA = 3;
 
+  const DEMO_PARES = [
+      { caminhoImagem: "/demo/sinal1.png", significado: "LETRA A" },
+      { caminhoImagem: "/demo/sinal2.png", significado: "LETRA B" },
+      { caminhoImagem: "/demo/sinal3.png", significado: "LETRA C" },
+  ];
+
   const [todosParesCarregados, setTodosParesCarregados] = useState([]);
 
   const [etapaAtual, setEtapaAtual] = useState(1);
-  const [paresRestantesEtapa, setParesRestantesEtapa] = useState([]);
+  const [paresRestantesEtapa, setParesRestantesEtapa] = useState(DEMO_PARES);
   const [acertosEtapa, setAcertosEtapa] = useState(0);
   const [acertosTotais, setAcertosTotais] = useState(0);
 
-  const [sinaisExibidos, setSinaisExibidos] = useState([]);
-  const [significadosExibidos, setSignificadosExibidos] = useState([]);
+  const [sinaisExibidos, setSinaisExibidos] = useState(DEMO_PARES.map(p => p.caminhoImagem));
+  const [significadosExibidos, setSignificadosExibidos] = useState(DEMO_PARES.map(p => p.significado));
 
   const [selecionadoSinal, setSelecionadoSinal] = useState(null);
   const [selecionadoSignificado, setSelecionadoSignificado] = useState(null);
@@ -162,7 +168,7 @@ export default function AssosiacaoBasico() {
         setSignificadosExibidos(novosSignificados);
         setParesRestantesEtapa(novosParesRestantes);
 
-        if (novosAcertosEtapa === PARES_POR_ETAPA) {
+        if (novosAcertosEtapa === PARES_POR_ETAPA && totalEtapas > 0) {
           avancarOuFinalizar(acertosTotais + 1);
         }
       }, 700);
@@ -175,16 +181,16 @@ export default function AssosiacaoBasico() {
         setSelecionadoSignificado(null);
       }, 700);
     }
-  }, [acertosEtapa, feedback, modalData, paresRestantesEtapa, sinaisExibidos, significadosExibidos, avancarOuFinalizar, acertosTotais, PARES_POR_ETAPA]);
+  }, [acertosEtapa, feedback, modalData, paresRestantesEtapa, sinaisExibidos, significadosExibidos, avancarOuFinalizar, acertosTotais, PARES_POR_ETAPA, totalEtapas]);
 
   function selecionarSinal(indice) {
-    if (feedback || modalData || todosParesCarregados.length === 0) return;
+    if (feedback || modalData) return;
     setSelecionadoSinal(indice);
     tentarChecar(indice, selecionadoSignificado);
   }
 
   function selecionarSignificado(indice) {
-    if (feedback || modalData || todosParesCarregados.length === 0) return;
+    if (feedback || modalData) return;
     setSelecionadoSignificado(indice);
     tentarChecar(selecionadoSinal, indice);
   }
@@ -195,6 +201,10 @@ export default function AssosiacaoBasico() {
     setModalData(null);
     if (todosParesCarregados.length > 0) {
       iniciarEtapa(todosParesCarregados[0]);
+    } else {
+      setSinaisExibidos(DEMO_PARES.map(p => p.caminhoImagem));
+      setSignificadosExibidos(DEMO_PARES.map(p => p.significado));
+      setParesRestantesEtapa(DEMO_PARES);
     }
   };
 
@@ -204,7 +214,6 @@ export default function AssosiacaoBasico() {
   };
 
   const porcentagem = totalEtapas > 0 ? Math.round((etapaAtual / totalEtapas) * 100) : 0;
-  const isGameReady = todosParesCarregados.length > 0;
 
   return (
     <div className="associacao-basico">
@@ -234,9 +243,9 @@ export default function AssosiacaoBasico() {
           <div className="preenchimento" style={{ width: `${porcentagem}%` }} />
         </div>
         <div className="legenda-progresso">
-          {isGameReady
+          {totalEtapas > 0
             ? `Etapa ${etapaAtual} de ${totalEtapas} (Pares acertados: ${acertosEtapa} de ${PARES_POR_ETAPA})`
-            : `Etapa 0 de 0 (Aguardando dados)`
+            : `Etapa 0 de 0 (Exibindo demonstração)`
           }
         </div>
       </section>
@@ -245,7 +254,7 @@ export default function AssosiacaoBasico() {
         <div className="card">
           <h2>Clique em um sinal e depois em sua letra correspondente</h2>
 
-          <div className="grade" style={{ opacity: isGameReady ? 1 : 0.5, pointerEvents: isGameReady ? 'auto' : 'none' }}>
+          <div className="grade">
             <div className="coluna sinais">
               {sinaisExibidos.map((s, i) => {
                 const ativo = selecionadoSinal === i;
@@ -259,7 +268,7 @@ export default function AssosiacaoBasico() {
                       }`}
                     onClick={() => selecionarSinal(i)}
                     aria-pressed={ativo}
-                    disabled={!isGameReady || !!modalData}
+                    disabled={!!modalData}
                   >
                     <img
                       src={s}
@@ -283,7 +292,7 @@ export default function AssosiacaoBasico() {
                       }`}
                     onClick={() => selecionarSignificado(i)}
                     aria-pressed={ativo}
-                    disabled={!isGameReady || !!modalData}
+                    disabled={!!modalData}
                   >
                     {s}
                   </button>

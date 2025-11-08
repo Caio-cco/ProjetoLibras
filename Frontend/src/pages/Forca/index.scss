@@ -1,0 +1,410 @@
+@use "sass:color";
+
+$cor-primaria: #12355B;
+$cor-secundaria: #3f51b5;
+$cor-destaque: #FFD200;
+$cor-fundo-card: #ffffff;
+$cor-fundo-pagina: #f0f2f5;
+$cor-borda-clara: #e9ecef;
+$cor-texto-escuro: #212529;
+$cor-texto-claro: #ffffff;
+
+.jogo-da-forca {
+    background-color: $cor-fundo-pagina;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.banner-conteudo {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.banner-imagem {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center bottom;
+}
+
+.banner-conteudo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.banner-texto {
+    position: absolute;
+    color: $cor-texto-claro;
+    text-align: center;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 15px 30px;
+    border-radius: 8px;
+    max-width: 80%;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-texto h1 {
+    font-size: 2.8rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.banner-texto p {
+    font-size: 1.2rem;
+    margin-top: 0;
+    line-height: 1.4;
+    color: $cor-texto-claro;
+}
+
+.conteudo-principal {
+    background: $cor-fundo-pagina;
+    padding: 40px 5%;
+    display: flex;
+    justify-content: center;
+    min-height: 60vh;
+    flex-grow: 1;
+}
+
+.card-atividade {
+    width: 100%;
+    max-width: 900px;
+    background: $cor-fundo-card;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.forca-display {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid $cor-borda-clara;
+    padding-bottom: 30px;
+}
+
+.forca-estrutura {
+    width: 180px;
+    height: 250px;
+    flex-shrink: 0;
+    position: relative;
+    border-bottom: 5px solid $cor-texto-escuro;
+
+    .mastro {
+        height: 100%;
+        width: 5px;
+        background-color: $cor-texto-escuro;
+        position: absolute;
+        left: 20px;
+    }
+
+    .travessa {
+        width: 120px;
+        height: 5px;
+        background-color: $cor-texto-escuro;
+        position: absolute;
+        top: 0;
+        left: 20px;
+    }
+
+    .corda {
+        width: 5px;
+        height: 25px;
+        background-color: $cor-texto-escuro;
+        position: absolute;
+        top: 0;
+        right: 0; 
+    }
+}
+
+.boneco-parte {
+    position: absolute;
+    background-color: $cor-texto-escuro;
+    display: none;
+    transition: opacity 0.3s;
+}
+
+@for $i from 1 through 6 {
+    .forca-display .forca-estrutura[data-erros^="#{$i}"] {
+        .parte-cabeca { display: block; }
+    }
+}
+
+@for $i from 2 through 6 {
+    .forca-display .forca-estrutura[data-erros^="#{$i}"] {
+        .parte-corpo { display: block; }
+    }
+}
+
+@for $i from 3 through 6 {
+    .forca-display .forca-estrutura[data-erros^="#{$i}"] {
+        .parte-braco-e { display: block; }
+    }
+}
+
+@for $i from 4 through 6 {
+    .forca-display .forca-estrutura[data-erros^="#{$i}"] {
+        .parte-braco-d { display: block; }
+    }
+}
+
+@for $i from 5 through 6 {
+    .forca-display .forca-estrutura[data-erros^="#{$i}"] {
+        .parte-perna-e { display: block; }
+    }
+}
+
+@for $i from 6 through 6 {
+    .forca-display .forca-estrutura[data-erros^="#{$i}"] {
+        .parte-perna-d { display: block; }
+    }
+}
+
+.parte-cabeca {
+    top: 25px; 
+    right: -17.5px; 
+    width: 30px;
+    height: 30px;
+    border: 3px solid $cor-texto-escuro;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.parte-corpo {
+    top: 58px; 
+    right: -2.5px; 
+    width: 5px; 
+    height: 45px; 
+}
+
+.parte-braco-e {
+    top: 65px; 
+    right: -2.5px; 
+    width: 30px; 
+    height: 5px;
+    transform: rotate(45deg);
+    transform-origin: 100% 50%;
+}
+
+.parte-braco-d {
+    top: 65px; 
+    right: -32.5px; 
+    width: 30px; 
+    height: 5px;
+    transform: rotate(-45deg);
+    transform-origin: 0% 50%;
+}
+
+.parte-perna-e {
+    top: 98px; 
+    right: -2.5px; 
+    width: 35px; 
+    height: 5px;
+    transform: rotate(-45deg);
+    transform-origin: 0% 50%;
+}
+
+.parte-perna-d {
+    top: 98px; 
+    right: -32.5px; 
+    width: 35px; 
+    height: 5px;
+    transform: rotate(45deg);
+    transform-origin: 100% 50%;
+}
+
+.forca-display .palavra-e-dica {
+    flex-grow: 1;
+    text-align: center;
+    padding-top: 20px;
+
+    .palavra-exibida {
+        font-size: 3rem;
+        letter-spacing: 15px;
+        font-weight: 700;
+        color: $cor-primaria;
+        margin-bottom: 20px;
+    }
+
+    .dica {
+        font-size: 1.2em;
+        color: $cor-secundaria;
+        font-style: italic;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f0f4ff;
+        border-radius: 5px;
+    }
+
+    .erros-restantes {
+        font-size: 1.1em;
+        color: $cor-texto-escuro;
+        font-weight: 600;
+    }
+}
+
+.teclado {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+
+    .titulo-teclado {
+        font-size: 1.4em;
+        color: $cor-primaria;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .botoes-letras {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+
+        .btn-letra {
+            width: 50px;
+            height: 50px;
+            background-color: $cor-secundaria;
+            color: $cor-texto-claro;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.4em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 3px 0 color.adjust($cor-secundaria, $lightness: -20%);
+
+            &:hover:not(:disabled) {
+                background-color: color.adjust($cor-secundaria, $lightness: -5%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 0 color.adjust($cor-secundaria, $lightness: -20%);
+            }
+
+            &:disabled {
+                cursor: not-allowed;
+                opacity: 0.8;
+                box-shadow: none;
+                transform: translateY(3px);
+            }
+
+            &.tentada {
+                box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+                transform: translateY(2px);
+            }
+
+            &.acertada {
+                background-color: #28a745; 
+                box-shadow: 0 3px 0 color.adjust(#28a745, $lightness: -20%);
+                color: $cor-texto-claro;
+            }
+
+            &.errada {
+                background-color: #dc3545;
+                box-shadow: 0 3px 0 color.adjust(#dc3545, $lightness: -20%);
+                color: $cor-texto-claro;
+            }
+        }
+    }
+}
+
+.botoes-acao {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 15px;
+
+    .btn-refazer {
+        background-color: $cor-destaque;
+        color: $cor-texto-escuro;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        &:hover:not(:disabled) {
+            background-color: color.adjust($cor-destaque, $lightness: -10%);
+        }
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    .modal-content {
+        background: $cor-fundo-card;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        &.vitoria h3 {
+            color: #28a745;
+        }
+
+        &.derrota h3 {
+            color: #dc3545;
+        }
+
+        .modal-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-voltar {
+            background-color: $cor-secundaria;
+            color: $cor-texto-claro;
+        }
+        
+        .btn-refazer {
+            background-color: $cor-destaque;
+            color: $cor-texto-escuro;
+        }
+    }
+}

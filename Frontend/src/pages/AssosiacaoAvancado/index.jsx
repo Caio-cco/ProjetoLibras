@@ -7,7 +7,7 @@ import "./index.scss";
 const API_URL = 'http://localhost:5010/pares-associacao';
 
 const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades, tipo }) => {
-  if (tipo === 'certo-rodada' || tipo === 'erro-rodada') {
+  if (tipo !== 'fim') {
     return null;
   }
 
@@ -15,57 +15,49 @@ const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades
     <div className="modal-overlay">
       <div className={`modal-content ${tipo}`}>
         <h3>{mensagem}</h3>
-
+        
         {tipo === 'fim' && (
           <>
-            <p>Seu placar final: <strong>{acertos} / {total}</strong></p>
+            <p>Sua pontuação final: <strong>{acertos} / {total} etapas</strong></p>
             <div className="modal-actions">
               <button className="btn-voltar" onClick={onVoltarAtividades}>
                 Voltar para Atividades
               </button>
-              {acertos < total && (
-                <button className="btn-refazer" onClick={onRefazer}>
-                  Refazer Atividade
-                </button>
-              )}
-              {acertos === total && (
-                <button className="btn-refazer" onClick={onVoltarAtividades}>
-                  Próxima Atividade
-                </button>
-              )}
+              <button className="btn-refazer" onClick={acertos < total ? onRefazer : onVoltarAtividades}>
+                {acertos < total ? "Refazer Atividade" : "Próxima Atividade"}
+              </button>
             </div>
           </>
-        )}
-
-        {tipo === 'erro-pular' && (
-          <div className="modal-actions">
-            <button className="btn-continuar" onClick={onVoltarAtividades}>
-              Continuar
-            </button>
-          </div>
         )}
       </div>
     </div>
   );
 };
 
+export default function AssosiacaoBasico() {
+  const [totalEtapas, setTotalEtapas] = useState(0);
+  const PARES_POR_ETAPA = 3;
 
-export default function AssosiacaoAvancado() {
-  const PARES_POR_RODADA = 3;
+  const DEMO_PARES = [
+      { caminhoImagem: "/demo/sinal1.png", significado: "LETRA A" },
+      { caminhoImagem: "/demo/sinal2.png", significado: "LETRA B" },
+      { caminhoImagem: "/demo/sinal3.png", significado: "LETRA C" },
+  ];
 
   const [todosParesCarregados, setTodosParesCarregados] = useState([]);
-  const [totalRodadas, setTotalRodadas] = useState(0);
 
-  const [rodadaAtual, setRodadaAtual] = useState(1);
-  const [paresRodada, setParesRodada] = useState([]);
-  const [sinais, setSinais] = useState([]);
-  const [significados, setSignificados] = useState([]);
+  const [etapaAtual, setEtapaAtual] = useState(1);
+  const [paresRestantesEtapa, setParesRestantesEtapa] = useState(DEMO_PARES);
+  const [acertosEtapa, setAcertosEtapa] = useState(0);
+  const [acertosTotais, setAcertosTotais] = useState(0);
+
+  const [sinaisExibidos, setSinaisExibidos] = useState(DEMO_PARES.map(p => p.caminhoImagem));
+  const [significadosExibidos, setSignificadosExibidos] = useState(DEMO_PARES.map(p => p.significado));
+
   const [selecionadoSinal, setSelecionadoSinal] = useState(null);
   const [selecionadoSignificado, setSelecionadoSignificado] = useState(null);
   const [feedback, setFeedback] = useState(null);
 
-  const [acertosTotais, setAcertosTotais] = useState(0);
-  const [errosNaRodada, setErrosNaRodada] = useState(0);
   const [modalData, setModalData] = useState(null);
 
   const navigate = useNavigate();
@@ -78,32 +70,39 @@ export default function AssosiacaoAvancado() {
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
-  }
+  };
 
-  const iniciarRodada = useCallback((paresDaRodada) => {
-    if (!paresDaRodada || paresDaRodada.length === 0) return;
+  const iniciarEtapa = useCallback((paresDaEtapa) => {
+    if (!paresDaEtapa || paresDaEtapa.length === 0) return;
 
-    setParesRodada(paresDaRodada);
-    setSinais(embaralharArray(paresDaRodada.map((p) => p.caminhoImagem || p.sinal)));
-    setSignificados(embaralharArray(paresDaRodada.map((p) => p.significado)));
+    setParesRestantesEtapa(paresDaEtapa);
+
+    setSinaisExibidos(embaralharArray(paresDaEtapa.map((p) => p.caminhoImagem)));
+    setSignificadosExibidos(embaralharArray(paresDaEtapa.map((p) => p.significado)));
 
     setSelecionadoSinal(null);
     setSelecionadoSignificado(null);
     setFeedback(null);
-    setErrosNaRodada(0);
+    setAcertosEtapa(0);
   }, []);
 
-  const avancarOuFinalizar = useCallback(() => {
-    if (rodadaAtual < totalRodadas) {
-      setRodadaAtual((ant) => ant + 1);
+  const avancarOuFinalizar = useCallback((novosAcertosTotais) => {
+    if (etapaAtual < totalEtapas) {
+      setEtapaAtual((ant) => ant + 1);
+      setAcertosTotais(novosAcertosTotais);
     } else {
-      const mensagem = acertosTotais === totalRodadas
-        ? "Excelente! Você dominou todos os sinais avançados!"
-        : `Atividade concluída! Você acertou ${acertosTotais} de ${totalRodadas}.`;
+      const mensagem = novosAcertosTotais === totalEtapas
+        ? "Parabéns! Você completou todas as atividades!"
+        : `Atividade concluída! Você completou ${novosAcertosTotais} de ${totalEtapas} etapas.`;
 
-      setModalData({ mensagem, acertos: acertosTotais, total: totalRodadas, tipo: 'fim' });
+      setModalData({
+        mensagem,
+        acertos: novosAcertosTotais,
+        total: totalEtapas,
+        tipo: 'fim'
+      });
     }
-  }, [rodadaAtual, totalRodadas, acertosTotais]);
+  }, [etapaAtual, totalEtapas]);
 
   const fetchData = async () => {
     try {
@@ -119,103 +118,105 @@ export default function AssosiacaoAvancado() {
 
       if (pares.length > 0) {
         setTodosParesCarregados(pares);
-        setTotalRodadas(pares.length);
-        iniciarRodada(pares[0]);
+        setTotalEtapas(pares.length);
+        iniciarEtapa(pares[0]);
       } else {
         setTodosParesCarregados([]);
-        setTotalRodadas(0);
+        setTotalEtapas(0);
       }
     } catch (err) {
       setTodosParesCarregados([]);
-      setTotalRodadas(0);
+      setTotalEtapas(0);
     }
   };
 
   useEffect(() => {
-    if (todosParesCarregados.length === 0 && totalRodadas === 0) {
+    if (todosParesCarregados.length === 0 && totalEtapas === 0) {
       fetchData();
     }
-    else if (rodadaAtual <= totalRodadas && todosParesCarregados.length > 0) {
-      iniciarRodada(todosParesCarregados[rodadaAtual - 1]);
+    else if (etapaAtual <= totalEtapas && todosParesCarregados.length > 0) {
+      iniciarEtapa(todosParesCarregados[etapaAtual - 1]);
     }
-  }, [rodadaAtual, todosParesCarregados, iniciarRodada, totalRodadas]);
+  }, [etapaAtual, todosParesCarregados, iniciarEtapa, totalEtapas]);
 
   const tentarChecar = useCallback((indSinal, indSignificado) => {
     if (indSinal === null || indSignificado === null || feedback || modalData) return;
 
-    const sinalEscolhido = sinais[indSinal];
-    const significadoEscolhido = significados[indSignificado];
+    const sinalEscolhido = sinaisExibidos[indSinal];
+    const significadoEscolhido = significadosExibidos[indSignificado];
 
-    const pareado = paresRodada.find(
-      (p) => (p.caminhoImagem || p.sinal) === sinalEscolhido && p.significado === significadoEscolhido
+    const pareado = paresRestantesEtapa.find(
+      (p) => p.caminhoImagem === sinalEscolhido && p.significado === significadoEscolhido
     );
 
     if (pareado) {
       setFeedback("certo");
-      setAcertosTotais(ant => ant + 1);
+
+      const novosAcertosEtapa = acertosEtapa + 1;
+      setAcertosEtapa(novosAcertosEtapa);
+
+      const novosSinais = sinaisExibidos.filter((_, i) => i !== indSinal);
+      const novosSignificados = significadosExibidos.filter((_, i) => i !== indSignificado);
+
+      const novosParesRestantes = paresRestantesEtapa.filter(p => p !== pareado);
 
       setTimeout(() => {
-        avancarOuFinalizar();
+        setFeedback(null);
+        setSelecionadoSinal(null);
+        setSelecionadoSignificado(null);
+        setSinaisExibidos(novosSinais);
+        setSignificadosExibidos(novosSignificados);
+        setParesRestantesEtapa(novosParesRestantes);
+
+        if (novosAcertosEtapa === PARES_POR_ETAPA && totalEtapas > 0) {
+          avancarOuFinalizar(acertosTotais + 1);
+        }
       }, 700);
 
     } else {
       setFeedback("errado");
-      const novosErros = errosNaRodada + 1;
-      setErrosNaRodada(novosErros);
-
-      if (novosErros >= 2) {
-        setModalData({
-          mensagem: "Você errou duas vezes. Esta rodada será pulada. Vamos para a próxima!",
-          tipo: 'erro-pular'
-        });
-
-        setTimeout(() => {
-          setModalData(null);
-          avancarOuFinalizar();
-        }, 1500);
-
-      } else {
-        setTimeout(() => {
-          setFeedback(null);
-          setSelecionadoSinal(null);
-          setSelecionadoSignificado(null);
-        }, 700);
-      }
+      setTimeout(() => {
+        setFeedback(null);
+        setSelecionadoSinal(null);
+        setSelecionadoSignificado(null);
+      }, 700);
     }
-  }, [avancarOuFinalizar, errosNaRodada, sinais, significados, paresRodada, feedback, modalData]);
+  }, [acertosEtapa, feedback, modalData, paresRestantesEtapa, sinaisExibidos, significadosExibidos, avancarOuFinalizar, acertosTotais, PARES_POR_ETAPA, totalEtapas]);
 
-  const selecionarSinal = (indice) => {
-    if (feedback || modalData || !paresRodada.length) return;
+  function selecionarSinal(indice) {
+    if (feedback || modalData) return;
     setSelecionadoSinal(indice);
     tentarChecar(indice, selecionadoSignificado);
   }
 
-  const selecionarSignificado = (indice) => {
-    if (feedback || modalData || !paresRodada.length) return;
+  function selecionarSignificado(indice) {
+    if (feedback || modalData) return;
     setSelecionadoSignificado(indice);
     tentarChecar(selecionadoSinal, indice);
   }
 
   const handleRefazer = () => {
-    setRodadaAtual(1);
+    setEtapaAtual(1);
     setAcertosTotais(0);
     setModalData(null);
     if (todosParesCarregados.length > 0) {
-      iniciarRodada(todosParesCarregados[0]);
+      iniciarEtapa(todosParesCarregados[0]);
     } else {
-      fetchData();
+      setSinaisExibidos(DEMO_PARES.map(p => p.caminhoImagem));
+      setSignificadosExibidos(DEMO_PARES.map(p => p.significado));
+      setParesRestantesEtapa(DEMO_PARES);
     }
   };
 
   const handleVoltarAtividades = () => {
+    setModalData(null);
     navigate("/atividades");
   };
 
-  const porcentagem = totalRodadas > 0 ? Math.round((rodadaAtual / totalRodadas) * 100) : 0;
-  const isGameReady = totalRodadas > 0;
+  const porcentagem = totalEtapas > 0 ? Math.round((etapaAtual / totalEtapas) * 100) : 0;
 
   return (
-    <div className="associacao-avancado">
+    <div className="associacao-basico">
       {modalData && (
         <FeedbackModal
           mensagem={modalData.mensagem}
@@ -230,10 +231,10 @@ export default function AssosiacaoAvancado() {
       <Cabecalho logado={true} />
 
       <div className="banner-conteudo">
-        <img src="/maovermelha.png" alt="Mão vermelha" className="banner-imagem" />
+        <img src="/maovermelha.png" alt="Mão azul" className="banner-imagem" />
         <div className="banner-texto">
-          <h1>Associação Avançada</h1>
-          <p>Conecte frases e conceitos complexos</p>
+          <h1>Frases em Libras</h1>
+          <p>Monte as imagens na ordem da frase</p>
         </div>
       </div>
 
@@ -242,61 +243,52 @@ export default function AssosiacaoAvancado() {
           <div className="preenchimento" style={{ width: `${porcentagem}%` }} />
         </div>
         <div className="legenda-progresso">
-          {isGameReady ?
-            `Rodada ${rodadaAtual} de ${totalRodadas} (Acertos: ${acertosTotais})` :
-            `Aguardando dados da API...`
+          {totalEtapas > 0
+            ? `Etapa ${etapaAtual} de ${totalEtapas} (Pares acertados: ${acertosEtapa} de ${PARES_POR_ETAPA})`
+            : `Etapa 0 de 0 (Exibindo demonstração)`
           }
         </div>
       </section>
 
       <main className="conteudo" aria-busy={!!modalData}>
         <div className="card">
-          <h2>Clique em um sinal e depois em seu significado</h2>
-          {isGameReady && errosNaRodada > 0 &&
-            <p className="alerta-erro">Erros nesta rodada: {errosNaRodada}/2</p>
-          }
+          <h2>Clique em um sinal e depois em sua letra correspondente</h2>
 
-          <div className="grade" style={{ opacity: isGameReady ? 1 : 0.5, pointerEvents: isGameReady ? 'auto' : 'none' }}>
+          <div className="grade">
             <div className="coluna sinais">
-              {sinais.map((s, i) => {
+              {sinaisExibidos.map((s, i) => {
                 const ativo = selecionadoSinal === i;
                 const destaque = feedback && selecionadoSinal === i;
-
-                const isImage = s && (s.includes('/') || s.includes('.'));
 
                 return (
                   <button
                     key={i}
                     type="button"
-                    className={`botao-sinal ${ativo ? "ativo selecionado" : ""} ${destaque ? (feedback === "certo" ? "certo" : "errado") : ""
+                    className={`botao-sinal ${ativo ? "ativo" : ""} ${destaque ? (feedback === "certo" ? "certo" : "errado") : ""
                       }`}
                     onClick={() => selecionarSinal(i)}
                     aria-pressed={ativo}
                     disabled={!!modalData}
                   >
-                    {isImage ? (
-                      <img
-                        src={s}
-                        alt={`Sinal de Libras ${i + 1}`}
-                        className="sinal-imagem"
-                      />
-                    ) : (
-                      <span className="emoji">{s}</span>
-                    )}
+                    <img
+                      src={s}
+                      alt={`Sinal em LIBRAS ${i + 1}`}
+                      className="sinal-imagem"
+                    />
                   </button>
                 );
               })}
             </div>
 
             <div className="coluna significados">
-              {significados.map((s, i) => {
+              {significadosExibidos.map((s, i) => {
                 const ativo = selecionadoSignificado === i;
                 const destaque = feedback && selecionadoSignificado === i;
                 return (
                   <button
                     key={i}
                     type="button"
-                    className={`botao-significado ${ativo ? "ativo selecionado" : ""} ${destaque ? (feedback === "certo" ? "certo" : "errado") : ""
+                    className={`botao-significado ${ativo ? "ativo" : ""} ${destaque ? (feedback === "certo" ? "certo" : "errado") : ""
                       }`}
                     onClick={() => selecionarSignificado(i)}
                     aria-pressed={ativo}

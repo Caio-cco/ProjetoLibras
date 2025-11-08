@@ -17,6 +17,8 @@ import AssosiacaoAvancado from "./pages/AssosiacaoAvancado";
 import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
 import AssosiacaoBasico from "./components/AssosiacaoBasico"; 
+import FraseAvancado from "./pages/FraseAvancado";
+import Forca from "./pages/Forca";
 
 import Nos from "./components/nos"; 
 
@@ -222,6 +224,15 @@ function Navegacao() {
         />
 
         <Route
+          path="/frase-avancado"
+          element={
+            <ProtectedRoute>
+              <FraseAvancado />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/teoria"
           element={
             <ProtectedRoute>
@@ -239,6 +250,14 @@ function Navegacao() {
           }
         />
 
+        <Route
+          path="/forca"
+          element={
+            <ProtectedRoute>
+              <Forca />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
