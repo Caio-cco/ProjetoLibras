@@ -18,9 +18,8 @@ import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
 import AssosiacaoBasico from "./components/AssosiacaoBasico"; 
 
-// >>> IMPORT CORRIGIDO PARA O COMPONENTE "QUEM SOMOS" <<<
 import Nos from "./components/nos"; 
-// ----------------------------------------------------
+
 
 
 function isAuthenticated() {
