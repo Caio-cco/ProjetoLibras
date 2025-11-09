@@ -70,6 +70,16 @@ export default function Fundadores() {
                   className="Instagram"
                 >
                   <FaInstagram size={24} />
+            
+                </a>
+                <a
+                  href={membro.linkedin}
+                  target="_blank"   
+                  rel="noopener noreferrer"
+                  className="Linkdin"
+                >
+                  <FaLinkedin size={24} />
+            
                 </a>
              
               </div>
