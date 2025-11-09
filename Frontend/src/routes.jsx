@@ -64,7 +64,7 @@ function Navegacao() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Página inicial (pública) */}
+      
         <Route
           path="/"
           element={
@@ -74,7 +74,7 @@ function Navegacao() {
           }
         />
 
-        {/* Rotas de autenticação (públicas) */}
+ 
         <Route
           path="/login"
           element={
@@ -103,8 +103,12 @@ function Navegacao() {
             element={<Nos />} 
         />
 
+       <Route 
+            path="/forca" 
+            element={<Forca />} 
+       />
 
-        {/* Rotas Protegidas (logadas) */}
+
         <Route
           path="/homeL"
           element={
@@ -250,14 +254,6 @@ function Navegacao() {
           }
         />
 
-        <Route
-          path="/forca"
-          element={
-            <ProtectedRoute>
-              <Forca />
-            </ProtectedRoute>
-          }
-        />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

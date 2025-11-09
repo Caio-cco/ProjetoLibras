@@ -72,7 +72,7 @@ export default function Cabecalho({ logado = false }) {
   return (
     <>
       <header className="cabecalho">
-        {/* Logo — NÃO MEXER */}
+       
         <div className="cabecalho-left">
           <div className="imagem">
             <Link to={logado ? "/homeL" : "/"}>
@@ -81,7 +81,7 @@ export default function Cabecalho({ logado = false }) {
           </div>
         </div>
 
-        {/* Links do meio */}
+
         <div className={`cabecalho-center ${menuOpen ? "open" : ""}`}>
           <nav className="titulos">
             <Link to="/atividades" onClick={() => setMenuOpen(false)}>

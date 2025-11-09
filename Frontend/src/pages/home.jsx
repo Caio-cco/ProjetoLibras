@@ -27,7 +27,6 @@ export default function Home() {
         <Fundadores />
       </div>
 
-      {/* ALVO DO SCROLL */}
       <div id="quem-somos" className="secao-quem-somos">
         <Nos />
       </div>

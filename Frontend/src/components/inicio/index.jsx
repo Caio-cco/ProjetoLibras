@@ -18,7 +18,7 @@ export default function Inicio() {
         </button>
       </div>
 
-      {/* 🌊 Onda suave no final */}
+ 
       <div className="onda-fundo">
   <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
   <path
