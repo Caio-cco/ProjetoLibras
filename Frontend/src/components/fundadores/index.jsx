@@ -27,7 +27,7 @@ export default function Fundadores() {
       descricao:
         "Diretor de Inteligência Artificial e cofundador da Hand Talk. Formado em Arquitetura e especializado em animação 3D no Canadá. Google Developer Expert e mentor do Google for Startups.",
       imagem: "./marcos.png",
-      linkedin: "https://www.linkedin.com/in/marcos/",
+      linkedin: "https://www.linkedin.com/in/marcos-souza-do-carmo-697044265/",
       instagram: "https://www.instagram.com/markcyss15?igsh=cHRveTE5b3pueHVz",
     },
     {

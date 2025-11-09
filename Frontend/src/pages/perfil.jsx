@@ -217,16 +217,7 @@ export default function PerfilAluno() {
 
                 />
 
-                <textarea
-
-                  placeholder="bio"
-
-                  value={bio}
-
-                  onChange={(e) => setBio(e.target.value)}
-
-                />
-
+               
                 <input
 
                   placeholder="telefone"
