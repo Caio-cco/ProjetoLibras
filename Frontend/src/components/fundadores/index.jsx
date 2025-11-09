@@ -9,7 +9,7 @@ export default function Fundadores() {
       descricao:
         "Publicitário e especialista em comunicação estratégica. Cofundador e Diretor Executivo da Hand Talk, uma das startups mais premiadas do Brasil. Reconhecido pela ONU e eleito Empreendedor do Ano pela EY.",
       imagem: "./caio.jpg",
-      linkedin: "https://www.linkedin.com/in/caiomello/",
+      linkedin: "https://www.linkedin.com/in/caio-sousa-mello-405254252/",
       instagram: "https://www.instagram.com/_eljadon/",
     },
     {
