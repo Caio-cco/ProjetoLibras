@@ -187,6 +187,7 @@ import Rodape from "../rodape";
 import "./index.scss";
 import { useState, useEffect } from "react";
 import Card from '../../components/Card';
+import useFetch from "../FetchSinais/Index";
 
 
 const sampleCards = [
@@ -214,19 +215,8 @@ export default function Atividades() {
     const [dificuldade, setDificuldade] = useState([]);
     const [query, setQuery] = useState("");
     const [nivelFiltro, setNivelFiltro] = useState("Todos");
-    const [cursos, setCursos] = useState([]);
+    //const [cursos, setCursos] = useState([]);
     const navegar = useNavigate();
-
-    const filtered = cursos.filter((c) => {
-        const q = query.trim().toLowerCase();
-
-        if (q && !`${c.titulo} ${c.descricao} ${c.nome}`.toLowerCase().includes(q)) return false;
-
-        if (nivelFiltro && nivelFiltro !== "Todos") {
-            return c.nome === nivelFiltro;
-        }
-        return true;
-    });
 
     const token = localStorage.getItem("authToken");
 
@@ -246,9 +236,20 @@ export default function Atividades() {
 
     useEffect(() => {
         fetchData('http://localhost:5010/dificuldades', setDificuldade);
-        fetchData('http://localhost:5010/obtercursos', setCursos);
     }, []);
 
+    const { data: cursos } = useFetch('http://localhost:5010/obtercursos', token);
+
+    const filtered = cursos?.filter((c) => {
+        const q = query.trim().toLowerCase();
+
+        if (q && !`${c.titulo} ${c.descricao} ${c.nome}`.toLowerCase().includes(q)) return false;
+
+        if (nivelFiltro && nivelFiltro !== "Todos") {
+            return c.nome === nivelFiltro;
+        }
+        return true;
+    }) || [];
 
     const lidarComNavegacao = (card) => {
         const title = card.titulo;
@@ -299,7 +300,6 @@ export default function Atividades() {
         }
     };
 
-
     return (
         <div>
             <Cabecalho logado={true} />
@@ -324,7 +324,7 @@ export default function Atividades() {
                             <option value="Todos">Todos</option>
 
                             {dificuldade?.map((item) => (
-                                <option key={item.id} value={item.nome}>
+                                <option key={item.id_dificuldade} value={item.nome}>
                                     {item.nome}
                                 </option>
                             ))}
@@ -344,7 +344,7 @@ export default function Atividades() {
                 <main className="cards-grid">
                     {filtered.map((card) => (
                         <Card
-                            key={card.id}
+                            key={card.id_curso}
                             atividade={card}
                             aoNavegar={lidarComNavegacao}
                         />

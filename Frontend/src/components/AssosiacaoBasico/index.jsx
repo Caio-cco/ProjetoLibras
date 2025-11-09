@@ -315,7 +315,7 @@ import Cabecalho from "../../components/cabecalho";
 import Rodape from "../../components/rodape";
 import "./index.scss";
 
-const API_URL = 'http://localhost:5010/pares-associacao';
+//const API_URL = 'http://localhost:5010/pares-associacao';
 
 const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades, tipo }) => {
   if (tipo !== 'fim') {
@@ -365,6 +365,8 @@ export default function AssosiacaoBasico() {
 
   const [modalData, setModalData] = useState(null);
 
+  //const [paresDaEtapa, setParesDaEtapa] = useState([]);
+
   const navigate = useNavigate();
   const token = localStorage.getItem("authToken");
 
@@ -378,6 +380,8 @@ export default function AssosiacaoBasico() {
   };
 
   const iniciarEtapa = useCallback((paresDaEtapa) => {
+    console.log('paresDaEtapa:', paresDaEtapa);
+
     if (!paresDaEtapa || paresDaEtapa.length === 0) {
       setParesRestantesEtapa([]);
       setSinaisExibidos([]);
@@ -416,19 +420,28 @@ export default function AssosiacaoBasico() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch('http://localhost:5010/sinais', {
         headers: { "x-access-token": token },
       });
 
       if (!res.ok) throw new Error("Falha ao carregar dados.");
 
       const data = await res.json();
-      const pares = data.pares || [];
+      console.log(data);
+      console.log(totalEtapas);
 
-      if (pares.length > 0) {
+      if (Array.isArray(data) && data.length > 0) {
+        const pares = data.map((item) => ({
+          caminhoImagem:item.url_imagem,
+          significado: item.descricao,
+        }));
+
+        console.log("Pares mapeados", pares);
+
         setTodosParesCarregados(pares);
         setTotalEtapas(pares.length);
-        setParesPorEtapa(pares[0].length);
+        // setParesPorEtapa(pares.length);
+        setParesPorEtapa(1);
         iniciarEtapa(pares[0]);
       } else {
         setTodosParesCarregados([]);

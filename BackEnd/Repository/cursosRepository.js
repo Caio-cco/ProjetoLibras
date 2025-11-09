@@ -63,3 +63,11 @@ export async function verificarCursos() {
     const [registros] = await conection.query(comando);
     return registros;
 }
+
+export async function obterSinais() {
+    const comando = `
+        select * from imagem_sinal
+    `;
+    const [registros] = await conection.query(comando);
+    return registros;
+}
