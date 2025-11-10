@@ -27,18 +27,6 @@
     }
   }
 
-  .footer__links {
-    display: flex;
-    gap: 1.5rem;
-    a {
-      color: #ffffffcc;
-      text-decoration: none;
-      transition: color 0.3s;
-      &:hover {
-        color: #5db1ff;
-      }
-    }
-  }
 
   .footer__credits {
     p {

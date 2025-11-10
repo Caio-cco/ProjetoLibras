@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa";
-import axios from "axios";
+
+
 import "./index.scss";
 
 export default function Cabecalho({ logado = false }) {
@@ -123,15 +123,6 @@ export default function Cabecalho({ logado = false }) {
             </div>
           ) : (
             <Link to="/perfil" className="icone-perfil">
-              {/* {fotoPerfil ? (
-                <img
-                  src={fotoPerfil}
-                  alt="Foto perfil"
-                  className="foto-perfil"
-                />
-              ) : (
-                <FaUserCircle size={36} />
-              )} */}
               <img src={fotoFinal} alt="Foto perfil" className="foto-perfil" />
             </Link>
           )}

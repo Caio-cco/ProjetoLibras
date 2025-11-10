@@ -4,7 +4,6 @@ import {
   BookOpen,
   Users,
   LayoutDashboard,
-  LogOut,
   Search,
   Filter,
 } from "lucide-react";
@@ -101,9 +100,12 @@ export default function AdminDashboard() {
             <Users size={18} /> Alunos
           </button>
 
-          <button onClick={handleLogout}>
-            <LogOut size={18} /> Sair
-          </button>
+      <button className={abaAtiva}
+      onClick={() => navigate("/perfil")}> Perfil
+
+      </button>
+          
+
         </nav>
       </aside>
 

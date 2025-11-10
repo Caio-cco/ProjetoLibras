@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./login.scss";
 
 import GoogleIcon from "../icons/google.png";
-
 
 const BACKEND_URL =
   import.meta.env.MODE === "production"
@@ -16,7 +17,6 @@ const BACKEND_URL =
 export default function LoginCadastro() {
   const navigate = useNavigate();
   const [modo, setModo] = useState("login");
-
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginSenha, setLoginSenha] = useState("");
@@ -49,12 +49,11 @@ export default function LoginCadastro() {
   const irParaLogin = () => setModo("login");
   const irParaCadastro = () => setModo("cadastro");
 
- 
   async function handleLogin(e) {
     e.preventDefault();
     try {
       if (!loginEmail || !loginSenha) {
-        alert("Preencha todos os campos!");
+        toast.warn("⚠️ Preencha todos os campos!");
         return;
       }
 
@@ -71,11 +70,15 @@ export default function LoginCadastro() {
       localStorage.setItem("authToken", token);
       localStorage.setItem("name", name);
       localStorage.setItem("id", id);
-      alert(`Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
-      navigate("/homel");
+
+      toast.success(`👋 Bem-vindo(a), ${userPayload.nome || userPayload.email}!`, {
+        autoClose: 2500,
+      });
+
+      setTimeout(() => navigate("/homel"), 1500);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.erro || "Falha ao fazer login.");
+      toast.error(err.response?.data?.erro || "❌ Falha ao fazer login.");
     }
   }
 
@@ -83,33 +86,35 @@ export default function LoginCadastro() {
     e.preventDefault();
     try {
       if (!cadNome || !cadEmail || !cadSenha || !cadConfSenha) {
-        alert("Preencha todos os campos!");
+        toast.warn("⚠️ Preencha todos os campos!");
         return;
       }
       if (/\d/.test(cadNome)) {
-        alert("O nome não pode conter números!");
+        toast.error("🚫 O nome não pode conter números!");
         return;
       }
       if (cadSenha !== cadConfSenha) {
-        alert("As senhas não coincidem!");
+        toast.error("❌ As senhas não coincidem!");
         return;
       }
-  
+
       const res = await axios.post(`${BACKEND_URL}/usuario`, {
         email: cadEmail,
         senha: cadSenha,
         name: cadNome,
       });
-  
+
       if (res.data.novoId) {
-        alert("Conta criada com sucesso! Faça login agora.");
+        toast.success("✅ Conta criada com sucesso! Faça login agora.", {
+          autoClose: 2500,
+        });
         setModo("login");
         setLoginEmail(cadEmail);
         setLoginSenha("");
       }
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.erro || "Falha ao criar conta.");
+      toast.error(err.response?.data?.erro || "❌ Falha ao criar conta.");
     }
   }
 
@@ -129,22 +134,27 @@ export default function LoginCadastro() {
         localStorage.setItem("authToken", token);
         localStorage.setItem("name", name);
         localStorage.setItem("id", id);
-        alert(`Login com sucesso! Bem-vindo(a), ${userPayload.nome || userPayload.email}!`);
-        navigate("/homel");
+
+        toast.success(`✅ Login bem-sucedido! Bem-vindo(a), ${name}!`, {
+          autoClose: 2500,
+        });
+
+        setTimeout(() => navigate("/homel"), 1500);
       } catch (error) {
         console.error("Erro ao autenticar com o backend:", error);
-        alert("Falha na autenticação com o Google.");
+        toast.error("❌ Falha na autenticação com o Google.");
       }
     },
     onError: (error) => {
       console.error("Erro no login com o Google:", error);
-      alert("Erro ao tentar fazer login com o Google.");
+      toast.error("⚠️ Erro ao tentar fazer login com o Google.");
     },
   });
 
- 
   return (
     <div className="login-cadastro-container">
+      {/* Container do Toast */}
+      <ToastContainer position="top-right" theme="colored" />
 
       <div className="switch-container">
         <button
@@ -165,7 +175,7 @@ export default function LoginCadastro() {
       <div className="conteudo-container">
         {modo === "login" ? (
           <div className="login-section">
-            <h2>Bem vindo de volta</h2>
+            <h2>Bem-vindo de volta</h2>
             <p>Faça login para continuar sua jornada de aprendizado</p>
 
             <form onSubmit={handleLogin}>
@@ -202,10 +212,6 @@ export default function LoginCadastro() {
                 Cadastre-se aqui!
               </span>
             </p>
-
-            <a href="#" className="forgot">
-              Esqueceu sua senha?
-            </a>
           </div>
         ) : (
           <div className="cadastro-section">

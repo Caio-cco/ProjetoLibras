@@ -4,7 +4,6 @@ import Home from "./pages/home";
 import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
 import HomeLogado from "./pages/homeLogado";
-import Chat from "./pages/chat";
 import JogoDasFrases from "./pages/Frase"; 
 import Teoria from "./pages/Teoria"; 
 import AssociacaoIntermediario from "./pages/AssosiacaoIntermediario";
@@ -103,10 +102,7 @@ function Navegacao() {
             element={<Nos />} 
         />
 
-       <Route 
-            path="/forca" 
-            element={<Forca />} 
-       />
+       
 
 
         <Route
@@ -137,13 +133,15 @@ function Navegacao() {
         />
 
         <Route
-          path="/chat"
+          path="/forca"
           element={
             <ProtectedRoute>
-              <Chat />
+              <Forca />
             </ProtectedRoute>
           }
         />
+
+        
 
         <Route
           path="/atividades"
