@@ -16,6 +16,16 @@ $cor-texto-claro: #ffffff;
     min-height: 100vh;
 }
 
+.status-rodada {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: $cor-secundaria;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 2px solid $cor-borda-clara;
+}
+
 .banner-conteudo {
     position: relative;
     width: 100%;
@@ -97,6 +107,24 @@ $cor-texto-claro: #ffffff;
     margin-bottom: 40px;
     border-bottom: 1px solid $cor-borda-clara;
     padding-bottom: 30px;
+}
+
+.sinal-palavra-area {
+    flex-shrink: 0;
+    width: 200px; 
+    height: 200px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid $cor-primaria;
+    border-radius: 10px;
+    overflow: hidden;
+
+    .sinal-palavra-img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
 }
 
 .forca-estrutura {
