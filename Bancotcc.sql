@@ -31,8 +31,9 @@ create table curso (
     titulo varchar(200) not null,
     descricao text,
     id_dificuldade int not null,
+    url_img varchar(255),
     data_criacao timestamp default current_timestamp,
-    foreign key (id_dificuldade) references dificuldade(id_dificuldade),
+    foreign key (id_dificuldade) references dificuldade(id_dificuldade)
 );
 
 
@@ -140,3 +141,51 @@ create table resposta_usuario (
     foreign key (id_usuario) references usuario(id_usuario),
     foreign key (id_pergunta) references pergunta(id_pergunta)
 );
+
+select*from curso;
+
+insert into imagem_sinal(url_imagem, descricao)
+    values
+    ("/alfabetoLibras/LibrasA.png", "Letra A"),
+    ("/alfabetoLibras/LibrasB.png", "Letra B"),
+    ("/alfabetoLibras/LibrasC.png", "Letra C"),
+    ("/alfabetoLibras/LibrasCCedilha.png", "Letra C Cedilha"),
+    ("/alfabetoLibras/LibrasD.png", "Letra D"),
+    ("/alfabetoLibras/LibrasE.png", "Letra E"),
+    ("/alfabetoLibras/LibrasF.png", "Letra F"),
+    ("/alfabetoLibras/LibrasG.png", "Letra G"),
+    ("/alfabetoLibras/LibrasH.png", "Letra H"),
+    ("/alfabetoLibras/LibrasI.png", "Letra I"),
+    ("/alfabetoLibras/LibrasJ.png", "Letra J"),
+    ("/alfabetoLibras/LibrasK.png", "Letra K"),
+    ("/alfabetoLibras/LibrasL.png", "Letra L"),
+    ("/alfabetoLibras/LibrasM.png", "Letra M"),
+    ("/alfabetoLibras/LibrasN.png", "Letra N"),
+    ("/alfabetoLibras/LibrasO.png", "Letra O"),
+    ("/alfabetoLibras/LibrasP.png", "Letra P"),
+    ("/alfabetoLibras/LibrasQ.png", "Letra Q"),
+    ("/alfabetoLibras/LibrasR.png", "Letra R"),
+    ("/alfabetoLibras/LibrasS.png", "Letra S"),
+    ("/alfabetoLibras/LibrasT.png", "Letra T"),
+    ("/alfabetoLibras/LibrasU.png", "Letra U"),
+    ("/alfabetoLibras/LibrasV.png", "Letra V"),
+    ("/alfabetoLibras/LibrasW.png", "Letra W"),
+    ("/alfabetoLibras/LibrasX.png", "Letra X"),
+    ("/alfabetoLibras/LibrasY.png", "Letra Y"),
+    ("/alfabetoLibras/LibrasZ.png", "Letra Z");
+    
+insert into curso(titulo, descricao, id_dificuldade, url_img)
+    values
+    ("Associação", "Associe a letra ao sinal", 1, "associacao-img"),
+    ("Associação", "Associe a palavra ao sinal", 2, "associacao-img"),
+    ("Associação", "Associe a frase ao sinal", 3, "associacao-img"),
+    ("Quiz", "Teste de sinais básicos", 1, "quiz-img"),
+    ("Quiz", "Teste de frases e vocabulário", 2, "quiz-img"),
+    ("Quiz", "Teste de gramática e contexto", 3, "quiz-img"),
+    ("Jogo das Frases", "Construa frases simples", 1, "frases-img"),
+    ("Jogo das Frases", "Use classificadores e verbos", 2, "frases-img"),
+    ("Jogo das Frases", "Crie textos completos", 3, "frases-img"),
+    ("Teoria", "Alfabeto, números e cumprimentos", 1, "teorico-img"),
+    ("Teoria", "Gramática e estrutura da Libras", 2, "teorico-img"),
+    ("Teoria", "História, cultura e regionalismos", 3, "teorico-img");
+    
