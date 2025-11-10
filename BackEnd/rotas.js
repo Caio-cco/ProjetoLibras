@@ -12,4 +12,5 @@ export function adicionarRotas(api) {
     api.use(adminController)
 
     api.use('/public/storage', express.static('public/storage'))
+    api.use('/alfabetoLibras', express.static('public/alfabetoLibras'))
 }

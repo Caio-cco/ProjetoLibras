@@ -195,11 +195,14 @@ export default function JogoDaForca() {
                             <section className="teclado">
                                 <h3 className="titulo-teclado">Adivinhe uma letra:</h3>
                                 <div className="botoes-letras">
+
                                     {letrasDisponiveis.split("").map((letra) => {
                                         const letraUpper = letra.toUpperCase();
                                         const tentada = letrasTentadas.includes(letraUpper);
                                         const acertada = tentada && palavraAtual.palavra.toUpperCase().includes(letraUpper);
                                         const errada = tentada && !palavraAtual.palavra.toUpperCase().includes(letraUpper);
+
+                                        const imagemLetra = `http://localhost:5010/alfabetoLibras/Libras${letraUpper}.png`;
 
                                         return (
                                             <button
@@ -208,10 +211,16 @@ export default function JogoDaForca() {
                                                 onClick={() => handleAdivinhar(letra)}
                                                 disabled={tentada || !!modal}
                                             >
-                                                {letra}
+                                                <img
+                                                    src={imagemLetra}
+                                                    alt={`Letra ${letraUpper} em Libras`}
+                                                    className="img-letra"
+                                                />
                                             </button>
                                         );
                                     })}
+
+
                                 </div>
                             </section>
 

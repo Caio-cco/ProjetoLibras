@@ -280,46 +280,48 @@ $cor-texto-claro: #ffffff;
         gap: 8px;
 
         .btn-letra {
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
             background-color: $cor-secundaria;
-            color: $cor-texto-claro;
             border: none;
-            border-radius: 8px;
-            font-size: 1.4em;
-            font-weight: 700;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.15s;
-            box-shadow: 0 3px 0 color.adjust($cor-secundaria, $lightness: -20%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s, background-color 0.3s, box-shadow 0.2s;
+            box-shadow: 0 4px 0 color.adjust($cor-secundaria, $lightness: -20%);
+
+            .img-letra {
+                width: 55px;
+                height: 55px;
+                object-fit: contain;
+                pointer-events: none;
+                user-select: none;
+            }
 
             &:hover:not(:disabled) {
+                transform: scale(1.05);
                 background-color: color.adjust($cor-secundaria, $lightness: -5%);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 0 color.adjust($cor-secundaria, $lightness: -20%);
             }
 
             &:disabled {
+                opacity: 0.7;
                 cursor: not-allowed;
-                opacity: 0.8;
-                box-shadow: none;
-                transform: translateY(3px);
             }
 
             &.tentada {
-                box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-                transform: translateY(2px);
+                opacity: 0.6;
             }
 
             &.acertada {
-                background-color: #28a745; 
-                box-shadow: 0 3px 0 color.adjust(#28a745, $lightness: -20%);
-                color: $cor-texto-claro;
+                background-color: #28a745;
+                box-shadow: 0 4px 0 color.adjust(#28a745, $lightness: -20%);
             }
-
+            
             &.errada {
                 background-color: #dc3545;
-                box-shadow: 0 3px 0 color.adjust(#dc3545, $lightness: -20%);
-                color: $cor-texto-claro;
+                box-shadow: 0 4px 0 color.adjust(#dc3545, $lightness: -20%);
             }
         }
     }
