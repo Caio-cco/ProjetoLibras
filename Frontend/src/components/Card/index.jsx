@@ -16,8 +16,8 @@ export default function Card({ atividade, aoNavegar }) {
             onClick={() => aoNavegar(atividade)} 
             style={{ cursor: 'pointer' }}
         >
-            {/* <div className={`card-media ${atividade.imageClass}`}>
-            </div> */}
+            <div className={`card-media ${atividade.url_img}`}>
+            </div>
             <div className="card-body">
                 <h3>{atividade.titulo} - {atividade.nome}</h3>
                 <p className="subtitle">{atividade.descricao}</p>

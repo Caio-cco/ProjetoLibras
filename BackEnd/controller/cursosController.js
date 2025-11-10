@@ -10,8 +10,10 @@ endpoints.get('/obtercursos', async (req, resp) => {
     resp.send(registros);
 })
 
-endpoints.get('/sinais', async (req, resp) => {
-    let registros = await repoCursos.obterSinais();
+endpoints.get('/sinais/:id1/:id2', async (req, resp) => {
+    let id1 = req.params.id1;
+    let id2 = req.params.id2;
+    let registros = await repoCursos.obterSinais(id1, id2);
     resp.send(registros);
 })
 

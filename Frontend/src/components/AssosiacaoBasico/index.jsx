@@ -420,7 +420,7 @@ export default function AssosiacaoBasico() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch('http://localhost:5010/sinais', {
+      const res = await fetch('http://localhost:5010/sinais/1/27', {
         headers: { "x-access-token": token },
       });
 

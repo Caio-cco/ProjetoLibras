@@ -239,7 +239,7 @@ export default function Atividades() {
     }, []);
 
     const { data: cursos } = useFetch('http://localhost:5010/obtercursos', token);
-
+    console.log(cursos);
     const filtered = cursos?.filter((c) => {
         const q = query.trim().toLowerCase();
 

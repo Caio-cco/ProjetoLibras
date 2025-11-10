@@ -64,10 +64,11 @@ export async function verificarCursos() {
     return registros;
 }
 
-export async function obterSinais() {
+export async function obterSinais(id1, id2) {
     const comando = `
         select * from imagem_sinal
+            where id_imagem between ? and ?;
     `;
-    const [registros] = await conection.query(comando);
+    const [registros] = await conection.query(comando, [id1, id2]);
     return registros;
 }
