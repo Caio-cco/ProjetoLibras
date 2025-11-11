@@ -39,7 +39,7 @@ export async function salvarProgresso(id_usuario, id_curso, progresso, possuiPro
                 values
                 (?, ?, ?, now(), case when ? >= 100 then now() else null end);
         `
-        const [registros] = await conection.query(comando, [id_usuario, id_curso, progresso]);
+        const [registros] = await conection.query(comando, [id_usuario, id_curso, progresso, progresso]);
         return registros;
     }
     else {

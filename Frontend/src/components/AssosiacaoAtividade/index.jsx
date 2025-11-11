@@ -32,7 +32,7 @@ const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades
   );
 };
 
-export default function AssosiacaoAtividade({ banner, titulo, descricao, idInicial, idFinal }) {
+export default function AssosiacaoAtividade({ banner, titulo, descricao, idInicial, idFinal, idCurso }) {
 
   const [todosParesCarregados, setTodosParesCarregados] = useState([]);
 
@@ -111,7 +111,7 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
             "x-access-token": token,
           },
           body: JSON.stringify({
-            id_curso: 1,
+            id_curso: idCurso,
             progresso: progresso,
           }),
         });

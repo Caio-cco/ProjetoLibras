@@ -7,6 +7,7 @@ export const AssociacaoBasico = () => (
     descricao="Associe o sinal com a letra do alfabeto"
     idInicial={1}
     idFinal={27}
+    idCurso={1}
   />
 );
 
@@ -17,6 +18,7 @@ export const AssociacaoIntermediario = () => (
     descricao="Associe o sinal com sua palavra correspondente"
     idInicial={28}
     idFinal={37}
+    idCurso={2}
   />
 );
 
@@ -27,5 +29,6 @@ export const AssociacaoAvancado = () => (
     descricao="Associe os sinais às frases"
     idInicial={38}
     idFinal={47}
+    idCurso={3}
   />
 );
