@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Cabecalho from "../../components/cabecalho";
-import Rodape from "../../components/rodape";
+import Cabecalho from "../cabecalho";
+import Rodape from "../rodape";
 import "./index.scss";
 
 const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades, tipo }) => {
@@ -32,7 +32,7 @@ const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades
   );
 };
 
-export default function AssosiacaoBasico() {
+export default function AssosiacaoAtividade({ banner, titulo, descricao, idInicial, idFinal }) {
 
   const [todosParesCarregados, setTodosParesCarregados] = useState([]);
 
@@ -133,7 +133,7 @@ export default function AssosiacaoBasico() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch('http://localhost:5010/sinais/1/27', {
+      const res = await fetch(`http://localhost:5010/sinais/${idInicial}/${idFinal}`, {
         headers: { "x-access-token": token },
       });
 
@@ -284,10 +284,10 @@ export default function AssosiacaoBasico() {
       <Cabecalho logado={true} />
 
       <div className="banner-conteudo">
-        <img src="/mãoazul.png" alt="Mão azul" className="banner-imagem" />
+        <img src={banner} className="banner-imagem" />
         <div className="banner-texto">
-          <h1>Alfabeto em Libras (Datilologia)</h1>
-          <p>Associe o sinal com a letra do alfabeto</p>
+          <h1>{titulo}</h1>
+          <p>{descricao}</p>
         </div>
       </div>
 

@@ -6,16 +6,14 @@ import Perfil from "./pages/perfil";
 import HomeLogado from "./pages/homeLogado";
 import JogoDasFrases from "./pages/Frase"; 
 import Teoria from "./pages/Teoria"; 
-import AssociacaoIntermediario from "./pages/AssosiacaoIntermediario";
 import FrasesIntermediario from "./pages/FraseIntermediario";
 import Quiz from "./pages/Quiz"; 
 import QuizIntermediario from "./pages/QuizIntermediario";
 import TeoriaIntermediario from "./pages/TeoriaIntermediario";
 import QuizAvancado from "./pages/QuizAvançado";
-import AssosiacaoAvancado from "./pages/AssosiacaoAvancado";
 import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
-import AssosiacaoBasico from "./components/AssosiacaoBasico"; 
+import { AssociacaoBasico, AssociacaoIntermediario, AssociacaoAvancado } from "./pages/Associacao";
 import FraseAvancado from "./pages/FraseAvancado";
 import Forca from "./pages/Forca";
 
@@ -184,7 +182,7 @@ function Navegacao() {
           path="/associacao"
           element={
             <ProtectedRoute>
-              <AssosiacaoBasico />
+              <AssociacaoBasico />
             </ProtectedRoute>
           }
         />
@@ -202,7 +200,7 @@ function Navegacao() {
           path="/associacao-avancado"
           element={
             <ProtectedRoute>
-              <AssosiacaoAvancado />
+              <AssociacaoAvancado />
             </ProtectedRoute>
           }
         />

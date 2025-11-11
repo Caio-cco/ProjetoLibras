@@ -13,4 +13,5 @@ export function adicionarRotas(api) {
 
     api.use('/public/storage', express.static('public/storage'))
     api.use('/alfabetoLibras', express.static('public/alfabetoLibras'))
+    api.use('/palavrasEFrases', express.static('public/palavrasEFrases'))
 }
