@@ -331,7 +331,7 @@ import "./index.scss";
 
 const MAX_ERROS = 6;
 const MAX_ROUNDS = 5;
-const API_URL = 'http://localhost:5010/palavras-forca';
+const API_URL = 'http://localhost:5010/sinais/';
 const ALFABETO_URL_BASE = 'http://localhost:5010/alfabetoLibras/';
 
 
@@ -398,7 +398,7 @@ export default function JogoDaForca() {
         if (!palavraObj) return;
 
         setPalavraAtual(palavraObj);
-        setPalavraExibida("_".repeat(palavraObj.palavra.length));
+        setPalavraExibida("_".repeat(palavraObj.descricao.length));
         setLetrasTentadas([]);
         setErros(0);
         setModal(null);
@@ -438,7 +438,7 @@ export default function JogoDaForca() {
     const verificarFimDeRodada = useCallback((errosAtuais, palavraCompleta) => {
         if (!palavraAtual) return false;
 
-        const palavraUpper = palavraAtual.palavra.toUpperCase();
+        const palavraUpper = palavraAtual.descricao.toUpperCase();
         
         let rodadaEncerrada = false;
 
@@ -467,14 +467,15 @@ export default function JogoDaForca() {
         setIsLoading(true);
         setFetchError(false);
         try {
-            const res = await fetch(API_URL, {
+            const res = await fetch(`${API_URL}${48}/${52}`, {
                 headers: { "x-access-token": token },
             });
             if (!res.ok) throw new Error("Falha ao carregar palavras.");
             const data = await res.json();
-            const palavras = data.palavras || []; 
+            //const palavras = data.palavras || []; 
+            const palavras = data;
             
-            if (palavras.length === 0) {
+            if (!Array.isArray(palavras) || palavras.length === 0) {
                 setFetchError(true);
                 return;
             }
@@ -494,7 +495,7 @@ export default function JogoDaForca() {
     }, [fetchData]);
 
     const handleAdivinhar = (letra) => {
-        if (modal || !palavraAtual) return;
+        if (modal || !palavraAtual || typeof palavraAtual.descricao !== "string") return;
 
         const letraUpper = letra.toUpperCase();
 
@@ -503,7 +504,8 @@ export default function JogoDaForca() {
         const novaLetrasTentadas = [...letrasTentadas, letraUpper];
         setLetrasTentadas(novaLetrasTentadas);
 
-        const palavraUpper = palavraAtual.palavra.toUpperCase();
+        const palavraUpper = palavraAtual.descricao.toUpperCase();
+
         let novosErros = erros;
         let palavraExibidaCompleta = "";
 
@@ -583,8 +585,8 @@ export default function JogoDaForca() {
 
                                 <div className="sinal-palavra-area">
                                     <img 
-                                        src={palavraAtual.url_sinal} 
-                                        alt={`Sinal de ${palavraAtual.palavra} em LIBRAS`} 
+                                        src={`http://localhost:5010${palavraAtual.url_imagem}`}
+                                        alt={`Sinal de ${palavraAtual.descricao} em LIBRAS`} 
                                         className="sinal-palavra-img"
                                         onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder-sinal.png' }}
                                     />
@@ -605,8 +607,8 @@ export default function JogoDaForca() {
                                     {letrasDisponiveis.split("").map((letra) => {
                                         const letraUpper = letra.toUpperCase();
                                         const tentada = letrasTentadas.includes(letraUpper);
-                                        const acertada = tentada && palavraAtual.palavra.toUpperCase().includes(letraUpper);
-                                        const errada = tentada && !palavraAtual.palavra.toUpperCase().includes(letraUpper);
+                                        const acertada = tentada && palavraAtual.descricao.toUpperCase().includes(letraUpper);
+                                        const errada = tentada && !palavraAtual.descricao.toUpperCase().includes(letraUpper);
 
                                         const imagemLetra = `${ALFABETO_URL_BASE}Libras${letraUpper}.png`;
 
@@ -614,7 +616,7 @@ export default function JogoDaForca() {
                                             <button
                                                 key={letra}
                                                 className={`btn-letra ${tentada ? 'tentada' : ''} ${acertada ? 'acertada' : ''} ${errada ? 'errada' : ''}`}
-                                                onClick={() => handleAdivinhar(letra)}
+                                                onClick={() => handleAdivinhar(String(letra))}
                                                 disabled={tentada || !!modal}
                                             >
                                                 <img

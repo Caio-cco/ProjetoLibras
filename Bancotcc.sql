@@ -143,6 +143,7 @@ create table resposta_usuario (
 );
 
 select*from curso;
+select*from usuario_curso;
 
 insert into imagem_sinal(url_imagem, descricao)
     values
@@ -172,7 +173,32 @@ insert into imagem_sinal(url_imagem, descricao)
     ("/alfabetoLibras/LibrasW.png", "Letra W"),
     ("/alfabetoLibras/LibrasX.png", "Letra X"),
     ("/alfabetoLibras/LibrasY.png", "Letra Y"),
-    ("/alfabetoLibras/LibrasZ.png", "Letra Z");
+    ("/alfabetoLibras/LibrasZ.png", "Letra Z"),
+    ("/palavrasEFrases/Oi.png", "Oi"),
+    ("/palavrasEFrases/Bem.png", "Bem"),
+    ("/palavrasEFrases/Bom.png", "Bom"),
+    ("/palavrasEFrases/Falar.png", "Falar"),
+    ("/palavrasEFrases/Sinalizar.png", "Sinalizar"),
+    ("/palavrasEFrases/Repetir.png", "Repetir"),
+    ("/palavrasEFrases/Rapido.png",	"Rápido"),
+    ("/palavrasEFrases/Devagar.png", "Devagar"),
+    ("/palavrasEFrases/Conhecer.png", "Conhecer"),
+    ("/palavrasEFrases/Desculpa.png", "Desculpa"),
+    ("/palavrasEFrases/Tudo_bem.png", "Tudo Bem?"),
+    ("/palavrasEFrases/Bom_dia.png", "Bom dia"),
+    ("/palavrasEFrases/Me_ajuda.png", "Me Ajuda"),	
+    ("/palavrasEFrases/Nao_conhecer.png", "Não conhecer"),
+    ("/palavrasEFrases/Ano_passado.png", "Ano passado"),
+    ("/palavrasEFrases/Qual_seu_nome.png", "Qual seu nome?"),
+    ("/palavrasEFrases/Meu_nome.png", "Meu nome"),
+    ("/palavrasEFrases/Prazer_em_te_conhecer.png", "Prazer em te conhecer"),
+    ("/palavrasEFrases/Boa_Tarde.png", "Boa Tarde"),
+    ("/palavrasEFrases/Boa_Noite.png", "Boa Noite"),
+    ("/palavrasEFrases/Chefe.png", "Chefe"),
+    ("/palavrasEFrases/Pessoa.png", "Pessoa"),
+    ("/palavrasEFrases/Banheiro.png", "Banheiro"),
+    ("/palavrasEFrases/Obrigada.png", "Obrigada"),
+    ("/palavrasEFrases/Legal.png", "Legal");
     
 insert into curso(titulo, descricao, id_dificuldade, url_img)
     values
@@ -189,3 +215,5 @@ insert into curso(titulo, descricao, id_dificuldade, url_img)
     ("Teoria", "Gramática e estrutura da Libras", 2, "teorico-img"),
     ("Teoria", "História, cultura e regionalismos", 3, "teorico-img");
     
+select*from usuario_curso;
+select*from imagem_sinal;
