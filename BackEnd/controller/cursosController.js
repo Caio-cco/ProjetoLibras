@@ -5,12 +5,12 @@ import { getAuthentication } from '../utils/jwt.js';
 const endpoints = Router();
 const autenticador = getAuthentication();
 
-endpoints.get('/obtercursos', async (req, resp) => {
+endpoints.get('/obtercursos', autenticador, async (req, resp) => {
     let registros = await repoCursos.verificarCursos();
     resp.send(registros);
 })
 
-endpoints.get('/sinais/:id1/:id2', async (req, resp) => {
+endpoints.get('/sinais/:id1/:id2', autenticador, async (req, resp) => {
     let id1 = req.params.id1;
     let id2 = req.params.id2;
     let registros = await repoCursos.obterSinais(id1, id2);
@@ -25,6 +25,23 @@ endpoints.get('/cursos/progresso', autenticador, async (req, resp) => {
 endpoints.get('/dificuldades', autenticador, async (req, resp) => {
     let dif = await repoCursos.dificuldadeTabela();
     resp.send ({ dif });
+})
+
+endpoints.post('/attprogresso', autenticador, async (req, resp) => {
+    let id_usuario = req.user.id;
+    let id_curso = req.body.id_curso;
+
+    let testeProgresso = await repoCursos.verificarProgresso(id_usuario, id_curso);
+
+    let possuiProgresso = testeProgresso && testeProgresso.length > 0;;
+
+    let progresso = req.body.progresso;
+
+    await repoCursos.salvarProgresso(id_usuario, id_curso, progresso, possuiProgresso);
+
+    let resposta = "Progresso Salvo com Sucesso";
+
+    resp.send({ resposta });
 })
 
 export default endpoints;

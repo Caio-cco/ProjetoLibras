@@ -32,24 +32,25 @@ export async function verificarProgresso(id_usuario, id_curso) {
 }
 
 export async function salvarProgresso(id_usuario, id_curso, progresso, possuiProgresso) {
-    const comando = '';
-    const registros = [];
     
-    if (possuiProgresso == false) {
-        comando = `
-            insert into usuario_curso (id_usuario, id_curso, progresso)
+    if (!possuiProgresso) {
+        const comando = `
+            insert into usuario_curso (id_usuario, id_curso, progresso, data_inicio, data_conclusao)
                 values
-                (?, ?, ?);
+                (?, ?, ?, now(), case when ? >= 100 then now() else null end);
         `
-        [registros] = await conection.query(comando, [id_usuario, id_curso, progresso]);
+        const [registros] = await conection.query(comando, [id_usuario, id_curso, progresso]);
+        return registros;
     }
     else {
-        comando = `
+        const comando = `
             update usuario_curso
-                set progresso = ?
+                set progresso = ?,
+                    data_conclusao = case when ? >= 100 then now() else data_conclusao end
                 where id_usuario = ? and id_curso = ?;
         `
-        [registros] = await conection.query(comando, [progresso, id_usuario, id_curso]);
+        const [registros] = await conection.query(comando, [progresso, progresso, id_usuario, id_curso]);
+        return registros;
     }
 }
 
