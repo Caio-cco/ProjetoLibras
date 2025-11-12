@@ -130,6 +130,36 @@ create table resposta_usuario (
     foreign key (id_pergunta) references pergunta_quiz(id_pergunta)
 );
 
+create table forca_img (
+    id_imagem int auto_increment primary key,
+    url_imagem varchar(255) not null,
+    descricao varchar(255) null,
+    id_dificuldade int
+);
+
+insert into forca_img(url_imagem, descricao, id_dificuldade)
+    values
+	("/palavrasEFrases/Chefe.png", "Chefe", 1),
+    ("/palavrasEFrases/Pessoa.png", "Pessoa", 1),
+    ("/palavrasEFrases/Banheiro.png", "Banheiro", 1),
+    ("/palavrasEFrases/Obrigada.png", "Obrigada", 1),
+    ("/palavrasEFrases/Legal.png", "Legal", 1),
+    ("/palavrasEFrases/Bombeiro.png", "Bombeiro", 1),
+    ("/palavrasEFrases/Policial.png", "Policial", 1),
+    ("/palavrasEFrases/Cozinha.png", "Cozinha", 1),
+    ("/palavrasEFrases/Riacho.png", "Riacho", 1),
+    ("/palavrasEFrases/Caminhao.png", "Caminhão", 1),
+    ("/palavrasEFrases/Disco_Voador.png", "Disco Voador", 2),
+    ("/palavrasEFrases/Helicoptero.png", "Helicóptero", 2),
+    ("/palavrasEFrases/Inteligente.png", "Inteligente", 2),
+    ("/palavrasEFrases/Submarino.png", "Submarino", 2),
+    ("/palavrasEFrases/Foguete.png", "Foguete", 2),
+    ("/palavrasEFrases/Cidade_de_Goias.png", "Cidade de Goiás", 3),
+    ("/palavrasEFrases/Pirenopolis.png", "Pirenópolis", 3),
+    ("/palavrasEFrases/Prazer_em_conhecer.png", "Prazer em te conhecer", 3),
+    ("/palavrasEFrases/Santo_Antonio.png", "Santo Antônio", 3),
+    ("/palavrasEFrases/Onibus.png", "Ônibus", 3);
+
 insert into imagem_sinal(url_imagem, descricao)
     values
     ("/alfabetoLibras/LibrasA.png", "Letra A"),
@@ -178,12 +208,7 @@ insert into imagem_sinal(url_imagem, descricao)
     ("/palavrasEFrases/Meu_nome.png", "Meu nome"),
     ("/palavrasEFrases/Prazer_em_te_conhecer.png", "Prazer em te conhecer"),
     ("/palavrasEFrases/Boa_Tarde.png", "Boa Tarde"),
-    ("/palavrasEFrases/Boa_Noite.png", "Boa Noite"),
-    ("/palavrasEFrases/Chefe.png", "Chefe"),
-    ("/palavrasEFrases/Pessoa.png", "Pessoa"),
-    ("/palavrasEFrases/Banheiro.png", "Banheiro"),
-    ("/palavrasEFrases/Obrigada.png", "Obrigada"),
-    ("/palavrasEFrases/Legal.png", "Legal");
+    ("/palavrasEFrases/Boa_Noite.png", "Boa Noite");
     
 insert into curso(titulo, descricao, id_dificuldade, url_img)
     values
@@ -198,7 +223,10 @@ insert into curso(titulo, descricao, id_dificuldade, url_img)
     ("Jogo das Frases", "Crie textos completos", 3, "frases-img"),
     ("Teoria", "Alfabeto, números e cumprimentos", 1, "teorico-img"),
     ("Teoria", "Gramática e estrutura da Libras", 2, "teorico-img"),
-    ("Teoria", "História, cultura e regionalismos", 3, "teorico-img");
+    ("Teoria", "História, cultura e regionalismos", 3, "teorico-img"),
+    ("Forca", "Jogo da Forca nível Iniciante", 1, "forca-img"),
+    ("Forca", "Jogo da Forca nível Intermediário", 2, "forca-img"),
+    ("Forca", "Jogo da Forca nível Avançado", 3, "forca-img");
     
 insert into pergunta_quiz (enunciado, id_dificuldade)
 	values
@@ -280,3 +308,6 @@ insert into resposta_quiz (id_pergunta, texto, correta)
     (15, "Sobrancelhas levantadas e leve inclinação de cabeça", true),
     (15, "Movimentos repetidos", false),
     (15, "Classificadores largos", false);
+    
+    
+select*from curso;

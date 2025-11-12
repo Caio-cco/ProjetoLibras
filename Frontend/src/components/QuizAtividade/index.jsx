@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Cabecalho from "../cabecalho";
 import Rodape from "../rodape";
 import "./index.scss";
+import { salvarProgresso } from "../salvarProgresso";
 
 export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
 
@@ -95,6 +96,13 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
                 acertosTotais === totalRodadas
                     ? "Parabéns! Você acertou todas as perguntas!"
                     : `Quiz concluído! Você acertou ${acertosTotais} de ${totalRodadas}.`;
+
+            const progresso = Math.round((acertosTotais / totalRodadas) * 100);
+
+            salvarProgresso({
+                idAtividade: idCurso,
+                progresso,
+            });
 
             setModalData({
                 mensagem,

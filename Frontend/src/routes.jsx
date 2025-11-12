@@ -13,7 +13,7 @@ import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
 import { AssociacaoBasico, AssociacaoIntermediario, AssociacaoAvancado } from "./pages/Associacao";
 import FraseAvancado from "./pages/FraseAvancado";
-import Forca from "./pages/Forca";
+import { ForcaAvancado, ForcaBasico, ForcaIntermediario } from "./pages/Forca";
 
 import Nos from "./components/nos"; 
 
@@ -132,7 +132,25 @@ function Navegacao() {
           path="/forca"
           element={
             <ProtectedRoute>
-              <Forca />
+              <ForcaBasico />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/forca-intermediario"
+          element={
+            <ProtectedRoute>
+              <ForcaIntermediario />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/forca-avancado"
+          element={
+            <ProtectedRoute>
+              <ForcaAvancado />
             </ProtectedRoute>
           }
         />

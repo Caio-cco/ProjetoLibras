@@ -58,10 +58,7 @@ export default function Atividades() {
         else if (title === "Jogo das Frases") {
             if (level === "Iniciante") rota = "/frase";
             else if (level === "Intermediário") rota = "/frase-intermediario";
-        } 
-        
-        else if (title === "Imite o Sinal") {
-            rota = "/imiteosinal";
+            else if (level === "Avançado") rota = "/frase-avancado";
         } 
         
         else if (title === "Teoria") {
@@ -74,6 +71,12 @@ export default function Atividades() {
            else if (level === "Intermediário") rota = "/quiz-intermediario";
            else if (level === "Avançado") rota = "/quiz-avancado";
         }
+
+        else if (title === "Forca") {
+            if (level === "Iniciante") rota = "/forca";
+            else if (level === "Intermediário") rota = "/forca-intermediario";
+            else if (level === "Avançado") rota = "/forca-avancado";
+        } 
         
         else if (title === "Em Breve") {
             alert("Em breve! Esta atividade ainda não está disponível.");

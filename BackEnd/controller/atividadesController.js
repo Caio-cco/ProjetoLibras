@@ -12,7 +12,7 @@ endpoints.get('/sinais/:id1/:id2', autenticador, async (req, resp) => {
     resp.send(registros);
 })
 
-endpoints.get('/quiz/:dif', async (req, resp) => {
+endpoints.get('/quiz/:dif', autenticador, async (req, resp) => {
     const dificuldade = req.params.dif;
     const perguntas = await repoAtv.obterPerguntasQuiz(dificuldade);
     const respostas = await repoAtv.obterRespostasQuiz(dificuldade);
@@ -20,29 +20,10 @@ endpoints.get('/quiz/:dif', async (req, resp) => {
     resp.json({ perguntas, respostas });
 })
 
-// endpoints.post('/selectLetras', autenticador, async (req, resp) => {
-//     let registros = await repoAtv.selecionarLetras();
-
-//     resp.send(registros);
-// })
-
-// endpoints.post('/selectPalavras', autenticador, async (req, resp) => {
-//     let registros = await repoAtv.selecionarPalavras();
-
-//     resp.send(registros);
-// })
-
-// endpoints.post('/selectFrases', autenticador, async (req, resp) => {
-//     let registros = await repoAtv.selecionarFrases();
-
-//     resp.send(registros);
-// })
-
-// endpoints.post('/selectImagens', autenticador, async (req, resp) => {
-//     let registros = await repoAtv.selecionarImagens();
-
-//     resp.send(registros);
-// })
-
+endpoints.get('/forca/:dif', autenticador, async (req, resp) => {
+    const dificuldade = req.params.dif;
+    let registros = await repoAtv.obterPalavrasForca(dificuldade);
+    resp.send(registros);
+})
 
 export default endpoints;

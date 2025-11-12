@@ -29,3 +29,13 @@ export async function obterRespostasQuiz(dificuldade) {
     const [registros] = await conection.query(comando, [dificuldade]);
     return registros;
 }
+
+export async function obterPalavrasForca(dificuldade) {
+    const comando = `
+        select id_imagem, url_imagem, descricao
+            from forca_img
+            where id_dificuldade = ?;
+    `;
+    const [registros] = await conection.query(comando, [dificuldade]);
+    return registros;
+}

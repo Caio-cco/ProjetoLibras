@@ -10,13 +10,6 @@ endpoints.get('/obtercursos', autenticador, async (req, resp) => {
     resp.send(registros);
 })
 
-// endpoints.get('/sinais/:id1/:id2', autenticador, async (req, resp) => {
-//     let id1 = req.params.id1;
-//     let id2 = req.params.id2;
-//     let registros = await repoCursos.obterSinais(id1, id2);
-//     resp.send(registros);
-// })
-
 endpoints.get('/cursos/progresso', autenticador, async (req, resp) => {
     let registros = await repoCursos.verificarProgresso();
     resp.send(registros);

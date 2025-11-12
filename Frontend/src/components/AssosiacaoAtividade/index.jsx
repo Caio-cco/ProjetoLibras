@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Cabecalho from "../cabecalho";
 import Rodape from "../rodape";
 import "./index.scss";
+import { salvarProgresso } from "../salvarProgresso";
 
 const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades, tipo }) => {
   if (tipo !== 'fim') {
@@ -103,24 +104,10 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
 
       const progresso = Math.round((novosAcertosTotais / totalEtapas) * 100);
 
-      try {
-        const resposta = await fetch("http://localhost:5010/attprogresso", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": token,
-          },
-          body: JSON.stringify({
-            id_curso: idCurso,
-            progresso: progresso,
-          }),
-        });
-
-        const data = await resposta.json();
-        console.log("Progresso salvo:", data.resposta);
-      } catch (error) {
-        console.error("Erro ao salvar progresso", error);
-      }
+      salvarProgresso({
+        idAtividade: idCurso,
+        progresso,
+      });
 
       setModalData({
         mensagem,
