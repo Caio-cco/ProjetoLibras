@@ -17,6 +17,8 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./admin.scss";
 
 const API_URL = "http://localhost:5010";
@@ -41,8 +43,16 @@ export default function AdminDashboard() {
         params: { nome: busca || null },
       });
       setAlunos(resp.data);
+      toast.success("Lista de alunos carregada com sucesso! 🎓", {
+        position: "top-right",
+        autoClose: 2500,
+      });
     } catch (err) {
       console.error("Erro ao carregar alunos:", err);
+      toast.error("Erro ao carregar alunos 😢", {
+        position: "top-right",
+        autoClose: 2500,
+      });
     }
   }
 
@@ -54,8 +64,16 @@ export default function AdminDashboard() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCursos(resp.data);
+        toast.success("Cursos carregados com sucesso! 📚", {
+          position: "top-right",
+          autoClose: 2500,
+        });
       } catch (err) {
         console.error("Erro ao carregar cursos:", err);
+        toast.error("Erro ao carregar cursos 😢", {
+          position: "top-right",
+          autoClose: 2500,
+        });
       }
     }
     buscarCursos();
@@ -68,14 +86,21 @@ export default function AdminDashboard() {
 
   function handleLogout() {
     localStorage.removeItem("authToken");
-    navigate("/", { replace: true });
+    toast.info("Sessão encerrada com sucesso 👋", {
+      position: "top-right",
+      autoClose: 2000,
+    });
+    setTimeout(() => navigate("/", { replace: true }), 2000);
   }
 
   return (
     <div className="admin-page">
+      {/* Container para exibir os toasts */}
+      <ToastContainer theme="colored" />
+
       <aside className="admin-sidebar">
         <h2 className="logo" onClick={() => navigate("/")}>
-          🤟 Falar é Mágico
+           Falar é Mágico
         </h2>
 
         <nav>
@@ -100,12 +125,16 @@ export default function AdminDashboard() {
             <Users size={18} /> Alunos
           </button>
 
-      <button className={abaAtiva}
-      onClick={() => navigate("/perfil")}> Perfil
+          <button
+            className={abaAtiva}
+            onClick={() => navigate("/perfil")}
+          >
+            👤 Perfil
+          </button>
 
-      </button>
-          
-
+          <button className="sair" onClick={handleLogout}>
+            🚪 Sair
+          </button>
         </nav>
       </aside>
 
@@ -165,7 +194,11 @@ export default function AdminDashboard() {
                     <XAxis dataKey="nome" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="alunos" fill="#ffcc00" radius={[10, 10, 0, 0]} />
+                    <Bar
+                      dataKey="alunos"
+                      fill="#ffcc00"
+                      radius={[10, 10, 0, 0]}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

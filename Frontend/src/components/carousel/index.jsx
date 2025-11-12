@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "./index.scss";
 
 const cards = [
@@ -8,27 +9,28 @@ const cards = [
     title: "Libras para Iniciantes",
     subtitle: "Módulo 1: Primeiros Sinais",
     desc: "Ideal pra quem nunca teve contato, aprenda frases básicas.",
-    image: "/imagem.png",
-    button: "Inscrever-se Agora",
+    image: "/avanco.png",
+    button: "Pratique Agora!",
   },
   {
     title: "Libras para Intermediários",
     subtitle: "Módulo 2: Fluência Conversacional",
     desc: "Aprofunde seus conhecimentos e construa diálogos mais complexos.",
-    image: "/imagem.png",
-    button: "Saiba Mais",
+    image: "/intermediario.png",
+    button: "Pratique Agora!",
   },
   {
     title: "Libras para Avançados",
     subtitle: "Expressão e Cultura",
     desc: "Domine sua interpretação, nuances culturais e diálogos complexos.",
     image: "/iniciante.png",
-    button: "Ver Conteúdo",
+    button: "Pratique Agora!",
   },
 ];
 
 export default function Carousel() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate(); // ✅
 
   const nextCard = () => setActiveIndex((prev) => (prev + 1) % cards.length);
   const prevCard = () => setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
@@ -80,7 +82,11 @@ export default function Carousel() {
                   <p className="subtitle">{card.subtitle}</p>
                   <p>{card.desc}</p>
                 </div>
-                <button>{card.button}</button>
+
+                
+                <button onClick={() => navigate("/atividades")}>
+                  {card.button}
+                </button>
               </motion.div>
             );
           })}

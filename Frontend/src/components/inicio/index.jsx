@@ -19,7 +19,7 @@ export default function Inicio() {
           className="btn"
           onClick={() => navigate("/forca")}
         >
-          Jogo da Forca! Venha Jogar <FaChevronRight/>
+          Jogo da Forca, Jogue Agora! <FaChevronRight/>
         </button>
       </div>
 

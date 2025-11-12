@@ -1,13 +1,12 @@
 import "./index.scss";
-import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
 
 export default function Fundadores() {
   const membros = [
     {
       nome: "Caio Mello",
       cargo: "CEO",
-      descricao:
-        "Publicitário e especialista em comunicação estratégica. Cofundador e Diretor Executivo da Hand Talk, uma das startups mais premiadas do Brasil. Reconhecido pela ONU e eleito Empreendedor do Ano pela EY.",
+      descricao:"Profissional entusiasta da comunicação, times colaborativos e inovação. Atuo como desenvolvedor Back-End,com uma bagagem em banco de dados e gestão de projetos.",
       imagem: "./caio.jpg",
       linkedin: "https://www.linkedin.com/in/caio-sousa-mello-405254252/",
       instagram: "https://www.instagram.com/_eljadon/",
@@ -16,16 +15,16 @@ export default function Fundadores() {
       nome: "João Pedro",
       cargo: "CEO",
       descricao:
-        "Diretor de Tecnologia e cofundador da Hand Talk, com mais de 20 anos de experiência em desenvolvimento de software. Eleito Empreendedor Social do Futuro pela Folha de São Paulo.",
-      imagem: "https://i.imgur.com/qkg9SDo.jpg",
-      linkedin: "https://www.linkedin.com/in/caiomello/",
-      instagram: "https://www.instagram.com",
+        "Sou João Pedro, tenho 19 anos e curso Tecnologia da Informação. No TCC, participei do desenvolvimento do front-end, ficando encarregado principalmente das atividades do site.",
+      imagem: "./joao.jpg",
+      linkedin: "https://www.linkedin.com/in/pedro-santos-9728032b2?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      instagram: "https://www.instagram.com/_jotape06_?igsh=MXJ0cDUyNXRweHI1Nw==",
     },
     {
       nome: "Marcos Souza",
       cargo: "CEO",
       descricao:
-        "Diretor de Inteligência Artificial e cofundador da Hand Talk. Formado em Arquitetura e especializado em animação 3D no Canadá. Google Developer Expert e mentor do Google for Startups.",
+        "Desenvolvedor interessado em se tornar FullStack. Atualmente com foco maior em Backend e interesse em aprender a Criação de Arte e Animação Digitais 2D e 3D. Formado em Desenvolvimento de Jogos.",
       imagem: "./marcos.png",
       linkedin: "https://www.linkedin.com/in/marcos-souza-do-carmo-697044265/",
       instagram: "https://www.instagram.com/markcyss15?igsh=cHRveTE5b3pueHVz",
