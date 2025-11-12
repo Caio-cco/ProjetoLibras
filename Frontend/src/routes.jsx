@@ -12,9 +12,7 @@ import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
 import { AssociacaoBasico, AssociacaoIntermediario, AssociacaoAvancado } from "./pages/Associacao";
 import { ForcaAvancado, ForcaBasico, ForcaIntermediario } from "./pages/Forca";
-
 import Nos from "./components/nos"; 
-
 
 
 function isAuthenticated() {
@@ -36,10 +34,34 @@ function isAuthenticated() {
 }
 
 
+function isAdmin() {
+  try {
+    const token = localStorage.getItem("authToken");
+    if (!token) return false;
+    const decoded = jwt_decode(token);
+    return decoded.role === "admin"; 
+  } catch {
+    return false;
+  }
+}
+
+
 function ProtectedRoute({ children }) {
   const location = useLocation();
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+  return children;
+}
+
+
+function AdminRoute({ children }) {
+  const location = useLocation();
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+  if (!isAdmin()) {
+    return <Navigate to="/homeL" replace state={{ from: location }} />;
   }
   return children;
 }
@@ -52,219 +74,43 @@ function PublicOnlyRoute({ children }) {
   return children;
 }
 
-
 function Navegacao() {
   return (
     <BrowserRouter>
       <Routes>
+
+     
+        <Route path="/" element={<PublicOnlyRoute><Home /></PublicOnlyRoute>} />
+        <Route path="/login" element={<PublicOnlyRoute><LoginCadastro /></PublicOnlyRoute>} />
+        <Route path="/cadastro" element={<PublicOnlyRoute><LoginCadastro /></PublicOnlyRoute>} />
+        <Route path="/quem-somos" element={<Nos />} />
+        <Route path="/contato" element={<Nos />} />
+
       
-        <Route
-          path="/"
-          element={
-            <PublicOnlyRoute>
-              <Home />
-            </PublicOnlyRoute>
-          }
-        />
-
- 
-        <Route
-          path="/login"
-          element={
-            <PublicOnlyRoute>
-              <LoginCadastro />
-            </PublicOnlyRoute>
-          }
-        />
-
-        <Route
-          path="/cadastro"
-          element={
-            <PublicOnlyRoute>
-              <LoginCadastro />
-            </PublicOnlyRoute>
-          }
-        />
-
-        <Route
-            path="/quem-somos"
-            element={<Nos />} 
-        />
-        
-        <Route
-            path="/contato"
-            element={<Nos />} 
-        />
+        <Route path="/homeL" element={<ProtectedRoute><HomeLogado /></ProtectedRoute>} />
+        <Route path="/perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
 
        
+        <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
 
+       
+        <Route path="/forca" element={<ProtectedRoute><ForcaBasico /></ProtectedRoute>} />
+        <Route path="/forca-intermediario" element={<ProtectedRoute><ForcaIntermediario /></ProtectedRoute>} />
+        <Route path="/forca-avancado" element={<ProtectedRoute><ForcaAvancado /></ProtectedRoute>} />
+        <Route path="/atividades" element={<ProtectedRoute><Atividades /></ProtectedRoute>} />
+        <Route path="/quiz" element={<ProtectedRoute><QuizBasico /></ProtectedRoute>} />
+        <Route path="/quiz-intermediario" element={<ProtectedRoute><QuizIntermediario /></ProtectedRoute>} />
+        <Route path="/quiz-avancado" element={<ProtectedRoute><QuizAvancado /></ProtectedRoute>} />
+        <Route path="/associacao" element={<ProtectedRoute><AssociacaoBasico /></ProtectedRoute>} />
+        <Route path="/associacao-intermediario" element={<ProtectedRoute><AssociacaoIntermediario /></ProtectedRoute>} />
+        <Route path="/associacao-avancado" element={<ProtectedRoute><AssociacaoAvancado /></ProtectedRoute>} />
+        <Route path="/frase" element={<ProtectedRoute><FrasesBasico /></ProtectedRoute>} />
+        <Route path="/frase-intermediario" element={<ProtectedRoute><FrasesIntermediario /></ProtectedRoute>} />
+        <Route path="/frase-avancado" element={<ProtectedRoute><FrasesAvancado /></ProtectedRoute>} />
+        <Route path="/teoria" element={<ProtectedRoute><Teoria /></ProtectedRoute>} />
+        <Route path="/teoria-intermediario" element={<ProtectedRoute><TeoriaIntermediario /></ProtectedRoute>} />
 
-        <Route
-          path="/homeL"
-          element={
-            <ProtectedRoute>
-              <HomeLogado />
-            </ProtectedRoute>
-          }
-        />
-   <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <Admin />
-            </ProtectedRoute>
-          }
-        />
-
-
-        <Route
-          path="/perfil"
-          element={
-            <ProtectedRoute>
-              <Perfil />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/forca"
-          element={
-            <ProtectedRoute>
-              <ForcaBasico />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/forca-intermediario"
-          element={
-            <ProtectedRoute>
-              <ForcaIntermediario />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/forca-avancado"
-          element={
-            <ProtectedRoute>
-              <ForcaAvancado />
-            </ProtectedRoute>
-          }
-        />
-
-        
-
-        <Route
-          path="/atividades"
-          element={
-            <ProtectedRoute>
-              <Atividades />
-            </ProtectedRoute>
-          }
-        />
-        
-        <Route
-          path="/quiz"
-          element={
-            <ProtectedRoute>
-              <QuizBasico />
-            </ProtectedRoute>
-          }
-        />
-
-
-        <Route
-          path="/quiz-intermediario"
-          element={ 
-            <ProtectedRoute>
-              <QuizIntermediario />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-            path="/quiz-avancado"
-            element={ 
-              <ProtectedRoute>
-                <QuizAvancado />
-              </ProtectedRoute>
-            }
-        />
-
-        <Route
-          path="/associacao"
-          element={
-            <ProtectedRoute>
-              <AssociacaoBasico />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/associacao-intermediario"
-          element={
-            <ProtectedRoute>
-              <AssociacaoIntermediario />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/associacao-avancado"
-          element={
-            <ProtectedRoute>
-              <AssociacaoAvancado />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/frase"
-          element={
-            <ProtectedRoute>
-              <FrasesBasico />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/frase-intermediario"
-          element={
-            <ProtectedRoute>
-              <FrasesIntermediario />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/frase-avancado"
-          element={
-            <ProtectedRoute>
-              <FrasesAvancado />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/teoria"
-          element={
-            <ProtectedRoute>
-              <Teoria />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/teoria-intermediario"
-          element={
-            <ProtectedRoute>
-              <TeoriaIntermediario />
-            </ProtectedRoute>
-          }
-        />
-
-
+      
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

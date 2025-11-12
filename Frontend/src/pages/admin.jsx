@@ -8,6 +8,7 @@ import {
   Filter,
 } from "lucide-react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import {
   BarChart,
   Bar,
@@ -31,6 +32,24 @@ export default function AdminDashboard() {
   const [cursos, setCursos] = useState([]);
   const [alunos, setAlunos] = useState([]);
 
+  // ✅ Verifica se o usuário é admin
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        navigate("/login", { replace: true });
+        return;
+      }
+      const decoded = jwt_decode(token);
+      if (decoded.role !== "admin") {
+        toast.warn("Acesso restrito! 🚫");
+        navigate("/homeL", { replace: true });
+      }
+    } catch {
+      navigate("/login", { replace: true });
+    }
+  }, [navigate]);
+
   useEffect(() => {
     buscarAlunos();
   }, [busca]);
@@ -43,16 +62,9 @@ export default function AdminDashboard() {
         params: { nome: busca || null },
       });
       setAlunos(resp.data);
-      toast.success("Lista de alunos carregada com sucesso! 🎓", {
-        position: "top-right",
-        autoClose: 2500,
-      });
     } catch (err) {
       console.error("Erro ao carregar alunos:", err);
-      toast.error("Erro ao carregar alunos 😢", {
-        position: "top-right",
-        autoClose: 2500,
-      });
+      toast.error("Erro ao carregar alunos 😢");
     }
   }
 
@@ -64,16 +76,9 @@ export default function AdminDashboard() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCursos(resp.data);
-        toast.success("Cursos carregados com sucesso! 📚", {
-          position: "top-right",
-          autoClose: 2500,
-        });
       } catch (err) {
         console.error("Erro ao carregar cursos:", err);
-        toast.error("Erro ao carregar cursos 😢", {
-          position: "top-right",
-          autoClose: 2500,
-        });
+        toast.error("Erro ao carregar cursos 😢");
       }
     }
     buscarCursos();
@@ -86,55 +91,29 @@ export default function AdminDashboard() {
 
   function handleLogout() {
     localStorage.removeItem("authToken");
-    toast.info("Sessão encerrada com sucesso 👋", {
-      position: "top-right",
-      autoClose: 2000,
-    });
-    setTimeout(() => navigate("/", { replace: true }), 2000);
+    toast.info("Sessão encerrada 👋");
+    setTimeout(() => navigate("/", { replace: true }), 1500);
   }
 
   return (
     <div className="admin-page">
-      {/* Container para exibir os toasts */}
       <ToastContainer theme="colored" />
 
       <aside className="admin-sidebar">
-        <h2 className="logo" onClick={() => navigate("/")}>
-           Falar é Mágico
-        </h2>
+        <h2 className="logo" onClick={() => navigate("/")}>Falar é Mágico</h2>
 
         <nav>
-          <button
-            className={abaAtiva === "dashboard" ? "ativo" : ""}
-            onClick={() => setAbaAtiva("dashboard")}
-          >
+          <button className={abaAtiva === "dashboard" ? "ativo" : ""} onClick={() => setAbaAtiva("dashboard")}>
             <LayoutDashboard size={18} /> Dashboard
           </button>
-
-          <button
-            className={abaAtiva === "cursos" ? "ativo" : ""}
-            onClick={() => setAbaAtiva("cursos")}
-          >
+          <button className={abaAtiva === "cursos" ? "ativo" : ""} onClick={() => setAbaAtiva("cursos")}>
             <BookOpen size={18} /> Cursos
           </button>
-
-          <button
-            className={abaAtiva === "alunos" ? "ativo" : ""}
-            onClick={() => setAbaAtiva("alunos")}
-          >
+          <button className={abaAtiva === "alunos" ? "ativo" : ""} onClick={() => setAbaAtiva("alunos")}>
             <Users size={18} /> Alunos
           </button>
-
-          <button
-            className={abaAtiva}
-            onClick={() => navigate("/perfil")}
-          >
-            👤 Perfil
-          </button>
-
-          <button className="sair" onClick={handleLogout}>
-            🚪 Sair
-          </button>
+          <button onClick={() => navigate("/perfil")}>👤 Perfil</button>
+          <button className="sair" onClick={handleLogout}>🚪 Sair</button>
         </nav>
       </aside>
 
@@ -153,9 +132,7 @@ export default function AdminDashboard() {
               <Search size={18} />
               <input
                 type="text"
-                placeholder={`Pesquisar ${
-                  abaAtiva === "cursos" ? "curso" : "aluno"
-                }...`}
+                placeholder={`Pesquisar ${abaAtiva === "cursos" ? "curso" : "aluno"}...`}
                 value={busca}
                 onChange={(e) => setBusca(e.target.value)}
               />
@@ -164,10 +141,7 @@ export default function AdminDashboard() {
             {abaAtiva === "cursos" && (
               <div className="filtro">
                 <Filter size={18} />
-                <select
-                  value={filtroNivel}
-                  onChange={(e) => setFiltroNivel(e.target.value)}
-                >
+                <select value={filtroNivel} onChange={(e) => setFiltroNivel(e.target.value)}>
                   <option value="Todos">Todos</option>
                   <option value="Iniciante">Iniciante</option>
                   <option value="Intermediário">Intermediário</option>
@@ -194,11 +168,7 @@ export default function AdminDashboard() {
                     <XAxis dataKey="nome" />
                     <YAxis />
                     <Tooltip />
-                    <Bar
-                      dataKey="alunos"
-                      fill="#ffcc00"
-                      radius={[10, 10, 0, 0]}
-                    />
+                    <Bar dataKey="alunos" fill="#ffcc00" radius={[10, 10, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -206,11 +176,7 @@ export default function AdminDashboard() {
           ) : abaAtiva === "cursos" ? (
             <table>
               <thead>
-                <tr>
-                  <th>Nome do Curso</th>
-                  <th>Nível</th>
-                  <th>Alunos</th>
-                </tr>
+                <tr><th>Nome do Curso</th><th>Nível</th><th>Alunos</th></tr>
               </thead>
               <tbody>
                 {cursos.map((curso) => (
@@ -225,11 +191,7 @@ export default function AdminDashboard() {
           ) : (
             <table>
               <thead>
-                <tr>
-                  <th>Nome do Aluno</th>
-                  <th>Curso</th>
-                  <th>Progresso</th>
-                </tr>
+                <tr><th>Nome do Aluno</th><th>Curso</th><th>Progresso</th></tr>
               </thead>
               <tbody>
                 {alunos.map((aluno) => (

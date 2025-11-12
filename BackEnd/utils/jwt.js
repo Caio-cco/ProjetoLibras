@@ -1,6 +1,7 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
-const KEY = 'borapracima';
+const KEY = "borapracima";
+
 
 export function generateToken(userInfo) {
   return jwt.sign(
@@ -9,16 +10,21 @@ export function generateToken(userInfo) {
       nome: userInfo.nome || userInfo.name,
       email: userInfo.email,
       foto_url: userInfo.foto_url || userInfo.picture,
-      role: userInfo.role || 'user',
+      role: userInfo.role || "user", // padrão é "user"
     },
     KEY,
-    { expiresIn: '7d' }
+    { expiresIn: "7d" }
   );
 }
 
+
 export function getTokenInfo(req) {
   try {
-    const token = req.headers['x-access-token'] || req.query['x-access-token'] || req.headers.authorization?.split(' ')[1];
+    const token =
+      req.headers["x-access-token"] ||
+      req.query["x-access-token"] ||
+      req.headers.authorization?.split(" ")[1];
+
     if (!token) return null;
     return jwt.verify(token, KEY);
   } catch {
@@ -26,21 +32,29 @@ export function getTokenInfo(req) {
   }
 }
 
-export function getAuthentication(checkRole, throw401 = true) {
+
+export function getAuthentication(checkRole = null, throw401 = true) {
   return (req, res, next) => {
     try {
-      const token = req.headers['x-access-token'] || req.query['x-access-token'] || req.headers.authorization?.split(' ')[1];
-      if (!token) throw new Error('Token ausente');
+      const token =
+        req.headers["x-access-token"] ||
+        req.query["x-access-token"] ||
+        req.headers.authorization?.split(" ")[1];
 
-      const signd = jwt.verify(token, KEY);
-      req.user = signd;
+      if (!token) throw new Error("Token ausente");
 
-      if (checkRole && !checkRole(signd) && signd.role !== 'admin')
-        return res.status(403).json({ erro: 'Acesso negado.' });
+      const decoded = jwt.verify(token, KEY);
+      req.user = decoded;
+
+    
+      if (checkRole && !checkRole(decoded)) {
+        return res.status(403).json({ erro: "Acesso negado. Requer permissão de administrador." });
+      }
 
       next();
     } catch {
-      if (throw401) return res.status(401).json({ erro: 'Token inválido ou não fornecido.' });
+      if (throw401)
+        return res.status(401).json({ erro: "Token inválido ou não fornecido." });
       next();
     }
   };

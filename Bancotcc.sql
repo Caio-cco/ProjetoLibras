@@ -2,15 +2,16 @@ drop database if exists tcc;
 create database tcc;
 use tcc;
 
-create table usuario (
-    id_usuario int AUTO_INCREMENT primary key,
-    nome varchar(100) not null,
-    foto_url varchar(255),
-    telefone varchar(255),
-    email varchar(100) unique not null,
-    senha varchar(255) null,
-    login_social tinyint(1) default 0,
-    data_cadastro timestamp default current_timestamp
+CREATE TABLE usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    foto_url VARCHAR(255),
+    telefone VARCHAR(255),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NULL,
+    login_social TINYINT(1) DEFAULT 0,
+    role enum('user', 'admin') DEFAULT 'user',
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 create table dificuldade (
@@ -87,14 +88,6 @@ create table curso_categoria (
     primary key (id_curso, id_categoria),
     foreign key (id_curso) references curso(id_curso),
     foreign key (id_categoria) references categoria(id_categoria)
-);
-
-
-create table cargo (
-	id_adm int primary key auto_increment,
-    id_usuario int,
-    cargo_adm boolean,
-    foreign key (id_usuario) references usuario(id_usuario)
 );
 
 create table imagem_sinal (

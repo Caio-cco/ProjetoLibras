@@ -3,20 +3,20 @@ import { conection } from "./conection.js";
 
 export async function listarUsuariosComCursos(filtroNome) {
   let comando = `
-    select 
-      u.id_usuario as id,
-      u.nome as nome,
-      c.titulo as curso,
-      uc.progresso as progresso
-    from usuario u
-    join usuario_curso uc on u.id_usuario = uc.id_usuario
-    join curso c on uc.id_curso = c.id_curso
+    SELECT 
+      u.id_usuario AS id,
+      u.nome AS nome,
+      c.titulo AS curso,
+      uc.progresso AS progresso
+    FROM usuario u
+    JOIN usuario_curso uc ON u.id_usuario = uc.id_usuario
+    JOIN curso c ON uc.id_curso = c.id_curso
   `;
 
   const params = [];
 
   if (filtroNome) {
-    comando += ` where u.nome like ?`;
+    comando += ` WHERE u.nome LIKE ?`;
     params.push(`%${filtroNome}%`);
   }
 
@@ -25,20 +25,19 @@ export async function listarUsuariosComCursos(filtroNome) {
 }
 
 
-
 export async function listarCursos() {
   const comando = `
-    select 
-      c.id_curso as id,
+    SELECT 
+      c.id_curso AS id,
       c.titulo,
-      d.nome as dificuldade,
+      d.nome AS dificuldade,
       (
-        select count(*) 
-        from usuario_curso uc 
-        where uc.id_curso = c.id_curso
-      ) as totalAlunos
-    from curso c
-    join dificuldade d on c.id_dificuldade = d.id_dificuldade
+        SELECT COUNT(*) 
+        FROM usuario_curso uc 
+        WHERE uc.id_curso = c.id_curso
+      ) AS totalAlunos
+    FROM curso c
+    JOIN dificuldade d ON c.id_dificuldade = d.id_dificuldade
   `;
 
   const [registros] = await conection.query(comando);
