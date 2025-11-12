@@ -5,10 +5,12 @@ import Rodape from "../rodape";
 import "./index.scss";
 import { salvarProgresso } from "../salvarProgresso";
 
-const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades, tipo }) => {
+const FeedbackModal = ({ mensagem, acertosEtapas, totalEtapas, acertosGerais, errosGerais, onRefazer, onVoltarAtividades, tipo }) => {
   if (tipo !== 'fim') {
     return null;
   }
+  
+  const totalQuestoes = acertosGerais + errosGerais;
 
   return (
     <div className="modal-overlay">
@@ -17,13 +19,18 @@ const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades
 
         {tipo === 'fim' && (
           <>
-            <p>Sua pontuação final: <strong>{acertos} / {total} etapas</strong></p>
+            <p>
+              Placar final de questões: <strong>{acertosGerais} acertos / {errosGerais} erros</strong> (Total: {totalQuestoes})
+            </p>
+            <p>
+              Etapas concluídas: <strong>{acertosEtapas} / {totalEtapas}</strong>
+            </p>
             <div className="modal-actions">
               <button className="btn-voltar" onClick={onVoltarAtividades}>
                 Voltar para Atividades
               </button>
-              <button className="btn-refazer" onClick={acertos < total ? onRefazer : onVoltarAtividades}>
-                {acertos < total ? "Refazer Atividade" : "Próxima Atividade"}
+              <button className="btn-refazer" onClick={onRefazer}>
+                Refazer Atividade
               </button>
             </div>
           </>
@@ -45,7 +52,10 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
 
   const [paresRestantesEtapa, setParesRestantesEtapa] = useState([]);
   const [acertosEtapa, setAcertosEtapa] = useState(0);
-  const [acertosTotais, setAcertosTotais] = useState(0);
+  const [acertosTotais, setAcertosTotais] = useState(0); 
+
+  const [acertosGerais, setAcertosGerais] = useState(0);
+  const [errosGerais, setErrosGerais] = useState(0);
 
   const [sinaisExibidos, setSinaisExibidos] = useState([]);
   const [significadosExibidos, setSignificadosExibidos] = useState([]);
@@ -111,12 +121,14 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
 
       setModalData({
         mensagem,
-        acertos: novosAcertosTotais,
-        total: totalEtapas,
+        acertosEtapas: novosAcertosTotais,
+        totalEtapas: totalEtapas,
+        acertosGerais: acertosGerais,
+        errosGerais: errosGerais,
         tipo: 'fim'
       });
     }
-  }, [etapaAtual, totalEtapas, token]);
+  }, [etapaAtual, totalEtapas, token, idCurso, acertosGerais, errosGerais]);
 
   const fetchData = async () => {
     try {
@@ -176,7 +188,7 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
       const proximaEtapaIndex = etapaAtual - 1;
       iniciarEtapa(todosParesCarregados[proximaEtapaIndex]);
     }
-  }, [todosParesCarregados, totalEtapas, etapaAtual]);
+  }, [todosParesCarregados, totalEtapas, etapaAtual, iniciarEtapa]);
 
 
   const tentarChecar = useCallback((indSinal, indSignificado) => {
@@ -191,6 +203,7 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
 
     if (pareado) {
       setFeedback("certo");
+      setAcertosGerais(ant => ant + 1); 
 
       const novosAcertosEtapa = acertosEtapa + 1;
       setAcertosEtapa(novosAcertosEtapa);
@@ -215,10 +228,38 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
 
     } else {
       setFeedback("errado");
+      setErrosGerais(ant => ant + 1); 
+
+      let parPenalizado = null;
+
+      if (indSinal !== null) {
+        const sinalRemover = sinaisExibidos[indSinal];
+        parPenalizado = paresRestantesEtapa.find(p => p.caminhoImagem === sinalRemover);
+      } else if (indSignificado !== null) {
+        const significadoRemover = significadosExibidos[indSignificado];
+        parPenalizado = paresRestantesEtapa.find(p => p.significado === significadoRemover);
+      }
+
       setTimeout(() => {
         setFeedback(null);
+
+        if (parPenalizado) {
+          const novosParesRestantes = paresRestantesEtapa.filter(p => p !== parPenalizado);
+
+          if (novosParesRestantes.length > 0) {
+            setParesRestantesEtapa(novosParesRestantes);
+            setSinaisExibidos(embaralharArray(novosParesRestantes.map(p => p.caminhoImagem)));
+            setSignificadosExibidos(embaralharArray(novosParesRestantes.map(p => p.significado)));
+            setParesPorEtapa(novosParesRestantes.length);
+            setAcertosEtapa(0);
+          } else {
+            avancarOuFinalizar(acertosTotais);
+          }
+        }
+
         setSelecionadoSinal(null);
         setSelecionadoSignificado(null);
+
       }, 700);
     }
   }, [acertosEtapa, feedback, modalData, paresRestantesEtapa, sinaisExibidos, significadosExibidos, avancarOuFinalizar, acertosTotais, paresPorEtapa, totalEtapas]);
@@ -238,6 +279,8 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
   const handleRefazer = () => {
     setEtapaAtual(1);
     setAcertosTotais(0);
+    setAcertosGerais(0); 
+    setErrosGerais(0);   
     setModalData(null);
 
     if (todosParesCarregados.length > 0) {
@@ -260,8 +303,10 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
       {modalData && (
         <FeedbackModal
           mensagem={modalData.mensagem}
-          acertos={modalData.acertos}
-          total={modalData.total}
+          acertosEtapas={modalData.acertosEtapas}
+          totalEtapas={modalData.totalEtapas}
+          acertosGerais={modalData.acertosGerais}
+          errosGerais={modalData.errosGerais}
           onRefazer={handleRefazer}
           onVoltarAtividades={handleVoltarAtividades}
           tipo={modalData.tipo}
@@ -271,7 +316,7 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
       <Cabecalho logado={true} />
 
       <div className="banner-conteudo">
-        <img src={banner} className="banner-imagem" />
+        <img src={banner} alt={`Banner da atividade ${titulo}`} className="banner-imagem" />
         <div className="banner-texto">
           <h1>{titulo}</h1>
           <p>{descricao}</p>
@@ -284,7 +329,7 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
         </div>
         <div className="legenda-progresso">
           {exibirConteudo
-            ? `Etapa ${etapaAtual} de ${totalEtapas} (Pares acertados: ${acertosEtapa} de ${paresPorEtapa})`
+            ? `Etapa ${etapaAtual} de ${totalEtapas} (Acertos: ${acertosGerais} | Erros: ${errosGerais})`
             : totalEtapas === 0
               ? 'Nenhuma atividade disponível.'
               : 'Carregando atividade...'

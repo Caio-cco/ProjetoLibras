@@ -9,6 +9,8 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
 
     const url = `http://localhost:5010/quiz/${dif}`;
 
+    const token = localStorage.getItem("authToken");
+
     const navigate = useNavigate();
 
     const [perguntas, setPerguntas] = useState([]);
@@ -17,6 +19,7 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
     const [opcaoSelecionada, setOpcaoSelecionada] = useState(null);
     const [feedback, setFeedback] = useState(null);
     const [acertosTotais, setAcertosTotais] = useState(0);
+    const [errosTotais, setErrosTotais] = useState(0);
     const [modalData, setModalData] = useState(null);
     const [opcoesStatus, setOpcoesStatus] = useState({});
     const [carregando, setCarregando] = useState(true);
@@ -31,7 +34,10 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
 
     async function carregarPerguntas() {
         try {
-            const res = await fetch(url);
+            const res = await fetch(url, {
+                headers: token ? { "x-access-token": token } : undefined,
+            });
+
             const data = await res.json();
 
             if (data.perguntas && data.respostas) {
@@ -49,8 +55,8 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
                         respostaCorreta,
                     };
                 });
-                
-                setPerguntas(perguntasComRespostas);
+
+                setPerguntas(perguntasComRespostas.slice(0, 5));
             }
             else {
                 setPerguntas(perguntasPlaceholder);
@@ -88,16 +94,19 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
         checarResposta(opcao);
     }
 
-    function avancarOuFinalizar() {
+    function avancarOuFinalizar(finalScore, finalErrors) {
+        const scoreParaModal = finalScore !== undefined ? finalScore : acertosTotais;
+        const errorsParaModal = finalErrors !== undefined ? finalErrors : errosTotais;
+
         if (rodadaAtual < totalRodadas) {
             setRodadaAtual((ant) => ant + 1);
         } else {
             const mensagem =
-                acertosTotais === totalRodadas
+                scoreParaModal === totalRodadas
                     ? "Parabéns! Você acertou todas as perguntas!"
-                    : `Quiz concluído! Você acertou ${acertosTotais} de ${totalRodadas}.`;
+                    : `Quiz concluído! Você acertou ${scoreParaModal} de ${totalRodadas}.`;
 
-            const progresso = Math.round((acertosTotais / totalRodadas) * 100);
+            const progresso = Math.round((scoreParaModal / totalRodadas) * 100);
 
             salvarProgresso({
                 idAtividade: idCurso,
@@ -106,7 +115,8 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
 
             setModalData({
                 mensagem,
-                acertos: acertosTotais,
+                acertos: scoreParaModal,
+                erros: errorsParaModal,
                 total: totalRodadas,
                 tipo: "fim",
             });
@@ -118,23 +128,30 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
         const indexOpcaoCorreta = perguntaAtual.opcoes.indexOf(respostaCorreta);
         const indexOpcaoSelecionada = perguntaAtual.opcoes.indexOf(opcao);
 
-        if (opcao === respostaCorreta) {
+        const acertou = (opcao === respostaCorreta);
+        let proximoAcertoTotal = acertosTotais;
+        let proximoErroTotal = errosTotais;
+
+        if (acertou) {
             setFeedback("certo");
+            proximoAcertoTotal += 1;
             setAcertosTotais((ant) => ant + 1);
             setOpcoesStatus({ [indexOpcaoSelecionada]: "certo" });
 
             setTimeout(() => {
-                avancarOuFinalizar();
+                avancarOuFinalizar(proximoAcertoTotal, proximoErroTotal);
             }, 1000);
         } else {
             setFeedback("errado");
+            proximoErroTotal += 1;
+            setErrosTotais((ant) => ant + 1);
             setOpcoesStatus({
                 [indexOpcaoSelecionada]: "errado",
                 [indexOpcaoCorreta]: "certo",
             });
 
             setTimeout(() => {
-                avancarOuFinalizar();
+                avancarOuFinalizar(proximoAcertoTotal, proximoErroTotal);
             }, 2000);
         }
     }
@@ -142,6 +159,7 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
     const handleRefazer = () => {
         setRodadaAtual(1);
         setAcertosTotais(0);
+        setErrosTotais(0);
         setModalData(null);
     };
 
@@ -155,7 +173,9 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
 
     const mapeamentoLetra = (indice) => String.fromCharCode(65 + indice);
 
-    const FeedbackModal = ({ mensagem, acertos, total, onRefazer, onVoltarAtividades, tipo }) => {
+    const FeedbackModal = ({ mensagem, acertos, erros, total, onRefazer, onVoltarAtividades, tipo }) => {
+        const totalQuestoes = acertos + erros;
+
         return (
             <div className="modal-overlay">
                 <div className={`modal-content ${tipo}`}>
@@ -164,24 +184,15 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
                     {tipo === "fim" && (
                         <>
                             <p>
-                                Seu placar final: <strong>{acertos} / {total}</strong>
+                                Seu placar final: <strong>{acertos} acertos | {erros} erros</strong> (Total: {totalQuestoes})
                             </p>
                             <div className="modal-actions">
                                 <button className="btn-voltar" onClick={onVoltarAtividades}>
                                     Voltar para Atividades
                                 </button>
-
-                                {acertos < total && (
-                                    <button className="btn-refazer" onClick={onRefazer}>
-                                        Refazer Quiz
-                                    </button>
-                                )}
-
-                                {acertos === total && (
-                                    <button className="btn-refazer" onClick={onVoltarAtividades}>
-                                        Próxima Atividade
-                                    </button>
-                                )}
+                                <button className="btn-refazer" onClick={onRefazer}>
+                                    Refazer Quiz
+                                </button>
                             </div>
                         </>
                     )}
@@ -197,6 +208,7 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
                 <FeedbackModal
                     mensagem={modalData.mensagem}
                     acertos={modalData.acertos}
+                    erros={modalData.erros}
                     total={modalData.total}
                     onRefazer={handleRefazer}
                     onVoltarAtividades={handleVoltarAtividades}
@@ -209,13 +221,12 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
             <div className="banner-conteudo quiz-banner">
                 <img src={banner} className="banner-imagem" />
                 <div className="banner-texto-overlay">
-                    <h1>Quiz de Libras</h1>
+
                     <h1>{titulo}</h1>
-                    <p>Teste seus conhecimentos</p>
                     <p>{descricao}</p>
                 </div>
             </div>
-            
+
             {!perguntaAtual && (
                 <p style={{ textAlign: "center" }}>Carregando...</p>
             )}
@@ -227,7 +238,7 @@ export default function Quiz({ banner, titulo, descricao, dif, idCurso }) {
                             <div className="preenchimento" style={{ width: `${porcentagem}%` }} />
                         </div>
                         <div className="legenda-progresso">
-                            {rodadaAtual} de {totalRodadas} (Acertos: {acertosTotais})
+                            {rodadaAtual} de {totalRodadas} (Acertos: {acertosTotais} | Erros: {errosTotais})
                         </div>
                     </section>
 
