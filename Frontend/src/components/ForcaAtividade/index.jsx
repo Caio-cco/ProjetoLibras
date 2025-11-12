@@ -93,7 +93,7 @@ export default function JogoDaForca({ banner, titulo, descricao, dif, idCurso })
     }, [iniciarRodada]);
 
 
-    const avancarRodada = useCallback(() => {
+    const avancarRodada = useCallback(async () => {
         const proximaRodada = rodadaAtual + 1;
         
         if (proximaRodada <= palavrasSequencia.length && proximaRodada <= MAX_ROUNDS) {
@@ -104,7 +104,7 @@ export default function JogoDaForca({ banner, titulo, descricao, dif, idCurso })
 
             const progresso = Math.round((acertosTotais / totalRodadas) * 100);
             
-            salvarProgresso({
+            await salvarProgresso({
                 idAtividade: idCurso,
                 progresso,
             });

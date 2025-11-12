@@ -26,4 +26,12 @@ endpoints.get('/forca/:dif', autenticador, async (req, resp) => {
     resp.send(registros);
 })
 
+endpoints.get('/frasesAtiv/:dif', async (req, resp) => {
+    const dificuldade = req.params.dif;
+    const frases = await repoAtv.obterFrases(dificuldade);
+    const palavras = await repoAtv.obterPalavrasFrases(dificuldade);
+
+    resp.json({ frases, palavras });
+})
+
 export default endpoints;

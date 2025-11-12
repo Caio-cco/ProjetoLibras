@@ -39,3 +39,26 @@ export async function obterPalavrasForca(dificuldade) {
     const [registros] = await conection.query(comando, [dificuldade]);
     return registros;
 }
+
+export async function obterFrases(dificuldade) {
+    const comando = `
+        select * from frases_ativ
+            where id_dificuldade = ?;
+    `;
+
+    const [registros] = await conection.query(comando, [dificuldade]);
+    return registros;
+}
+
+export async function obterPalavrasFrases(dificuldade) {
+    const comando =  `
+        select id_fraseimg, id_frase, texto_img, url_img, posicao
+            from frases_img
+            inner join frases_ativ on frases_ativ.id_frases = frases_img.id_frase
+            where id_dificuldade = ?
+            order by id_frase, posicao;
+        `;
+
+    const [registros] = await conection.query(comando, [dificuldade]);
+    return registros;
+}

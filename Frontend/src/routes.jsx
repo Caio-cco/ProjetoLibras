@@ -4,15 +4,13 @@ import Home from "./pages/home";
 import LoginCadastro from "./pages/login";
 import Perfil from "./pages/perfil";
 import HomeLogado from "./pages/homeLogado";
-import JogoDasFrases from "./pages/Frase"; 
+import { FrasesAvancado, FrasesBasico, FrasesIntermediario } from "./pages/Frase"; 
 import Teoria from "./pages/Teoria"; 
-import FrasesIntermediario from "./pages/FraseIntermediario";
 import { QuizBasico, QuizIntermediario, QuizAvancado } from "./pages/Quiz"; 
 import TeoriaIntermediario from "./pages/TeoriaIntermediario";
 import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
 import { AssociacaoBasico, AssociacaoIntermediario, AssociacaoAvancado } from "./pages/Associacao";
-import FraseAvancado from "./pages/FraseAvancado";
 import { ForcaAvancado, ForcaBasico, ForcaIntermediario } from "./pages/Forca";
 
 import Nos from "./components/nos"; 
@@ -225,7 +223,7 @@ function Navegacao() {
           path="/frase"
           element={
             <ProtectedRoute>
-              <JogoDasFrases />
+              <FrasesBasico />
             </ProtectedRoute>
           }
         />
@@ -243,7 +241,7 @@ function Navegacao() {
           path="/frase-avancado"
           element={
             <ProtectedRoute>
-              <FraseAvancado />
+              <FrasesAvancado />
             </ProtectedRoute>
           }
         />

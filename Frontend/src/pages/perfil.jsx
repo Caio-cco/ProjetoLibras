@@ -22,11 +22,52 @@ export default function PerfilAluno() {
   const token = localStorage.getItem("authToken");
   const id = localStorage.getItem("id");
 
+  function formatarTelefone(valor) {
+    let apenasNumeros = valor.replace(/\D/g, "");
+
+    if (apenasNumeros.startsWith("55")) {
+      apenasNumeros = apenasNumeros.slice(0, 13);
+      return apenasNumeros
+        .replace(/^55(\d{2})(\d{5})(\d{0,4}).*/, "+55 ($1) $2-$3")
+        .replace(/^55(\d{2})(\d{4})(\d{0,4}).*/, "+55 ($1) $2-$3")
+        .trim();
+    }
+
+    if (apenasNumeros.length <= 10) {
+      return apenasNumeros
+        .replace(/^(\d{0,2})(\d{0,4})(\d{0,4}).*/, (_, a, b, c) =>
+          [a ? `(${a})` : "", b, c ? `-${c}` : ""].join(" ").trim()
+        )
+        .trim();
+    } else {
+      return apenasNumeros
+        .replace(/^(\d{2})(\d{5})(\d{0,4}).*/, "($1) $2-$3")
+        .trim();
+    }
+  }
+
   const handleSubmit = async () => {
+
+    const nomeValido = /^[A-Za-zÀ-ÿ\s]+$/.test(nome.trim()) || nome.trim() === "";
+    const telefoneNumerico = telefone.replace(/\D/g, "");
+    const telefoneValido = telefoneNumerico.length >= 8 && telefoneNumerico.length <= 15;
+
+    if (!nomeValido) {
+      toast.error("O nome deve conter apenas letras e espaços.", { position: "top-right" });
+      return;
+    }
+
+    if (telefone.trim() !== "" && !telefoneValido) {
+      toast.error("Telefone inválido. Use apenas números e DDD corretos.", { position: "top-right" });
+      return;
+    }
+
     const dadosParaEnviar = {
       ...perfilatt,
       nome: nome.trim() === "" ? perfil.nome : nome,
-      telefone: telefone.trim() === "" ? perfil.telefone : telefone,
+      telefone: 
+        telefone.trim() === "" 
+        ? perfil.telefone : telefone.replace(/\D/g, ""),
     };
 
     try {
@@ -83,9 +124,6 @@ export default function PerfilAluno() {
       headers: {
         "x-access-token": token,
       },
-    })
-    .then((response) => {
-      console.log(response.data);
     })
     .catch((error) => {
       console.error(error);
@@ -182,7 +220,10 @@ export default function PerfilAluno() {
                 <input
                   placeholder="telefone"
                   value={telefone}
-                  onChange={(e) => setTelefone(e.target.value)}
+                  onChange={(e) => {
+                    const valor = e.target.value;
+                    setTelefone(formatarTelefone(valor));
+                  }}
                 />
 
                 <input
@@ -202,11 +243,19 @@ export default function PerfilAluno() {
                 <h2>{perfil.nome}</h2>
                 <p className="bio">{bio}</p>
                 <p>
-                  <strong>Telefone:</strong> {perfil.telefone}
+                  <strong>Telefone:</strong> {" "}
+                    {perfil.telefone
+                    ? formatarTelefone(perfil.telefone)
+                    : "Não informado"}
                 </p>
 
                 <div className="botoes">
-                  <button className="editar" onClick={() => setEditando(true)}>
+                  <button className="editar" onClick={() => {
+                    setNome(perfil.nome || "");
+                    setTelefone(formatarTelefone(perfil.telefone || ""));
+                    setEditando(true)
+                  }}
+                >
                     Editar perfil
                   </button>
                 </div>

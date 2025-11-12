@@ -104,7 +104,7 @@ export default function AssosiacaoAtividade({ banner, titulo, descricao, idInici
 
       const progresso = Math.round((novosAcertosTotais / totalEtapas) * 100);
 
-      salvarProgresso({
+      await salvarProgresso({
         idAtividade: idCurso,
         progresso,
       });

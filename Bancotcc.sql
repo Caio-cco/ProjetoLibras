@@ -118,6 +118,22 @@ create table resposta_quiz (
     foreign key (id_pergunta) references pergunta_quiz(id_pergunta)
 );
 
+create table frases_ativ (
+	id_frases int primary key auto_increment,
+    texto varchar(255) not null,
+    id_dificuldade int,
+    foreign key (id_dificuldade) references dificuldade(id_dificuldade)
+);
+
+create table frases_img (
+	id_fraseimg int primary key auto_increment,
+    id_frase int,
+    texto_img varchar(255),
+    url_img varchar(255),
+    posicao int not null,
+    foreign key (id_frase) references frases_ativ(id_frases)
+);
+
 create table resposta_usuario (
     id_resposta_usuario int auto_increment primary key,
     id_usuario int not null,
@@ -156,10 +172,15 @@ insert into forca_img(url_imagem, descricao, id_dificuldade)
     ("/palavrasEFrases/Foguete.png", "Foguete", 2),
     ("/palavrasEFrases/Cidade_de_Goias.png", "Cidade de Goiás", 3),
     ("/palavrasEFrases/Pirenopolis.png", "Pirenópolis", 3),
-    ("/palavrasEFrases/Prazer_em_conhecer.png", "Prazer em te conhecer", 3),
+    ("/palavrasEFrases/Prazer_em_te_conhecer.png", "Prazer em te conhecer", 3),
     ("/palavrasEFrases/Santo_Antonio.png", "Santo Antônio", 3),
-    ("/palavrasEFrases/Onibus.png", "Ônibus", 3);
-
+    ("/palavrasEFrases/Onibus.png", "Ônibus", 3),
+    ("/palavrasEFrases/Sobradinho.png", "Sobradinho", 2),
+    ("/palavrasEFrases/Barco_a_Vela.png", "Barco a Vela", 2),
+    ("/palavrasEFrases/Recanto_das_Emas.png", "Recanto das Emas", 3),
+	("/palavrasEFrases/Valparaiso.png", "Valparaiso", 3),
+	("/palavrasEFrases/Taguatinga.png", "Taguatinga", 3);
+    
 insert into imagem_sinal(url_imagem, descricao)
     values
     ("/alfabetoLibras/LibrasA.png", "Letra A"),
@@ -310,4 +331,93 @@ insert into resposta_quiz (id_pergunta, texto, correta)
     (15, "Classificadores largos", false);
     
     
-select*from curso;
+insert into frases_ativ(texto, id_dificuldade)
+    values
+    ('Oi, tudo bem?', 1),
+	('Oi, qual seu nome?', 1),
+	('Boa noite, prazer em te conhecer.', 1),
+	('Pai Policial', 1),
+	('Mãe Médica', 1),
+	('Oi, tudo bom?', 1),
+	('Riacho Fundo', 3),
+	('Santa Maria', 2),
+	('Auxiliar de Cozinha', 2),
+	('Planaltina de Goiás', 3),
+	('Núcleo Bandeirante', 3),
+	('Cidade Ocidental', 3),
+	('Santo Antônio do Descoberto', 3),
+	('Transportes', 2),
+	('Auxiliar de Limpeza', 2),
+	('Vicente Pires', 3),
+	('Jardins Mangueirão', 3),
+	('Lago Norte', 2),
+	('Lago Sul', 2),
+	('Nervoso', 1),
+	('Maio', 1),
+	('Amar Mãe', 1),
+	('Pai Adotivo Policial', 2),
+	('Oi Bombeiro, tudo bem?', 3),
+	('Cidade de Brasília', 3);
+    
+insert into frases_img (id_frase, texto_img, url_img, posicao) 
+	values
+	(1, 'Oi', 'Oi.png', 1),
+	(1, 'Tudo bem?', 'Tudo_bem.png', 2),
+	(2, 'Oi', 'Oi.png', 1),
+	(2, 'qual seu nome?', 'Qual_seu_nome.png', 2),
+	(3, 'Boa noite', 'Boa_noite.png', 1),
+	(3, 'Prazer em te conhecer', 'Prazer_em_te_conhecer.png', 2),
+	(4, 'Pai', 'Pai.png', 1),
+	(4, 'Policial', 'Policial.png', 2),
+	(5, 'Mãe', 'Mae.png', 1),
+	(5, 'Médica', 'Medica.png', 2),
+	(6, 'Oi', 'Oi.png', 1),
+	(6, 'Tudo Bom?', 'Tudo_bom.png', 2),
+	(7, 'Riacho', 'Riacho.png', 1),
+	(7, 'Fundo', 'Fundo.png', 2),
+	(8, 'Santa', 'Santa.png', 1),
+	(8, 'Maria', 'Maria.png', 2),
+	(9, 'Auxiliar', 'Auxiliar.png', 1),
+	(9, 'de', 'De.png', 2),
+	(9, 'Cozinha', 'Cozinha.png', 3),
+	(10, 'Planaltina', 'Planaltina.png', 1),
+	(10, 'de Goiás', 'Goias.png', 2),
+	(11, 'Núcleo', 'Nucleo.png', 1),
+	(11, 'Bandeirante', 'Bandeirante.png', 2),
+	(12, 'Cidade', 'Cidade.png', 1),
+	(12, 'Ocidental', 'Ocidental.png', 2),
+	(13, 'Santo Antônio', 'Santo_Antonio.png', 1),
+	(13, 'do Descoberto', 'Descoberto.png', 2),
+	(14, 'Transportes', 'Transportes1.png', 1),
+    (14, ' ', 'Transportes2.png', 2),
+    (14, ' ', 'Transportes3.png', 3),
+	(15, 'Auxiliar', 'Auxiliar.png', 1),
+	(15, 'de', 'De.png', 2),
+	(15, 'Limpeza', 'Limpeza.png', 3),
+	(16, 'Vicente', 'Vicente.png', 1),
+	(16, 'Pires', 'Pires.png', 2),
+	(17, 'Jardins', 'Jardins.png', 1),
+	(17, 'Mangueirão', 'Mangueirao.png', 2),
+	(18, 'Lago', 'Lago.png', 1),
+	(18, 'Norte', 'Norte.png', 2),
+	(19, 'Lago', 'Lago.png', 1),
+	(19, 'Sul', 'Sul1.png', 2),
+    (19, ' ', 'Sul2.png', 3),
+	(20, 'Nervosa', 'Nervosa.png', 1),
+	(21, 'M', 'M.png', 1),
+    (21, 'a', 'A.png', 2),
+    (21, 'i', 'I.png', 3),
+    (21, 'o', 'O.png', 4),
+	(22, 'Amar', 'Amar1.png', 1),
+    (22, ' ', 'Amar2.png', 2),
+	(22, 'Mãe', 'Mae.png', 3),
+	(23, 'Pai', 'Pai.png', 1),
+	(23, 'Adotivo', 'Adotivo.png', 2),
+	(23, 'Policial', 'Policial.png', 3),
+	(24, 'Oi', 'Oi.png', 1),
+	(24, 'Bombeiro', 'Bombeiro.png', 2),
+	(24, 'Tudo', 'Tudo.png', 3),
+	(24, 'Bem', 'Bem.png', 4),
+	(25, 'Cidade', 'Cidade1.png', 1),
+	(25, 'Brasília', 'Brasilia1.png', 2),
+	(25, ' ', 'Brasilia2.png', 3);
