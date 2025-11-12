@@ -7,10 +7,8 @@ import HomeLogado from "./pages/homeLogado";
 import JogoDasFrases from "./pages/Frase"; 
 import Teoria from "./pages/Teoria"; 
 import FrasesIntermediario from "./pages/FraseIntermediario";
-import Quiz from "./pages/Quiz"; 
-import QuizIntermediario from "./pages/QuizIntermediario";
+import { QuizBasico, QuizIntermediario, QuizAvancado } from "./pages/Quiz"; 
 import TeoriaIntermediario from "./pages/TeoriaIntermediario";
-import QuizAvancado from "./pages/QuizAvançado";
 import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
 import { AssociacaoBasico, AssociacaoIntermediario, AssociacaoAvancado } from "./pages/Associacao";
@@ -154,7 +152,7 @@ function Navegacao() {
           path="/quiz"
           element={
             <ProtectedRoute>
-              <Quiz />
+              <QuizBasico />
             </ProtectedRoute>
           }
         />

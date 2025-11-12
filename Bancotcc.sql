@@ -2,7 +2,6 @@ drop database if exists tcc;
 create database tcc;
 use tcc;
 
-
 create table usuario (
     id_usuario int AUTO_INCREMENT primary key,
     nome varchar(100) not null,
@@ -14,7 +13,6 @@ create table usuario (
     data_cadastro timestamp default current_timestamp
 );
 
-
 create table dificuldade (
     id_dificuldade int AUTO_INCREMENT primary key,
     nome varchar(50) not null
@@ -25,7 +23,6 @@ insert into dificuldade (nome) values
 ('Intermediário'), 
 ('Avançado');
 
-
 create table curso (
     id_curso int AUTO_INCREMENT primary key,
     titulo varchar(200) not null,
@@ -35,7 +32,6 @@ create table curso (
     data_criacao timestamp default current_timestamp,
     foreign key (id_dificuldade) references dificuldade(id_dificuldade)
 );
-
 
 create table usuario_curso (
     id_usuario int not null,
@@ -48,7 +44,6 @@ create table usuario_curso (
     foreign key (id_curso) references curso(id_curso)
 );
 
-
 create table aula (
     id_aula int AUTO_INCREMENT primary key,
     id_curso int not null,
@@ -59,7 +54,6 @@ create table aula (
     foreign key (id_curso) references curso(id_curso)
 );
 
-
 create table atividade (
     id_atividade int auto_increment primary key,
     id_curso int not null,
@@ -69,7 +63,6 @@ create table atividade (
     ordem int default 0,
     foreign key (id_curso) references curso(id_curso)
 );
-
 
 create table progresso (
     id_progresso int AUTO_INCREMENT primary key,
@@ -110,25 +103,20 @@ create table imagem_sinal (
     descricao varchar(255) null
 );
 
-
-create table pergunta (
+create table pergunta_quiz (
     id_pergunta int auto_increment primary key,
-    id_atividade int not null,
     enunciado text not null,
-    imagem_url varchar(255) null,
-    video_url varchar(255) null,
-    foreign key (id_atividade) references atividade(id_atividade)
+    id_dificuldade int,
+    foreign key (id_dificuldade) references dificuldade(id_dificuldade)
 );
 
-create table resposta (
+create table resposta_quiz (
     id_resposta int auto_increment primary key,
     id_pergunta int not null,
     texto varchar(255) null,
-    imagem_url varchar(255) null,
     correta boolean default false,
-    foreign key (id_pergunta) references pergunta(id_pergunta)
+    foreign key (id_pergunta) references pergunta_quiz(id_pergunta)
 );
-
 
 create table resposta_usuario (
     id_resposta_usuario int auto_increment primary key,
@@ -139,11 +127,8 @@ create table resposta_usuario (
     correta boolean,
     data_resposta timestamp default current_timestamp,
     foreign key (id_usuario) references usuario(id_usuario),
-    foreign key (id_pergunta) references pergunta(id_pergunta)
+    foreign key (id_pergunta) references pergunta_quiz(id_pergunta)
 );
-
-select*from curso;
-select*from usuario_curso;
 
 insert into imagem_sinal(url_imagem, descricao)
     values
@@ -215,5 +200,83 @@ insert into curso(titulo, descricao, id_dificuldade, url_img)
     ("Teoria", "Gramática e estrutura da Libras", 2, "teorico-img"),
     ("Teoria", "História, cultura e regionalismos", 3, "teorico-img");
     
-select*from usuario_curso;
-select*from imagem_sinal;
+insert into pergunta_quiz (enunciado, id_dificuldade)
+	values
+    ("Durante muito tempo, pessoas surdas não eram reconhecidas como:", 1),
+    ("Qual filósofos da antiguidade acreditavam sobre quem não falava?", 1),
+    ("O que o Congresso de Milão (1880) proibiu?", 1),
+    ("Quem fundou o Instituto Nacional de Surdos Mudos (atual INES) no Brasil?", 1),
+    ("A partir das décadas de 1970 e 1980, o INES passou a aplicar:", 1),
+    ("Quantos são os parâmetros essenciais da LIBRAS?", 2),
+    ("Qual parâmetro muda nos sinais APRENDER e ESTUDAR, tornando-os diferentes?", 2),
+    ("Classificadores representam:", 2),
+    ("A estrutura frasal mais comum em LIBRAS é:", 2),
+    ("As Expressões Não-Manuais servem para:", 2),
+    ("Se um sinal muda apenas sua Orientação/Direcionalidade, o que ocorre?", 3),
+    ("O uso de Classificadores é especialmente necessário em:", 3),
+    ("No exemplo de ‘CARRO ANDAR’ com uso de CL, o sinalizante:", 3),
+    ("Expressões Não-Manuais podem indicar:", 3),
+    ("Na estrutura Tópico–Comentário, o Tópico geralmente é sinalizado com:", 3);
+
+insert into resposta_quiz (id_pergunta, texto, correta)
+	values
+    (1, "Cidadãos brasileiros", false),
+    (1, "Seres humanos", true),
+    (1, "Professores", false),
+    (1, "Crianças", false),
+    (2, "Era inteligente", false),
+    (2, "Era um ser pensante", false),
+    (2, "Não era um ser pensante", true),
+    (2, "Era nobre", false),
+    (3, "Uso do português", false),
+    (3, "Uso das línguas de sinais", true),
+    (3, "Uso do braile", false),
+    (3, "Uso da escrita", false),
+    (4, "William Stokoe", false),
+    (4, "Imperatrice Debret", false),
+    (4, "Hernest Huet", true),
+    (4, "Dom Pedro II", false),
+    (5, "Apenas oralismo", false),
+    (5, "Escrita simplificada", false),
+    (5, "Comunicação total e bilinguismo", true),
+    (5, "Braile como língua oficial", false),
+    (6, "3", false),
+    (6, "4", false),
+    (6, "5", true),
+    (6, "6", false),
+    (7, "Configuração de mão", false),
+    (7, "Ponto de articulação", false),
+    (7, "Movimento", true),
+    (7, "Expressões faciais", false),
+    (8, "Cores de objetos", false),
+    (8, "Forma, tamanho, movimento ou localização", true),
+    (8, "Ordem das frases", false),
+    (8, "Intensidade das expressões", false),
+    (9, "Sujeito – Verbo – Objeto", false),
+    (9, "Verbo – Sujeito – Objeto", false),
+    (9, "Tópico – Comentário", true),
+    (9, "Comentário – Tópico", false),
+    (10, "Enfeitar o sinal", false),
+    (10, "Apenas dar emoção", false),
+    (10, "Indicar funções gramaticais, como negação e perguntas", true),
+    (10, "Substituir a ordem Tópico–Comentário", false),
+    (11, "Nada muda", false),
+    (11, "Torna-se um Par Mínimo", true),
+    (11, "Vira Classificador", false),
+    (11, "Perde sentido", false),
+    (12, "Descrições espaciais detalhadas", true),
+    (12, "Sinais estáticos", false),
+    (12, "Frases sem sujeito", false),
+    (12, "Verbos sem movimento", false),
+    (13, "Repete o sinal de CARRO", false),
+    (13, "Remove o sinal de ANDAR", false),
+    (13, "Representa visualmente o carro e seu movimento", true),
+    (13, "Usa apenas ENM", false),
+    (14, "Apenas tempo", false),
+    (14, "Apenas sujeito", false),
+    (14, "Nada essencial", false),
+    (14, "Tempo, intensidade, negação, interrogação", true),
+    (15, "Mãos fechadas", false),
+    (15, "Sobrancelhas levantadas e leve inclinação de cabeça", true),
+    (15, "Movimentos repetidos", false),
+    (15, "Classificadores largos", false);

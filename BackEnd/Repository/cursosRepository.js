@@ -9,17 +9,6 @@ export async function dificuldadeTabela() {
     return registros;
 }
 
-// export async function verificarProgresso() {
-//     const comando = `
-//         select usuario.id_usuario, usuario.nome, progresso.concluido
-//             from usuario
-//             inner join progresso on progresso.id_usuario = usuario.id_usuario;
-//     `;
-
-//     const [registros] = await conection.query(comando);
-//     return registros;
-// }
-
 export async function verificarProgresso(id_usuario, id_curso) {
     const comando = `
         select *
@@ -62,14 +51,5 @@ export async function verificarCursos() {
     `;
 
     const [registros] = await conection.query(comando);
-    return registros;
-}
-
-export async function obterSinais(id1, id2) {
-    const comando = `
-        select * from imagem_sinal
-            where id_imagem between ? and ?;
-    `;
-    const [registros] = await conection.query(comando, [id1, id2]);
     return registros;
 }
