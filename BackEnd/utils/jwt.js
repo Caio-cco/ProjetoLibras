@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 
 const KEY = "borapracima";
 
-
 export function generateToken(userInfo) {
   return jwt.sign(
     {
@@ -10,13 +9,12 @@ export function generateToken(userInfo) {
       nome: userInfo.nome || userInfo.name,
       email: userInfo.email,
       foto_url: userInfo.foto_url || userInfo.picture,
-      role: userInfo.role || "user", // padrão é "user"
+      role: userInfo.role || userInfo.cargo || "user"
     },
     KEY,
     { expiresIn: "7d" }
   );
 }
-
 
 export function getTokenInfo(req) {
   try {
@@ -24,7 +22,6 @@ export function getTokenInfo(req) {
       req.headers["x-access-token"] ||
       req.query["x-access-token"] ||
       req.headers.authorization?.split(" ")[1];
-
     if (!token) return null;
     return jwt.verify(token, KEY);
   } catch {
@@ -32,30 +29,20 @@ export function getTokenInfo(req) {
   }
 }
 
-
-export function getAuthentication(checkRole = null, throw401 = true) {
+export function getAuthentication(checkRole = null) {
   return (req, res, next) => {
     try {
       const token =
         req.headers["x-access-token"] ||
         req.query["x-access-token"] ||
         req.headers.authorization?.split(" ")[1];
-
-      if (!token) throw new Error("Token ausente");
-
+      if (!token) return res.status(401).json({ erro: "Token ausente" });
       const decoded = jwt.verify(token, KEY);
       req.user = decoded;
-
-    
-      if (checkRole && !checkRole(decoded)) {
-        return res.status(403).json({ erro: "Acesso negado. Requer permissão de administrador." });
-      }
-
+      if (checkRole && !checkRole(decoded)) return res.status(403).json({ erro: "Acesso negado" });
       next();
     } catch {
-      if (throw401)
-        return res.status(401).json({ erro: "Token inválido ou não fornecido." });
-      next();
+      return res.status(401).json({ erro: "Token inválido" });
     }
   };
 }

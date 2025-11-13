@@ -16,7 +16,6 @@ const REDIRECT_URI = isProduction
 
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI);
 
-
 endpoints.post("/usuario/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
@@ -30,11 +29,9 @@ endpoints.post("/usuario/login", async (req, res) => {
     const token = generateToken(credenciais);
     res.send({ token });
   } catch (err) {
-    console.error(err);
     res.status(500).send({ erro: "Falha na autenticação" });
   }
 });
-
 
 endpoints.post("/usuario", async (req, res) => {
   try {
@@ -45,11 +42,9 @@ endpoints.post("/usuario", async (req, res) => {
     const id = await repo.criarConta(novoLogin);
     res.send({ novoId: id });
   } catch (err) {
-    console.error(err);
     res.status(400).send({ erro: err.message || "Falha no cadastro" });
   }
 });
-
 
 endpoints.post("/usuario/google", async (req, res) => {
   try {
@@ -79,8 +74,7 @@ endpoints.post("/usuario/google", async (req, res) => {
 
     const token = generateToken(usuario);
     res.send({ token });
-  } catch (err) {
-    console.error("Erro no login com Google:", err);
+  } catch {
     res.status(500).send({ erro: "Falha na autenticação com google" });
   }
 });
