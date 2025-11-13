@@ -11,7 +11,7 @@ const cards = [
     desc: "Ideal pra quem nunca teve contato, aprenda frases básicas.",
     image: "/avanco.png",
     button: "Pratique Agora!",
-    level: "iniciante", // Mantido
+    level: "iniciante", 
   },
   {
     title: "Libras para Intermediários",
@@ -19,7 +19,7 @@ const cards = [
     desc: "Aprofunde seus conhecimentos e construa diálogos mais complexos.",
     image: "/intermediario.png",
     button: "Pratique Agora!",
-    level: "intermediário", // Corrigido com acento
+    level: "intermediário", 
   },
   {
     title: "Libras para Avançados",
@@ -27,7 +27,7 @@ const cards = [
     desc: "Domine sua interpretação, nuances culturais e diálogos complexos.",
     image: "/iniciante.png",
     button: "Pratique Agora!",
-    level: "avançado", // Corrigido com acento e cedilha
+    level: "avançado", 
   },
 ];
 
