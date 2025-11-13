@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import jwt_decode from "jwt-decode"; // 👈 adicionei isso
 import "react-toastify/dist/ReactToastify.css";
 import "./perfil.scss";
 
@@ -18,56 +19,29 @@ export default function PerfilAluno() {
     telefone: "",
   });
 
+  const [isAdmin, setIsAdmin] = useState(false); // 👈 novo estado
+
   const navigate = useNavigate();
   const token = localStorage.getItem("authToken");
   const id = localStorage.getItem("id");
 
-  function formatarTelefone(valor) {
-    let apenasNumeros = valor.replace(/\D/g, "");
-
-    if (apenasNumeros.startsWith("55")) {
-      apenasNumeros = apenasNumeros.slice(0, 13);
-      return apenasNumeros
-        .replace(/^55(\d{2})(\d{5})(\d{0,4}).*/, "+55 ($1) $2-$3")
-        .replace(/^55(\d{2})(\d{4})(\d{0,4}).*/, "+55 ($1) $2-$3")
-        .trim();
+  // 👇 Novo useEffect pra decodificar o token e descobrir se é admin
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwt_decode(token);
+        setIsAdmin(decoded.isAdmin || false);
+      } catch (err) {
+        console.error("Erro ao decodificar token:", err);
+      }
     }
-
-    if (apenasNumeros.length <= 10) {
-      return apenasNumeros
-        .replace(/^(\d{0,2})(\d{0,4})(\d{0,4}).*/, (_, a, b, c) =>
-          [a ? `(${a})` : "", b, c ? `-${c}` : ""].join(" ").trim()
-        )
-        .trim();
-    } else {
-      return apenasNumeros
-        .replace(/^(\d{2})(\d{5})(\d{0,4}).*/, "($1) $2-$3")
-        .trim();
-    }
-  }
+  }, [token]);
 
   const handleSubmit = async () => {
-
-    const nomeValido = /^[A-Za-zÀ-ÿ\s]+$/.test(nome.trim()) || nome.trim() === "";
-    const telefoneNumerico = telefone.replace(/\D/g, "");
-    const telefoneValido = telefoneNumerico.length >= 8 && telefoneNumerico.length <= 15;
-
-    if (!nomeValido) {
-      toast.error("O nome deve conter apenas letras e espaços.", { position: "top-right" });
-      return;
-    }
-
-    if (telefone.trim() !== "" && !telefoneValido) {
-      toast.error("Telefone inválido. Use apenas números e DDD corretos.", { position: "top-right" });
-      return;
-    }
-
     const dadosParaEnviar = {
       ...perfilatt,
       nome: nome.trim() === "" ? perfil.nome : nome,
-      telefone: 
-        telefone.trim() === "" 
-        ? perfil.telefone : telefone.replace(/\D/g, ""),
+      telefone: telefone.trim() === "" ? perfil.telefone : telefone,
     };
 
     try {
@@ -125,6 +99,9 @@ export default function PerfilAluno() {
         "x-access-token": token,
       },
     })
+    .then((response) => {
+      console.log(response.data);
+    })
     .catch((error) => {
       console.error(error);
     });
@@ -179,7 +156,12 @@ export default function PerfilAluno() {
 
         <nav>
           <button onClick={() => navigate("/homeL")}>🏠 Início</button>
-          <button onClick={() => navigate("/admin")}>🧾 Admin</button>
+
+          {/* 👇 Só aparece se o usuário for admin */}
+          {isAdmin && (
+            <button onClick={() => navigate("/admin")}>🧾 Admin</button>
+          )}
+
           <button onClick={() => navigate("/atividades")}>📚 Atividades</button>
           <button className="ativo">👤 Perfil</button>
           <button className="sair" onClick={handleLogout}>
@@ -220,10 +202,7 @@ export default function PerfilAluno() {
                 <input
                   placeholder="telefone"
                   value={telefone}
-                  onChange={(e) => {
-                    const valor = e.target.value;
-                    setTelefone(formatarTelefone(valor));
-                  }}
+                  onChange={(e) => setTelefone(e.target.value)}
                 />
 
                 <input
@@ -243,19 +222,11 @@ export default function PerfilAluno() {
                 <h2>{perfil.nome}</h2>
                 <p className="bio">{bio}</p>
                 <p>
-                  <strong>Telefone:</strong> {" "}
-                    {perfil.telefone
-                    ? formatarTelefone(perfil.telefone)
-                    : "Não informado"}
+                  <strong>Telefone:</strong> {perfil.telefone}
                 </p>
 
                 <div className="botoes">
-                  <button className="editar" onClick={() => {
-                    setNome(perfil.nome || "");
-                    setTelefone(formatarTelefone(perfil.telefone || ""));
-                    setEditando(true)
-                  }}
-                >
+                  <button className="editar" onClick={() => setEditando(true)}>
                     Editar perfil
                   </button>
                 </div>
