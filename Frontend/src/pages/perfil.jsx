@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import jwt_decode from "jwt-decode"; // 👈 adicionei isso
+import jwt_decode from "jwt-decode"; 
 import "react-toastify/dist/ReactToastify.css";
 import "./perfil.scss";
 
@@ -19,13 +19,12 @@ export default function PerfilAluno() {
     telefone: "",
   });
 
-  const [isAdmin, setIsAdmin] = useState(false); // 👈 novo estado
+  const [isAdmin, setIsAdmin] = useState(false); 
 
   const navigate = useNavigate();
   const token = localStorage.getItem("authToken");
   const id = localStorage.getItem("id");
 
-  // 👇 Novo useEffect pra decodificar o token e descobrir se é admin
   useEffect(() => {
     if (token) {
       try {
