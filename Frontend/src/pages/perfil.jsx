@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import jwt_decode from "jwt-decode"; 
 import "react-toastify/dist/ReactToastify.css";
 import "./perfil.scss";
 
@@ -19,22 +18,9 @@ export default function PerfilAluno() {
     telefone: "",
   });
 
-  const [isAdmin, setIsAdmin] = useState(false); 
-
   const navigate = useNavigate();
   const token = localStorage.getItem("authToken");
   const id = localStorage.getItem("id");
-
-  useEffect(() => {
-    if (token) {
-      try {
-        const decoded = jwt_decode(token);
-        setIsAdmin(decoded.isAdmin || false);
-      } catch (err) {
-        console.error("Erro ao decodificar token:", err);
-      }
-    }
-  }, [token]);
 
   const handleSubmit = async () => {
     const dadosParaEnviar = {
@@ -155,12 +141,7 @@ export default function PerfilAluno() {
 
         <nav>
           <button onClick={() => navigate("/homeL")}>🏠 Início</button>
-
-          {/* 👇 Só aparece se o usuário for admin */}
-          {isAdmin && (
-            <button onClick={() => navigate("/admin")}>🧾 Admin</button>
-          )}
-
+          <button onClick={() => navigate("/admin")}>🧾 Admin</button>
           <button onClick={() => navigate("/atividades")}>📚 Atividades</button>
           <button className="ativo">👤 Perfil</button>
           <button className="sair" onClick={handleLogout}>
