@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Cabecalho from "../cabecalho";
 import Rodape from "../rodape";
 import "./index.scss";
@@ -11,6 +11,7 @@ export default function Atividades() {
     const [query, setQuery] = useState("");
     const [nivelFiltro, setNivelFiltro] = useState("Todos");
     const navegar = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const token = localStorage.getItem("authToken");
 
@@ -30,9 +31,18 @@ export default function Atividades() {
 
     useEffect(() => {
         fetchData('http://localhost:5010/dificuldades', setDificuldade);
-    }, []);
+
+        const nivelDoUrl = searchParams.get('nivel');
+
+        if (nivelDoUrl) {
+            const nivelFormatado = nivelDoUrl.charAt(0).toUpperCase() + nivelDoUrl.slice(1).toLowerCase();
+            setNivelFiltro(nivelFormatado);
+        }
+
+    }, [searchParams]);
 
     const { data: cursos } = useFetch('http://localhost:5010/obtercursos', token);
+
     const filtered = cursos?.filter((c) => {
         const q = query.trim().toLowerCase();
 
@@ -53,31 +63,31 @@ export default function Atividades() {
             if (level === "Iniciante") rota = "/associacao";
             else if (level === "Intermediário") rota = "/associacao-intermediario";
             else if (level === "Avançado") rota = "/associacao-avancado";
-        } 
-        
+        }
+
         else if (title === "Jogo das Frases") {
             if (level === "Iniciante") rota = "/frase";
             else if (level === "Intermediário") rota = "/frase-intermediario";
             else if (level === "Avançado") rota = "/frase-avancado";
-        } 
-        
+        }
+
         else if (title === "Teoria") {
             if (level === "Iniciante") rota = "/teoria";
             else if (level === "Intermediário") rota = "/teoria-intermediario";
-        } 
-        
+        }
+
         else if (title === "Quiz") {
-           if (level === "Iniciante") rota = "/quiz";
-           else if (level === "Intermediário") rota = "/quiz-intermediario";
-           else if (level === "Avançado") rota = "/quiz-avancado";
+            if (level === "Iniciante") rota = "/quiz";
+            else if (level === "Intermediário") rota = "/quiz-intermediario";
+            else if (level === "Avançado") rota = "/quiz-avancado";
         }
 
         else if (title === "Forca") {
             if (level === "Iniciante") rota = "/forca";
             else if (level === "Intermediário") rota = "/forca-intermediario";
             else if (level === "Avançado") rota = "/forca-avancado";
-        } 
-        
+        }
+
         else if (title === "Em Breve") {
             alert("Em breve! Esta atividade ainda não está disponível.");
             return;
@@ -86,7 +96,7 @@ export default function Atividades() {
         if (rota) {
             navegar(rota);
         } else {
-            navegar(`/atividade/${card.id}`);
+            navegar(`/atividade/${card.id_curso}`);
         }
     };
 
@@ -112,7 +122,6 @@ export default function Atividades() {
                             aria-label="Selecionar nível"
                         >
                             <option value="Todos">Todos</option>
-
                             {dificuldade?.map((item) => (
                                 <option key={item.id_dificuldade} value={item.nome}>
                                     {item.nome}
@@ -123,13 +132,17 @@ export default function Atividades() {
                 </header>
 
                 <main className="cards-grid">
-                    {filtered.map((card) => (
-                        <Card
-                            key={card.id_curso}
-                            atividade={card}
-                            aoNavegar={lidarComNavegacao}
-                        />
-                    ))}
+                    {filtered.length > 0 ? (
+                        filtered.map((card) => (
+                            <Card
+                                key={card.id_curso}
+                                atividade={card}
+                                aoNavegar={lidarComNavegacao}
+                            />
+                        ))
+                    ) : (
+                        <p className="no-results">Nenhuma atividade encontrada para os filtros selecionados.</p>
+                    )}
                 </main>
                 <br />
             </div>

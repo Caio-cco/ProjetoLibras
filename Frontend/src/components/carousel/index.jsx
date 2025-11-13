@@ -11,6 +11,7 @@ const cards = [
     desc: "Ideal pra quem nunca teve contato, aprenda frases básicas.",
     image: "/avanco.png",
     button: "Pratique Agora!",
+    level: "iniciante", // Mantido
   },
   {
     title: "Libras para Intermediários",
@@ -18,6 +19,7 @@ const cards = [
     desc: "Aprofunde seus conhecimentos e construa diálogos mais complexos.",
     image: "/intermediario.png",
     button: "Pratique Agora!",
+    level: "intermediário", // Corrigido com acento
   },
   {
     title: "Libras para Avançados",
@@ -25,12 +27,13 @@ const cards = [
     desc: "Domine sua interpretação, nuances culturais e diálogos complexos.",
     image: "/iniciante.png",
     button: "Pratique Agora!",
+    level: "avançado", // Corrigido com acento e cedilha
   },
 ];
 
 export default function Carousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const navigate = useNavigate(); // ✅
+  const navigate = useNavigate();
 
   const nextCard = () => setActiveIndex((prev) => (prev + 1) % cards.length);
   const prevCard = () => setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
@@ -83,8 +86,7 @@ export default function Carousel() {
                   <p>{card.desc}</p>
                 </div>
 
-                
-                <button onClick={() => navigate("/atividades")}>
+                <button onClick={() => navigate(`/atividades?nivel=${card.level}`)}>
                   {card.button}
                 </button>
               </motion.div>
