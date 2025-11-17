@@ -12,6 +12,7 @@ import Admin from "./pages/admin";
 import Atividades from "./components/atividades";
 import { AssociacaoBasico, AssociacaoIntermediario, AssociacaoAvancado } from "./pages/Associacao";
 import { ForcaAvancado, ForcaBasico, ForcaIntermediario } from "./pages/Forca";
+import TeoriaAvancado from "./pages/TeoriaAvançado";
 import Nos from "./components/nos"; 
 
 
@@ -109,6 +110,7 @@ function Navegacao() {
         <Route path="/frase-avancado" element={<ProtectedRoute><FrasesAvancado /></ProtectedRoute>} />
         <Route path="/teoria" element={<ProtectedRoute><Teoria /></ProtectedRoute>} />
         <Route path="/teoria-intermediario" element={<ProtectedRoute><TeoriaIntermediario /></ProtectedRoute>} />
+        <Route path="/teoria-avancado" element={<ProtectedRoute><TeoriaAvancado /></ProtectedRoute>} />
 
       
         <Route path="*" element={<Navigate to="/" replace />} />

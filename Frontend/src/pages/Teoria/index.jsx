@@ -13,7 +13,7 @@ export default function Teoria() {
 
             <div className="banner-conteudo">
                 <img 
-                    src="/mãoazul.png"
+                    src="/maoazul.png"
                     alt="Mão azul" 
                     className="banner-imagem"
                 />

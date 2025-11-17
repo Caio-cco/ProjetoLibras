@@ -28,7 +28,7 @@ export default function JogoDasFrasesImagens({ banner, titulo, descricao, dif, i
     const [statusVerificacao, setStatusVerificacao] = useState(null);
     const [acertos, setAcertos] = useState(0);
     const [modal, setModal] = useState(null);
-    
+
     const navigate = useNavigate();
 
     const token = localStorage.getItem("authToken");
@@ -46,7 +46,7 @@ export default function JogoDasFrasesImagens({ banner, titulo, descricao, dif, i
                 if (!data.frases || !data.palavras) {
                     throw new Error("Formato inválido: faltam frases ou palavras");
                 }
-                
+
                 const allWordsMap = new Map();
                 data.palavras.forEach(p => {
                     const caminho = `http://localhost:5010/palavrasEFrases/${p.url_img}`;
@@ -72,13 +72,13 @@ export default function JogoDasFrasesImagens({ banner, titulo, descricao, dif, i
                     }));
 
                     const correctPaths = new Set(palavrasCorretasObj.map(p => p.caminho));
-                    
-                    let distractors = allUniqueWords.filter(word => 
+
+                    let distractors = allUniqueWords.filter(word =>
                         !correctPaths.has(word.caminho)
                     );
 
                     distractors = shuffleArray(distractors).slice(0, MAX_DISTRACTORS);
-                    
+
                     const distractorObjs = distractors.map(d => ({
                         label: d.label,
                         caminho: d.caminho,
@@ -153,7 +153,7 @@ export default function JogoDasFrasesImagens({ banner, titulo, descricao, dif, i
     };
 
     const salvarProgresso = async ({ idAtividade, progresso }) => {
-        return Promise.resolve(); 
+        return Promise.resolve();
     };
 
     const handleProximaFrase = async () => {
@@ -167,7 +167,7 @@ export default function JogoDasFrasesImagens({ banner, titulo, descricao, dif, i
                 : "Que tal tentar novamente para melhorar sua pontuação?";
 
             const progresso = Math.round((acertos / totalPerguntas) * 100);
-                        
+
             await salvarProgresso({
                 idAtividade: idCurso,
                 progresso,
@@ -271,12 +271,12 @@ export default function JogoDasFrasesImagens({ banner, titulo, descricao, dif, i
                                 <RespostaCorretaDisplay respostaCorreta={perguntaAtual.respostaCorreta} />
                             </div>
                         )}
-                        
+
                         {statusVerificacao === "incorreta" && perguntaAtual && (
-                                <div className="feedback-incorreto">
-                                    ❌ Resposta incorreta. A resposta correta é:
-                                    <RespostaCorretaDisplay respostaCorreta={perguntaAtual.respostaCorreta} />
-                                </div>
+                            <div className="feedback-incorreto">
+                                ❌ Resposta incorreta. A resposta correta é:
+                                <RespostaCorretaDisplay respostaCorreta={perguntaAtual.respostaCorreta} />
+                            </div>
                         )}
 
                         <div className="area-palavras-disponiveis">

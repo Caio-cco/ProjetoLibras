@@ -74,6 +74,7 @@ export default function Atividades() {
         else if (title === "Teoria") {
             if (level === "Iniciante") rota = "/teoria";
             else if (level === "Intermediário") rota = "/teoria-intermediario";
+            else if (level === "Avançado") rota = "/teoria-avancado";
         }
 
         else if (title === "Quiz") {
