@@ -1,11 +1,24 @@
 import mysql from "mysql2/promise";
 
-const conection = await mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "5526",
+
+const usarAWS = true; 
+
+const connection = await mysql.createConnection({
+  host: usarAWS
+    ? "falaremagico.c54e0wcomrec.us-east-2.rds.amazonaws.com"
+    : "localhost",
+
+  user: usarAWS
+    ? "SEU_USUARIO_MASTER"
+    : "root",
+
+  password: usarAWS
+    ? "csm06171825"
+    : "1234",
+
   database: "tcc",
-  multipleStatements: true 
+  port: 3306,
+  multipleStatements: true
 });
 
-export { conection };
+export { connection };
