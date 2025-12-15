@@ -16,10 +16,8 @@ const REDIRECT_URI = isProduction
 
 const googleClient = new OAuth2Client(
   GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET,
-  REDIRECT_URI
+  GOOGLE_CLIENT_SECRET
 );
-
 endpoints.post("/usuario/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
@@ -36,7 +34,7 @@ endpoints.post("/usuario/login", async (req, res) => {
 
     const token = generateToken(credenciais);
     res.send({ token });
-  } catch {
+  } catch (err) {
     res.status(500).send({ erro: "Falha na autenticação" });
   }
 });
@@ -45,8 +43,8 @@ endpoints.post("/usuario", async (req, res) => {
   try {
     const { email, senha, name } = req.body;
 
-    if (!email || !senha) {
-      return res.status(400).send({ erro: "Email e senha são obrigatórios" });
+    if (!email || !senha || !name) {
+      return res.status(400).send({ erro: "Dados obrigatórios ausentes" });
     }
 
     const id = await repo.criarConta({ email, senha, name });
@@ -58,29 +56,31 @@ endpoints.post("/usuario", async (req, res) => {
 
 endpoints.post("/usuario/google", async (req, res) => {
   try {
-    const { code } = req.body;
+    const { access_token } = req.body;
 
-    if (!code) {
-      return res.status(400).send({ erro: "Código OAuth não recebido" });
+    if (!access_token) {
+      return res.status(400).send({ erro: "Access token não recebido" });
     }
 
-    const { tokens } = await googleClient.getToken(code);
+    const response = await fetch(
+      `https://www.googleapis.com/oauth2/v3/userinfo`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
 
-    if (!tokens.id_token) {
-      return res.status(400).send({ erro: "ID Token não retornado pelo Google" });
+    const payload = await response.json();
+
+    if (!payload.email) {
+      return res.status(400).send({ erro: "Email não retornado pelo Google" });
     }
-
-    const ticket = await googleClient.verifyIdToken({
-      idToken: tokens.id_token,
-      audience: GOOGLE_CLIENT_ID,
-    });
-
-    const payload = ticket.getPayload();
 
     const usuario = await repo.upsertUsuarioSocial({
       email: payload.email,
-      name: payload.name,
-      picture: payload.picture,
+      name: payload.name || payload.email,
+      picture: payload.picture || null,
     });
 
     const token = generateToken(usuario);

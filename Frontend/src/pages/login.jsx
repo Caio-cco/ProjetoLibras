@@ -14,6 +14,11 @@ const BACKEND_URL =
     ? "https://projetolibras.onrender.com"
     : "http://localhost:5010";
 
+const REDIRECT_URI =
+  import.meta.env.MODE === "production"
+    ? "https://projeto-libras-ten.vercel.app/login/google/callback"
+    : "http://localhost:5173/login/google/callback";
+
 export default function LoginCadastro() {
   const navigate = useNavigate();
   const [modo, setModo] = useState("login");
@@ -46,126 +51,96 @@ export default function LoginCadastro() {
     }
   }, [navigate]);
 
-  const irParaLogin = () => setModo("login");
-  const irParaCadastro = () => setModo("cadastro");
-
   async function handleLogin(e) {
     e.preventDefault();
-    try {
-      if (!loginEmail || !loginSenha) {
-        toast.warn("⚠️ Preencha todos os campos!");
-        return;
-      }
 
-      const res = await axios.post(`${BACKEND_URL}/usuario/login`, {
-        email: loginEmail,
-        senha: loginSenha,
-      });
-
-      const { token } = res.data;
-      const userPayload = jwt_decode(token);
-      const name = userPayload.nome;
-      const id = userPayload.id;
-
-      localStorage.setItem("authToken", token);
-      localStorage.setItem("name", name);
-      localStorage.setItem("id", id);
-
-      toast.success(`👋 Bem-vindo(a), ${userPayload.nome || userPayload.email}!`, {
-        autoClose: 2500,
-      });
-
-      setTimeout(() => navigate("/homel"), 1500);
-    } catch (err) {
-      console.error(err);
-      toast.error(err.response?.data?.erro || "❌ Falha ao fazer login.");
+    if (!loginEmail || !loginSenha) {
+      toast.warn("⚠️ Preencha todos os campos!");
+      return;
     }
+
+    const res = await axios.post(`${BACKEND_URL}/usuario/login`, {
+      email: loginEmail,
+      senha: loginSenha,
+    });
+
+    const { token } = res.data;
+    const userPayload = jwt_decode(token);
+
+    localStorage.setItem("authToken", token);
+    localStorage.setItem("name", userPayload.nome);
+    localStorage.setItem("id", userPayload.id);
+
+    navigate("/homel");
   }
 
   async function handleCadastro(e) {
     e.preventDefault();
-    try {
-      if (!cadNome || !cadEmail || !cadSenha || !cadConfSenha) {
-        toast.warn("⚠️ Preencha todos os campos!");
-        return;
-      }
-      if (/\d/.test(cadNome)) {
-        toast.error("🚫 O nome não pode conter números!");
-        return;
-      }
-      if (cadSenha !== cadConfSenha) {
-        toast.error("❌ As senhas não coincidem!");
-        return;
-      }
 
-      const res = await axios.post(`${BACKEND_URL}/usuario`, {
-        email: cadEmail,
-        senha: cadSenha,
-        name: cadNome,
-      });
+    if (!cadNome || !cadEmail || !cadSenha || !cadConfSenha) {
+      toast.warn("⚠️ Preencha todos os campos!");
+      return;
+    }
 
-      if (res.data.novoId) {
-        toast.success("✅ Conta criada com sucesso! Faça login agora.", {
-          autoClose: 2500,
-        });
-        setModo("login");
-        setLoginEmail(cadEmail);
-        setLoginSenha("");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error(err.response?.data?.erro || "❌ Falha ao criar conta.");
+    if (cadSenha !== cadConfSenha) {
+      toast.error("❌ As senhas não coincidem!");
+      return;
+    }
+
+    const res = await axios.post(`${BACKEND_URL}/usuario`, {
+      email: cadEmail,
+      senha: cadSenha,
+      name: cadNome,
+    });
+
+    if (res.data.novoId) {
+      setModo("login");
+      setLoginEmail(cadEmail);
+      setLoginSenha("");
     }
   }
 
-  const loginGoogle = useGoogleLogin({
-    flow: "auth-code",
-    onSuccess: async (codeResponse) => {
-      try {
-        const res = await axios.post(`${BACKEND_URL}/usuario/google`, {
-          code: codeResponse.code,
-        });
+const loginGoogle = useGoogleLogin({
+  onSuccess: async (tokenResponse) => {
+    try {
+      const res = await axios.post(
+        `${BACKEND_URL}/usuario/google`,
+        {
+          access_token: tokenResponse.access_token,
+        }
+      );
 
-        const { token } = res.data;
-        const userPayload = jwt_decode(token);
-        const name = userPayload.nome;
-        const id = userPayload.id;
+      const { token } = res.data;
+      const userPayload = jwt_decode(token);
 
-        localStorage.setItem("authToken", token);
-        localStorage.setItem("name", name);
-        localStorage.setItem("id", id);
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("name", userPayload.nome);
+      localStorage.setItem("id", userPayload.id);
 
-        toast.success(`✅ Login bem-sucedido! Bem-vindo(a), ${name}!`, {
-          autoClose: 2500,
-        });
-
-        setTimeout(() => navigate("/homel"), 1500);
-      } catch (error) {
-        console.error("Erro ao autenticar com o backend:", error);
-        toast.error("❌ Falha na autenticação com o Google.");
-      }
-    },
-    onError: (error) => {
-      console.error("Erro no login com o Google:", error);
-      toast.error("⚠️ Erro ao tentar fazer login com o Google.");
-    },
-  });
+      navigate("/homel");
+    } catch {
+      toast.error("❌ Falha na autenticação com o Google.");
+    }
+  },
+  onError: () => {
+    toast.error("❌ Falha na autenticação com o Google.");
+  },
+});
 
   return (
     <div className="login-cadastro-container">
-      {/* Container do Toast */}
       <ToastContainer position="top-right" theme="colored" />
 
       <div className="switch-container">
         <button
           className={`switch-btn ${modo === "login" ? "ativo" : ""}`}
-          onClick={irParaLogin}
+          onClick={() => setModo("login")}
         >
           Login
         </button>
         <button
           className={`switch-btn ${modo === "cadastro" ? "ativo" : ""}`}
-          onClick={irParaCadastro}
+          onClick={() => setModo("cadastro")}
         >
           Cadastro
         </button>
@@ -208,7 +183,7 @@ export default function LoginCadastro() {
 
             <p className="link">
               Não possui conta?{" "}
-              <span className="highlight" onClick={irParaCadastro}>
+              <span className="highlight" onClick={() => setModo("cadastro")}>
                 Cadastre-se aqui!
               </span>
             </p>
@@ -251,7 +226,7 @@ export default function LoginCadastro() {
 
             <p className="link">
               Já possui uma conta?{" "}
-              <span className="highlight" onClick={irParaLogin}>
+              <span className="highlight" onClick={() => setModo("login")}>
                 Entre agora!
               </span>
             </p>
@@ -261,3 +236,9 @@ export default function LoginCadastro() {
     </div>
   );
 }
+
+
+
+
+
+
